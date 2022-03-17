@@ -7,8 +7,11 @@ Application should contain REST API with EF Core Database Access, with vue.js fr
 Should implement IS for managing Hotel.
 
 Hotel_PIS.DAL	- data access layer using EF Core
+
 Hotel_PIS		- WEB API
+
 Hotel_PIS.vue	- Frontend of application
 
+https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-vue?view=vs-2022
 
-Authors: Petr Urb·nek (HyperReap/xurban70)
+Authors: Petr Urb√°nek (HyperReap/xurban70)
