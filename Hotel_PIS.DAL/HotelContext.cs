@@ -16,15 +16,34 @@ namespace Hotel_PIS.DAL
         }
         public HotelContext()
         {
-            //TODO:: create Factory 
+
         }
 
-        private readonly string _connectionString;
+        private readonly string _connectionString = "server=localhost;database=hotel;user=user;password=password";
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public string DbPath { get; }
+
+        // The following configures EF to create a Sqlite database file in the
+        // special "local" folder for your platform.
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
-            optionsBuilder.UseSqlServer(_connectionString);
+            options.UseSqlite($"Data Source={DbPath}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<Room>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
+
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
         }
 
         public DbSet<Room> Rooms { get; set; }
@@ -33,8 +52,7 @@ namespace Hotel_PIS.DAL
         public DbSet<Client> Clients { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Failure> Failures { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-     
+    }
 }

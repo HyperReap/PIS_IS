@@ -5,3 +5,4 @@
         public string PhoneNumber { get; set; }
         public string IdentityCardNumber { get; set; }
     }
+}
