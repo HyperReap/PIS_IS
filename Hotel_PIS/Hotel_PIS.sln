@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel_PIS", "Hotel_PIS.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel_PIS.DAL", "..\Hotel_PIS.DAL\Hotel_PIS.DAL.csproj", "{519C82C2-286F-44DD-913B-066697276C95}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "hotel_pis.vue", "..\Hotel_PIS.vue\hotel_pis.vue.esproj", "{FFF996A0-3497-4F61-A036-3846C18AA59C}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "hotel_pis.vue", "..\Hotel_PIS.vue\hotel_pis.vue.esproj", "{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,12 @@ Global
 		{519C82C2-286F-44DD-913B-066697276C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{519C82C2-286F-44DD-913B-066697276C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{519C82C2-286F-44DD-913B-066697276C95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFF996A0-3497-4F61-A036-3846C18AA59C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{355F7A27-2CD9-4A61-A4E7-DFB5F910F43D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
