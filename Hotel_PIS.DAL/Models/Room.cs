@@ -2,9 +2,9 @@
 {
     public class Room : BaseModel
     {
-        public Room(ICollection<RoomReservation> roomReservations)
+        public Room()
         {
-            RoomReservations = roomReservations;
+            RoomReservations = new HashSet<RoomReservation>();
         }
         public int NumberOfBeds { get; set; }
         public int NumberOfSideBeds { get; set; }
