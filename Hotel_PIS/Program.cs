@@ -1,4 +1,6 @@
 using Hotel_PIS.DAL;
+using Hotel_PIS.IServices;
+using Hotel_PIS.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<HotelContext>();
 builder.Services.AddControllers();
+builder.Services.AddSession();
+
+//HERE ADD Repositories for Dependency Injection into controllers in this manner
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

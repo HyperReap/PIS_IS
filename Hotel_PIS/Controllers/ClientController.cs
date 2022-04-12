@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace Hotel_PIS.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ClientController : ControllerBase/*, IClientRepository*/
+    public class ClientController : ControllerBase, IClientRepository
     {
         private readonly IClientRepository clientRepository;
         private readonly ILogger logger;
@@ -23,13 +24,13 @@ namespace Hotel_PIS.Controllers
             this.logger = logger;
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete]
         public bool Delete(int id)
         {
             return clientRepository.Delete(id);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public Client Get(int id)
         {
             return clientRepository.Get(id);
