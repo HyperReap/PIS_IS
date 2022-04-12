@@ -1,4 +1,5 @@
-﻿using Hotel_PIS.IServices;
+﻿using Hotel_PIS.DAL;
+using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,39 +12,39 @@ namespace Hotel_PIS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientController : ControllerBase, IClientService
+    public class ClientController : ControllerBase, IClientRepository
     {
-        // GET: api/<ClientController>
+        private readonly IClientRepository clientRepository;
+        private readonly ILogger logger;
+
+        public ClientController(ILogger<ClientController> logger, IClientRepository clientRepository)
+        {
+            this.clientRepository = clientRepository;
+            this.logger = logger;
+        }
+
+        [HttpDelete]
+        public bool Delete(int id)
+        {
+            return clientRepository.Delete(id);
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public Client Get(int id)
         {
-            return new string[] { "value1", "value2" };
+            return clientRepository.Get(id);
         }
 
-        // GET api/<ClientController>/5
-        [HttpGet("{id}")]
-        public string GetClient(int id)
+        [HttpGet]
+        public List<Client> GetAll()
         {
-            return "value";
+            return clientRepository.GetAll();
         }
 
-        // POST api/<ClientController>
         [HttpPost]
-        public void SaveClient([FromBody] string value)
+        public Client Save(int id, Client obj)
         {
-            //TODO jak change tak save
-        }
-
-        // PUT api/<ClientController>/5 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ClientController>/5
-        [HttpDelete("{id}")]
-        public void DeleteClient(int id)
-        {
+            return clientRepository.Save(id, obj);
         }
     }
 }

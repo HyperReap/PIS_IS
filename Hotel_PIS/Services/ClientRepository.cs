@@ -7,7 +7,7 @@ using Hotel_PIS.IServices;
 
 namespace Hotel_PIS.Services
 {
-    public class ClientService : IClientService
+    public class ClientRepository : IClientRepository
     {
         public bool Delete(int id)
         {
