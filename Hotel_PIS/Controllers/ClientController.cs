@@ -12,7 +12,7 @@ namespace Hotel_PIS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientController : ControllerBase, IClientRepository
+    public class ClientController : ControllerBase/*, IClientRepository*/
     {
         private readonly IClientRepository clientRepository;
         private readonly ILogger logger;
@@ -23,13 +23,13 @@ namespace Hotel_PIS.Controllers
             this.logger = logger;
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public bool Delete(int id)
         {
             return clientRepository.Delete(id);
         }
 
-        [HttpGet]
+        [HttpGet("{id:int}")]
         public Client Get(int id)
         {
             return clientRepository.Get(id);
