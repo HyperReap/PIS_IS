@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<HotelContext>();
 builder.Services.AddControllers();
+//builder.Services.AddSession();
 
 //HERE ADD Repositories for Dependency Injection into controllers in this manner
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
