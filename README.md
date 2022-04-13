@@ -29,6 +29,8 @@ kazdy nove pouzity nuget package napsat do README
 
 ## ZAPOMENUTO:
   obrazky u pokoju
+  cena za pokoj / noc
+  vybaveni pokoje??
 
 
 ## Project for Advanced information Systems.
