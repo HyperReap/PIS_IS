@@ -40,7 +40,8 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
-                return db.Rooms.ToList();
+                var rooms = db.Rooms.ToList();
+                return rooms;
             }
         }
 
