@@ -27,6 +27,9 @@
         padding: 0;
         box-sizing: border-box;
     }
+    sup{
+        line-height: 0;
+    }
     #app {
       font-family: 'Roboto', Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import MyReservations from '../views/myReservations.vue'
-import Rooms from '../views/rooms.vue'
+import Rooms from '../views/customer/rooms.vue'
 
 const routes = [
   {
