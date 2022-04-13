@@ -27,7 +27,8 @@ kazdy nove pouzity nuget package napsat do README
 
  Sprava zamestnancu
 
-
+## ZAPOMENUTO:
+  obrazky u pokoju
 
 
 ## Project for Advanced information Systems.
