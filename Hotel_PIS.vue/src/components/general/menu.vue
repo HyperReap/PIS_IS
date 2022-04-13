@@ -1,26 +1,29 @@
 <template>
-    <el-menu :default-active="defaultActive" mode="horizontal">
-            <el-menu-item index="1" route="/">
-                Home
+    <el-menu router :default-active="$route.path" mode="horizontal">
+        <template v-for="(rule, index) in $router.options.routes">
+            <el-menu-item :key="index" :index="rule.path">
+                {{ rule.name }}
             </el-menu-item>
-        <router-link to="/pokoje">
-            <el-menu-item index="2">
-                Pokoje
-            </el-menu-item>
-        </router-link>
-        <router-link to="/moje-rezervace">
-            <el-menu-item index="3">
-                Moje rezervace
-            </el-menu-item>
-        </router-link>
+        </template>
     </el-menu>
 </template>
-<script>
+
+<script lang="js">
+
     export default {
         data() {
             return {
-                defaultActive: '1'
+                activeLink: null,
+            };
+        },
+        mounted() {
+            this.activeLink = this.$route.path
+        },
+        watch: {
+            $route(newVal, oldVal) {
+                this.activeLink = newVal.path
             }
         }
-    }
+    };
 </script>
+

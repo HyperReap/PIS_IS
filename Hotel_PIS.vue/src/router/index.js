@@ -10,14 +10,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/moje-rezervace',
-    name: 'Moje rezervace',
-    component: MyReservations
-  },
-  {
     path: '/pokoje',
     name: 'Pokoje',
       component: Rooms
+  },
+  {
+    path: '/moje-rezervace',
+    name: 'Moje rezervace',
+    component: MyReservations
   },
   {
     path: "/:pathMatch(.*)*",
