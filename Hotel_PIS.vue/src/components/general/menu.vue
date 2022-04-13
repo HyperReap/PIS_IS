@@ -1,7 +1,7 @@
 <template>
     <el-menu router :default-active="$route.path" mode="horizontal">
         <template v-for="(rule, index) in $router.options.routes">
-            <el-menu-item :key="index" :index="rule.path">
+            <el-menu-item :key="index" :index="rule.path" v-if="rule.showInMenu == true">
                 {{ rule.name }}
             </el-menu-item>
         </template>
