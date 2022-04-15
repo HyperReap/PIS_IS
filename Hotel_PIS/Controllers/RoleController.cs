@@ -13,40 +13,45 @@ namespace Hotel_PIS.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class RoomController : ControllerBase, IRoomRepository
+    public class RoleController : ControllerBase, IRoleRepository
     {
-        private readonly IRoomRepository roomRepository;
+        private readonly IRoleRepository roleRepository;
         private readonly ILogger logger;
 
-        public RoomController(ILogger<RoomController> logger, IRoomRepository roomRepository)
+        public RoleController(ILogger<RoleController> logger, IRoleRepository roleRepository)
         {
-            this.roomRepository = roomRepository;
+            this.roleRepository = roleRepository;
             this.logger = logger;
+        }
+
+        [HttpPost]
+        public bool AssignRole(int id, Employee employee)
+        {
+            return roleRepository.AssignRole(id, employee);
         }
 
         [HttpDelete]
         public bool Delete(int id)
         {
-            return roomRepository.Delete(id);
+            return roleRepository.Delete(id);
         }
 
         [HttpGet]
-        public Room Get(int id)
+        public Role Get(int id)
         {
-            return roomRepository.Get(id);
+            return roleRepository.Get(id);
         }
 
         [HttpGet]
-        public List<Room> GetAll()
+        public List<Role> GetAll()
         {
-            return roomRepository.GetAll();
+            return roleRepository.GetAll();
         }
 
         [HttpPost]
-        public Room Save(int id, Room obj)
+        public Role Save(int id, Role obj)
         {
-            return roomRepository.Save(id, obj);
+            return roleRepository.Save(id, obj);
         }
-
     }
 }
