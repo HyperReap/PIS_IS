@@ -59,8 +59,7 @@ namespace Hotel_PIS.Services
                 savedClient = Update(obj);
             }
 
-
-
+            return savedClient;
         }
 
         public Room CreateNew(Room client)

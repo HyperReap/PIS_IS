@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 //HERE ADD Repositories for Dependency Injection into controllers in this manner
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IFailureRepository, FailureRepository>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

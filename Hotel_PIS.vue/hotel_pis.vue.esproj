@@ -21,10 +21,7 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
-	<Target Name="NpmInstall"
-  BeforeTargets="BeforeBuild"
-  Inputs="package.json"
-  Outputs="$(NpmInstallStampFile)">
+	<Target Name="NpmInstall" BeforeTargets="BeforeBuild" Inputs="package.json" Outputs="$(NpmInstallStampFile)">
 		<Exec Command="npm install" />
 		<Touch Files="$(NpmInstallStampFile)" AlwaysCreate="true" />
 	</Target>

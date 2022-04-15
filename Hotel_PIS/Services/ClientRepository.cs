@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hotel_PIS.IServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_PIS.Services
 {
@@ -50,7 +51,6 @@ namespace Hotel_PIS.Services
 
         public Client Save(int id, Client obj)
         {
-            throw new NotImplementedException();
             Client savedClient;
 
             if (id == 0) // Create
@@ -62,8 +62,7 @@ namespace Hotel_PIS.Services
                 savedClient = UpdateClient(obj);
             }
 
-
-
+            return savedClient;
         }
         private Client CreateNewClient(Client client)
         {
