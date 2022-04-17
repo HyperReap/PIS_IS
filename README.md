@@ -1,6 +1,6 @@
 ## TODO-LIST
 
-xurban70: dodelat DB, dodelat nastrel controller a service
+xurban70:
 
 Ondra_stuD: Front-end 1/2
 
@@ -28,11 +28,7 @@ kazdy nove pouzity nuget package napsat do README
  Sprava zamestnancu
 
 ## ZAPOMENUTO:
-  obrazky u pokoju
-  
-  cena za pokoj / noc
-  
-  vybaveni pokoje??
+Sem dopiste co si vsimnete ze jeste chybi
 
 
 ## Project for Advanced information Systems.

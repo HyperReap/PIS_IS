@@ -19,7 +19,12 @@ namespace Hotel_PIS.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            seed(modelBuilder);
+            configureRelations(modelBuilder);
+        }
 
+        private void seed(ModelBuilder modelBuilder)
+        {
             var roomSeed = new List<Room>
             {
                 new Room
@@ -31,6 +36,8 @@ namespace Hotel_PIS.DAL
                     NumberOfSideBeds = 1_111,
                     RoomNumber = 11_111,
                     RoomSize = 111_111,
+                    Picture = "1111",
+                    CostPerNight = 121,
                 },
                 new Room
                 {
@@ -41,14 +48,42 @@ namespace Hotel_PIS.DAL
                     NumberOfSideBeds = 2_222,
                     RoomNumber = 22_222,
                     RoomSize = 222_222,
+                    Picture = "222",
+                    CostPerNight = 212,
                 },
             };
 
-
-
             modelBuilder.Entity<Room>().HasData(roomSeed);
+        }
+
+        private void configureRelations(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RoomEquipment>(entity =>
+            entity.HasOne(eq => eq.Room)
+            .WithMany(re => re.RoomEquipments)
+            .HasForeignKey(e => e.RoomId));
+
+            modelBuilder.Entity<RoomEquipment>(entity =>
+            entity.HasOne(eq => eq.Equipment)
+            .WithMany(re => re.RoomEquipments)
+            .HasForeignKey(e => e.EquipmentId));
+
+
+
+            modelBuilder.Entity<RoomReservation>(entity =>
+            entity.HasOne(r => r.Reservation)
+            .WithMany(rr => rr.RoomReservations)
+            .HasForeignKey(e => e.ReservationId));
+
+            modelBuilder.Entity<RoomReservation>(entity =>
+            entity.HasOne(r => r.Room)
+            .WithMany(rr => rr.RoomReservations)
+            .HasForeignKey(e => e.RoomId));
+
 
         }
+
+
 
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomReservation> RoomReservations { get; set; }
@@ -57,6 +92,7 @@ namespace Hotel_PIS.DAL
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Failure> Failures { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Equipment> Equipments { get; set; }
 
     }
 }
