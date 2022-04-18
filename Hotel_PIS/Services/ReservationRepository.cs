@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_PIS.Services
 {
@@ -49,30 +50,29 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public Reservation Save(Reservation obj, int roomId)
+        public Reservation Save(Reservation obj, int roomId, DateTime dateTo, DateTime dateFrom)
         {
             Reservation savedReservation;
             if (obj.Id == 0)
             {
-                savedReservation = CreateReservation(obj, roomId);
+                savedReservation = CreateReservation(obj, roomId, dateTo,dateFrom);
             }
             else
             {
-                savedReservation = UpdateReservation(obj);
+                savedReservation = UpdateReservation(obj, roomId, dateTo, dateFrom);
             }
 
             return savedReservation;
         }
 
-        private Reservation CreateReservation(Reservation reservation, int roomId)
+        private Reservation CreateReservation(Reservation reservation, int roomId, DateTime dateTo, DateTime dateFrom)
         {
             using (var db = new HotelContext())
             {
-                reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId});
+                reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
 
-                reservation.RoomReservations.Clear();
                 return reservation;
             }
         }
@@ -83,11 +83,13 @@ namespace Hotel_PIS.Services
         /// <param name="reservation"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private Reservation UpdateReservation(Reservation reservation)
+        private Reservation UpdateReservation(Reservation reservation, int roomId, DateTime dateTo, DateTime dateFrom)
         {
             using (var db = new HotelContext())
             {
-                var dbReservation = db.Reservations.Where(x => x.Id == reservation.Id).FirstOrDefault();
+                var dbReservation = db.Reservations
+                    .Include(e=>e.RoomReservations)
+                    .Where(x => x.Id == reservation.Id).FirstOrDefault();
                 if (dbReservation == null)
                     throw new Exception($"Reservation with id:'{reservation.Id}' was not found in database.");
 
@@ -95,15 +97,14 @@ namespace Hotel_PIS.Services
                     return reservation;
 
                 dbReservation.ReservationState = reservation.ReservationState;
-                dbReservation.DateTo = reservation.DateTo;
-                dbReservation.DateFrom = reservation.DateFrom;
+                dbReservation.RoomReservations.First(x=>x.RoomId == roomId).DateTo = dateTo;
+                dbReservation.RoomReservations.First(x => x.RoomId == roomId).DateFrom = dateFrom;
                 dbReservation.NumberOfPeople = reservation.NumberOfPeople;
                 dbReservation.Cost = reservation.Cost;
                 dbReservation.Payed = reservation.Payed;
 
                 db.SaveChanges();
 
-                reservation.RoomReservations.Clear();
                 return reservation;
             }
         }

@@ -43,6 +43,12 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
+        public List<Room> GetFiltered([FromBody]List<Equipment> equipments, DateTime? dateFrom, DateTime? dateTo, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        {
+            return roomRepository.GetFiltered(equipments, dateFrom, dateTo, minPrice, maxPrice, minNumberOfBeds, maxNumberOfBeds);
+        }
+
+        [HttpPost]
         public Room Save(int id, Room obj)
         {
             return roomRepository.Save(id, obj);

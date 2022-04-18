@@ -14,6 +14,6 @@ namespace Hotel_PIS.IServices
         public void PayArrear(int id);
         public void CheckIn(int id);
         public void CheckOut(int id);
-        Reservation Save(Reservation obj, int roomId);
+        Reservation Save(Reservation obj, int roomId, DateTime dateTo, DateTime dateFrom);
     }
 }

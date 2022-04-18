@@ -1,5 +1,6 @@
 ﻿using Hotel_PIS.DAL;
 using Hotel_PIS.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_PIS.Services
 {
@@ -70,6 +71,48 @@ namespace Hotel_PIS.Services
                 db.SaveChanges();
 
                 return client;
+            }
+        }
+
+        public List<Room> GetFiltered(List<Equipment> equipments, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        {
+
+
+            using (var db = new HotelContext())
+            {
+
+                var rooms = db.Rooms
+                    .Include(e=>e.RoomEquipments).ThenInclude(e=>e.Equipment)
+                    .Include(e=>e.RoomReservations).ThenInclude(e=>e.Reservation)
+                    .ToList();
+
+
+                var tmp = rooms.Where(x =>
+                 (from is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateFrom >= from))
+                 && (to is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateFrom <= to))
+                 && (equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
+                 && (minPrice is null || minPrice <= x.CostPerNight)
+                 && (maxPrice is null || maxPrice >= x.CostPerNight)
+                 && (minNumberOfBeds is null || minNumberOfBeds >= x.NumberOfBeds)
+                 && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
+                     ).Select(s => new Room
+                     {
+                         CostPerNight = s.CostPerNight,
+                         NumberOfBeds = s.NumberOfBeds,
+                         Floor = s.Floor,
+                         Id = s.Id,
+                         IsCleaned = s.IsCleaned,
+                         NumberOfSideBeds = s.NumberOfSideBeds,
+                         Picture = s.Picture,
+                         RoomEquipments = s.RoomEquipments,
+                         RoomNumber = s.RoomNumber,
+                         RoomReservations = s.RoomReservations,
+                         RoomSize = s.RoomSize
+                     })
+                     .ToList();
+
+
+                return tmp;
             }
         }
 
