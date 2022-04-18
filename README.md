@@ -11,7 +11,9 @@ FE 2/2
 
 Zpravit aby vue slo dokupy s webApi
 
-udelat authorize (login apod..)
+**udelat authorize (login apod..)**
+
+**controller na filtrovani pokoju dle zadanych parametru, bude to vsak zahrnovat i kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...)**
 
 odmazat WeatherForecast files
 
