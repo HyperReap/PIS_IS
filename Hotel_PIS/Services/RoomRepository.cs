@@ -93,7 +93,7 @@ namespace Hotel_PIS.Services
                  && (equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
                  && (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
-                 && (minNumberOfBeds is null || minNumberOfBeds >= x.NumberOfBeds)
+                 && (minNumberOfBeds is null || minNumberOfBeds <= x.NumberOfBeds)
                  && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
                      ).Select(s => new Room
                      {
