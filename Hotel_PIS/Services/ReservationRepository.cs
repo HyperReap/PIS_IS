@@ -72,6 +72,7 @@ namespace Hotel_PIS.Services
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
 
+                reservation.RoomReservations.Clear();
                 return reservation;
             }
         }
@@ -101,6 +102,8 @@ namespace Hotel_PIS.Services
                 dbReservation.Payed = reservation.Payed;
 
                 db.SaveChanges();
+
+                reservation.RoomReservations.Clear();
                 return reservation;
             }
         }
