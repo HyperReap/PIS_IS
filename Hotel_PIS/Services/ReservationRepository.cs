@@ -76,6 +76,12 @@ namespace Hotel_PIS.Services
             }
         }
 
+        /// <summary>
+        /// If room is changed, new Reservation is created in method createNewReservation
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private Reservation UpdateReservation(Reservation reservation)
         {
             using (var db = new HotelContext())
@@ -86,6 +92,13 @@ namespace Hotel_PIS.Services
 
                 if (dbReservation.Equals(reservation))
                     return reservation;
+
+                dbReservation.ReservationState = reservation.ReservationState;
+                dbReservation.DateTo = reservation.DateTo;
+                dbReservation.DateFrom = reservation.DateFrom;
+                dbReservation.NumberOfPeople = reservation.NumberOfPeople;
+                dbReservation.Cost = reservation.Cost;
+                dbReservation.Payed = reservation.Payed;
 
                 db.SaveChanges();
                 return reservation;

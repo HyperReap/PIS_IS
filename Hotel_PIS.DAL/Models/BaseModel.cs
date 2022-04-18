@@ -11,7 +11,7 @@ namespace Hotel_PIS.DAL
 
         public override bool Equals(object obj)
         {
-            bool isEqual = false;
+            bool isEqual = true;
 
             if (obj == null || GetType() != obj.GetType())
             {
@@ -23,7 +23,13 @@ namespace Hotel_PIS.DAL
             foreach (var prop in properties)
             {
                 var objProperty = obj.GetType().GetProperty(prop.Name);
-                isEqual = isEqual && (objProperty == prop);
+                if (objProperty is null)
+                    return false;
+
+                var v1 = objProperty.GetValue(obj);
+                var v2 = prop.GetValue(this);
+
+                isEqual = isEqual && (v1 == v2);
             }
 
             return isEqual;
