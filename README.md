@@ -9,11 +9,9 @@ TODO: dodelat controllery podle navrhu
 
 FE 2/2
 
-Zpravit aby vue slo dokupy s webApi
-
 **udelat authorize (login apod..)**
 
-**controller na filtrovani pokoju dle zadanych parametru, bude to vsak zahrnovat i kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...)**
+**kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...)**
 
 odmazat WeatherForecast files
 
@@ -24,8 +22,6 @@ kazdy nove pouzity nuget package napsat do README
 
 ## STEZEJNI BODY:
  autorizace
-
- Create Reservation
 
  Sprava zamestnancu
 
