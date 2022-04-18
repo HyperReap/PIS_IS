@@ -1,18 +1,23 @@
 <template>
-    <el-row>
+    <el-row v-if="rooms">
         <el-col :span="4">
-            <filters />
+            <filters :filterValues="filterValues"/>
         </el-col>
         <el-col :span="20">
-            <div v-if="loading" class="loading">
-                Loading... TODO
-            </div>
-            <div v-if="rooms">
+            <div class="rooms">
                 <div v-for="room in rooms" :key="room.id" class="room">
                     <room :room="room" />
+                    <el-checkbox :id="room.id.toString()" :value="room.id" class="room-checkbox" size="large" @change="updateSelectedRooms(room.id)" />
                 </div>
+                <el-button type="primary" :disabled="numberOfSelectedRooms ? false : true" size="large" class="reservation-button" @click="saveReservationRooms">
+                    Rezervovat ({{ numberOfSelectedRooms }})
+                </el-button>
             </div>
+            <!-- TODO: vyhodit hlasku ze po filtrovani nezbyl zadny pokoj -->
         </el-col>
+    </el-row>
+    <el-row v-else class="no-rooms">
+        <p>Žádné pokoje k zobrazení!</p>
     </el-row>
 </template>
 <script lang="js">
@@ -25,31 +30,98 @@
         },
         data() {
             return {
-                loading: false,
-                rooms: null
+                rooms: null,
+                selectedRooms: [],
+                filterValues: {
+                    minRoomPrice: 0,
+                    maxRoomPrice: 100,
+                    minNumberOfBeds: 0,
+                    maxNumberOfBeds: 10,
+                    equipment: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
+                }
             };
         },
         created() {
-            this.fetchData();
+            this.loadRooms();
+        },
+        computed: {
+            numberOfSelectedRooms() {
+                return this.selectedRooms.length
+            }
         },
         methods: {
-            fetchData() {
+            loadRooms() {
                 this.rooms = null;
-                this.loading = true;
-
+                this.$root.loading = !this.$root.loading
                 fetch('api/Room/GetAll')
                     .then(r => r.json())
                     .then(json => {
                         this.rooms = json;
-                        this.loading = false;
+                        this.filterValues.minNumberOfBeds = Math.min(...json.map(item => item.numberOfBeds));
+                        this.filterValues.minRoomPrice = Math.min(...json.map(item => item.costPerNight));
+                        this.filterValues.maxNumberOfBeds = Math.max(...json.map(item => item.numberOfBeds));
+                        this.filterValues.maxRoomPrice = Math.max(...json.map(item => item.costPerNight));
+                        this.$root.loading = !this.$root.loading
                         return;
                     });
+            },
+            updateSelectedRooms(id) {
+                if (!this.selectedRooms.includes(id)) {
+                    this.selectedRooms.push(id);
+                }
+                else {
+                    this.selectedRooms.splice(this.selectedRooms.indexOf(id), 1);
+                }
+            },
+            saveReservationRooms() {
+                this.$store.dispatch('saveReservationRooms', Object.values(this.selectedRooms))
+                this.$router.push({path: '/dataily-rezervace'});
             }
         }
     };
 </script>
 <style scoped>
-    .room{
-        border: 1px solid red;
+    .rooms{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .room {
+        border: 1px solid var(--el-border-color);
+        flex-basis: 49%;
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        transition: border var(--el-transition-duration);
+        position: relative;
+    }
+    .room:hover{
+        border: 1px solid var(--el-color-primary);
+    }
+    .room-checkbox{
+        position: absolute;
+        top: 15px;
+        right: 20px;
+    }
+    .room-checkbox >>> .el-checkbox__inner {
+       width: 25px!important;
+       height: 25px!important;
+    }
+
+    .room-checkbox >>> .el-checkbox__inner::after{
+        height: 13px;
+        width: 7px;
+        top: 2px;
+        left: 8px;
+    }
+    .reservation-button{
+        margin: 30px 0 30px auto;
+    }
+    .no-rooms p{
+        text-align: center;
+        flex-basis: 100%;
     }
 </style>
