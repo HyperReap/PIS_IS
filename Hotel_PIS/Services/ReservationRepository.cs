@@ -49,12 +49,12 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public Reservation Save(int id, Reservation obj)
+        public Reservation Save(Reservation obj, int roomId)
         {
             Reservation savedReservation;
-            if (id == 0)
+            if (obj.Id == 0)
             {
-                savedReservation = CreateReservation(obj);
+                savedReservation = CreateReservation(obj, roomId);
             }
             else
             {
@@ -64,18 +64,19 @@ namespace Hotel_PIS.Services
             return savedReservation;
         }
 
-        public Reservation CreateReservation(Reservation obj)
+        private Reservation CreateReservation(Reservation reservation, int roomId)
         {
             using (var db = new HotelContext())
             {
-                db.Reservations.Add(obj);
+                reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId});
+                db.Reservations.Add(reservation);
                 db.SaveChanges();
 
-                return obj;
+                return reservation;
             }
         }
 
-        public Reservation UpdateReservation(Reservation reservation)
+        private Reservation UpdateReservation(Reservation reservation)
         {
             using (var db = new HotelContext())
             {

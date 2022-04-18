@@ -40,11 +40,6 @@ namespace Hotel_PIS.Controllers
             reservationRepository.CheckOut(id);
         }
 
-        [HttpPost]
-        public Reservation CreateReservation(Reservation obj)
-        {
-            return reservationRepository.CreateReservation(obj);
-        }
 
         [HttpDelete]
         public bool Delete(int id)
@@ -83,15 +78,11 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Reservation Save(int id, Reservation obj)
+        public Reservation Save(Reservation obj, int roomId)
         {
-            return reservationRepository.Save(id, obj);
+            return reservationRepository.Save(obj, roomId);
         }
 
-        [HttpPost]
-        public Reservation UpdateReservation(Reservation obj)
-        {
-            return reservationRepository.UpdateReservation(obj);
-        }
+
     }
 }
