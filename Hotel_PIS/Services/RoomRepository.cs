@@ -91,7 +91,7 @@ namespace Hotel_PIS.Services
                     .ToList();
 
                 var tmp = rooms.Where(x =>
-                 (x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && (r.DateFrom >= dateFrom && r.DateTo <= dateTo )))
+                 !(x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && (r.DateFrom >= dateFrom && r.DateTo <= dateTo )))
                  && (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
                  && (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
