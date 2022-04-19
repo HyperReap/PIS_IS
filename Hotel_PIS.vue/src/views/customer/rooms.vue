@@ -1,7 +1,7 @@
 <template>
     <el-row v-if="rooms">
         <el-col :span="4">
-            <filters :filterValues="filterValues"/>
+            <filters :filterValues="filterValues" @filterRooms="filterRooms"/>
         </el-col>
         <el-col :span="20">
             <div class="rooms">
@@ -33,8 +33,8 @@
                 rooms: null,
                 selectedRooms: [],
                 filterValues: {
-                    minRoomPrice: 0,
-                    maxRoomPrice: 100,
+                    minPrice: 0,
+                    maxPrice: 100,
                     minNumberOfBeds: 0,
                     maxNumberOfBeds: 10,
                     equipment: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
@@ -58,12 +58,36 @@
                     .then(json => {
                         this.rooms = json;
                         this.filterValues.minNumberOfBeds = Math.min(...json.map(item => item.numberOfBeds));
-                        this.filterValues.minRoomPrice = Math.min(...json.map(item => item.costPerNight));
+                        this.filterValues.minPrice = Math.min(...json.map(item => item.costPerNight));
                         this.filterValues.maxNumberOfBeds = Math.max(...json.map(item => item.numberOfBeds));
-                        this.filterValues.maxRoomPrice = Math.max(...json.map(item => item.costPerNight));
+                        this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
                         this.$root.loading = !this.$root.loading
                         return;
                     });
+            },
+            filterRooms(filterData) {
+                console.log(filterData)
+                console.log(JSON.stringify(filterData))
+                //this.$root.loading = !this.$root.loading
+                fetch('api/Room/GetFiltered', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(filterData)
+                })
+                .then(r => r.json())
+                    .then(json => {
+                    console.log(json)
+                    /*this.rooms = json;
+                    this.filterValues.minNumberOfBeds = Math.min(...json.map(item => item.numberOfBeds));
+                    this.filterValues.minPrice = Math.min(...json.map(item => item.costPerNight));
+                    this.filterValues.maxNumberOfBeds = Math.max(...json.map(item => item.numberOfBeds));
+                    this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
+                    this.$root.loading = !this.$root.loading
+                    return;*/
+                });
             },
             updateSelectedRooms(id) {
                 if (!this.selectedRooms.includes(id)) {

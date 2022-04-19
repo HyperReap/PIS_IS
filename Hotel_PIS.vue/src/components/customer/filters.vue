@@ -1,19 +1,19 @@
 <template>
     <div class="filters">
         <h4>Filtry</h4>
-        <el-date-picker v-model="filteredValues.checkIn" type="date" placeholder="Datum příjezdu" popper-class="date-dropdown"
-                        class="date-picker" :disabled-date="disabledDateCheckIn" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
-        <el-date-picker v-model="filteredValues.checkOut" type="date" placeholder="Datum odjezdu" popper-class="date-dropdown"
-                        class="date-picker" :disabled-date="disabledDateCheckOut" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
+        <el-date-picker v-model="filteredValues.from" type="date" placeholder="Datum příjezdu" popper-class="date-dropdown"
+                        class="date-picker" :disabled-date="disabledDateFrom" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
+        <el-date-picker v-model="filteredValues.to" type="date" placeholder="Datum odjezdu" popper-class="date-dropdown"
+                        class="date-picker" :disabled-date="disabledDateTo" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
         <p>Cena</p>
-        <el-slider @change="setFilterPrice" range :min="filterValues.minRoomPrice" :max="filterValues.maxRoomPrice" class="range-picker" tooltip-class="range-picker-tooltip" />
+        <el-slider @change="setFilterPrice" range :min="filterValues.minPrice" :max="filterValues.maxPrice" class="range-picker" tooltip-class="range-picker-tooltip" />
         <p>Počet postelí</p>
         <el-slider @change="setFilterBeds" range :min="filterValues.minNumberOfBeds" :max="filterValues.maxNumberOfBeds" class="range-picker" tooltip-class="range-picker-tooltip" />
         <p>Vybavení:</p>
         <el-select v-model="filteredValues.equipment" multiple collapse-tags placeholder="Vybavení">
             <el-option v-for="item in filterValues.equipment" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
-        <el-button class="button">Filtrovat</el-button>
+        <el-button class="button" @click="filterRooms">Filtrovat</el-button>
     </div>
 </template>
 <script lang="js">
@@ -22,31 +22,42 @@
         data() {
             return {
                 filteredValues: {
-                    checkIn: null,
-                    checkOut: null,
-                    minRoomPrice: null,
-                    maxRoomPrice: null,
+                    equipment: [],
+                    from: null,
+                    to: null,
+                    minPrice: null,
+                    maxPrice: null,
                     minNumberOfBeds: null,
-                    maxNumberOfBeds: null,
-                    equipment: []
+                    maxNumberOfBeds: null                    
                 },
                 dayDuration: 86400000
             };
         },
         methods: {
-            disabledDateCheckIn(date) {
+            disabledDateFrom(date) {
                 return date.getTime() < Date.now() - this.dayDuration
             },
-            disabledDateCheckOut(date) {
-                return date.getTime() < Date.now()
+            disabledDateTo(date) {
+                if (this.filteredValues.from === null) {
+                    return date.getTime() < Date.now()
+                }
+                else {
+                    return date.getTime() < this.getTimeStamp(this.filteredValues.from)
+                }
+            },
+            getTimeStamp(strDate) {
+                return ((new Date(strDate).getTime()))
             },
             setFilterPrice(prices) {
-                this.filteredValues.minRoomPrice = prices[0]
-                this.filteredValues.maxRoomPrice = prices[1]
+                this.filteredValues.minPrice = prices[0]
+                this.filteredValues.maxPrice = prices[1]
             },
             setFilterBeds(beds) {
                 this.filteredValues.minNumberOfBeds = beds[0]
                 this.filteredValues.maxNumberOfBeds = beds[1]
+            },
+            filterRooms() {
+                this.$emit('filterRooms', this.filteredValues)
             }
         }
     }
