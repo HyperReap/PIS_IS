@@ -9,4 +9,14 @@
         public string Name { get; set; }
         public ICollection<RoomEquipment> RoomEquipments { get; set; }
     }
+
+    public class EquipmentsList
+    {
+        public EquipmentsList()
+        {
+            Equipments = new List<Equipment>();
+        }
+        public List<Equipment> Equipments { get; set; }
+        
+    }
 }

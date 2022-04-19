@@ -7,7 +7,7 @@ namespace Hotel_PIS.IServices
         bool Delete(int id);
         Room Get(int id);
         List<Room> GetAll();
-        List<Room> GetFiltered(List<Equipment> equipments, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds);
+        List<Room> GetFiltered(EquipmentsList equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds);
         Room Save(int id, Room obj);
     }
 }

@@ -74,9 +74,9 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public List<Room> GetFiltered(List<Equipment> equipments, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        public List<Room> GetFiltered(EquipmentsList equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
         {
-
+            var equipments = equipmentsList.Equipments;
 
             using (var db = new HotelContext())
             {
@@ -90,7 +90,7 @@ namespace Hotel_PIS.Services
                 var tmp = rooms.Where(x =>
                  (from is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateFrom >= from))
                  && (to is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateFrom <= to))
-                 && (equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
+                 && (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
                  && (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
                  && (minNumberOfBeds is null || minNumberOfBeds <= x.NumberOfBeds)
