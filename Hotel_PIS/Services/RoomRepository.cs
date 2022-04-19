@@ -78,18 +78,20 @@ namespace Hotel_PIS.Services
         {
             var equipments = equipmentsList.Equipments;
 
+
+            var dateFrom = from == null ? new DateTime(01, 01, 01) : from;
+            var dateTo = to == null ? new DateTime(2222, 01, 01) : to;
+
             using (var db = new HotelContext())
             {
 
                 var rooms = db.Rooms
-                    .Include(e=>e.RoomEquipments).ThenInclude(e=>e.Equipment)
-                    .Include(e=>e.RoomReservations).ThenInclude(e=>e.Reservation)
+                    .Include(e => e.RoomEquipments).ThenInclude(e => e.Equipment)
+                    .Include(e => e.RoomReservations).ThenInclude(e => e.Reservation)
                     .ToList();
 
-
                 var tmp = rooms.Where(x =>
-                 (from is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateFrom >= from))
-                 && (to is null || x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && r.DateTo <= to))
+                 (x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && (r.DateFrom >= dateFrom && r.DateTo <= dateTo )))
                  && (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
                  && (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)

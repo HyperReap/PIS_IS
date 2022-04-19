@@ -1,9 +1,9 @@
 <template>
     <div class="filters">
         <h4>Filtry</h4>
-        <el-date-picker v-model="filteredValues.from" type="date" placeholder="Datum příjezdu" popper-class="date-dropdown"
+        <el-date-picker v-model="filteredValues.dateFrom" type="date" placeholder="Datum příjezdu" popper-class="date-dropdown"
                         class="date-picker" :disabled-date="disabledDateFrom" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
-        <el-date-picker v-model="filteredValues.to" type="date" placeholder="Datum odjezdu" popper-class="date-dropdown"
+        <el-date-picker v-model="filteredValues.dateTo" type="date" placeholder="Datum odjezdu" popper-class="date-dropdown"
                         class="date-picker" :disabled-date="disabledDateTo" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
         <p>Cena</p>
         <el-slider @change="setFilterPrice" range :min="filterValues.minPrice" :max="filterValues.maxPrice" class="range-picker" tooltip-class="range-picker-tooltip" />
@@ -23,8 +23,8 @@
             return {
                 filteredValues: {
                     equipment: [],
-                    from: null,
-                    to: null,
+                    dateFrom: null,
+                    dateTo: null,
                     minPrice: null,
                     maxPrice: null,
                     minNumberOfBeds: null,
@@ -38,11 +38,11 @@
                 return date.getTime() < Date.now() - this.dayDuration
             },
             disabledDateTo(date) {
-                if (this.filteredValues.from === null) {
+                if (this.filteredValues.dateFrom === null) {
                     return date.getTime() < Date.now()
                 }
                 else {
-                    return date.getTime() < this.getTimeStamp(this.filteredValues.from)
+                    return date.getTime() < this.getTimeStamp(this.filteredValues.dateFrom)
                 }
             },
             getTimeStamp(strDate) {
