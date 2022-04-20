@@ -11,7 +11,7 @@ FE 2/2
 
 **udelat authorize (login apod..)**
 
-**kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...)**
+**kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
 
 odmazat WeatherForecast files
 
