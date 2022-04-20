@@ -104,9 +104,12 @@ namespace Hotel_PIS.Services
 
                 tmp = tmp.Where(x =>
                   useDates 
-                  && x.RoomReservations.Any(r => 
-                  r.Reservation.ReservationState != ReservationStateEnum.Canceled
-                  && IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo))).ToList();
+                  && 
+                  (x.RoomReservations is null || x.RoomReservations.Count == 0 
+                  || x.RoomReservations.Any(r => 
+                      r.Reservation.ReservationState != ReservationStateEnum.Canceled
+                      && IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo)))
+                      ).ToList();
 
 
                 return tmp;
