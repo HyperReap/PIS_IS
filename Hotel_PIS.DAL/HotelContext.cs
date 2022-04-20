@@ -74,7 +74,7 @@ namespace Hotel_PIS.DAL
                     NumberOfPeople = 4,
                     Payed = 50,
                     ReservationState = ReservationStateEnum.Reserved,
-                    //ClientId = 1,
+                    ClientId = 1,
                 }
             };
 
@@ -130,6 +130,7 @@ namespace Hotel_PIS.DAL
 
 
 
+            modelBuilder.Entity<Client>().HasData(clientSeed);
             modelBuilder.Entity<Room>().HasData(roomSeed);
             modelBuilder.Entity<Equipment>().HasData(equipmentSeed);
             modelBuilder.Entity<Reservation>().HasData(reservationSeed);
