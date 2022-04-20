@@ -10,8 +10,8 @@
         <p>Počet postelí</p>
         <el-slider @change="setFilterBeds" range :min="filterValues.minNumberOfBeds" :max="filterValues.maxNumberOfBeds" class="range-picker" tooltip-class="range-picker-tooltip" />
         <p>Vybavení:</p>
-        <el-select v-model="filteredValues.equipment" multiple collapse-tags placeholder="Vybavení">
-            <el-option v-for="item in filterValues.equipment" :key="item.value" :label="item.label" :value="item.value" />
+        <el-select v-model="filteredValues.equipments" multiple collapse-tags placeholder="Vybavení">
+            <el-option v-for="item in filterValues.equipments" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
         <el-button class="button" @click="filterRooms">Filtrovat</el-button>
     </div>
@@ -22,7 +22,7 @@
         data() {
             return {
                 filteredValues: {
-                    equipment: [],
+                    equipments: [],
                     dateFrom: null,
                     dateTo: null,
                     minPrice: null,

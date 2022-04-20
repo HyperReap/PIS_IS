@@ -4,7 +4,7 @@
             <filters :filterValues="filterValues" @filterRooms="filterRooms"/>
         </el-col>
         <el-col :span="20">
-            <div class="rooms">
+            <div class="rooms" v-if="rooms.length">
                 <div v-for="room in rooms" :key="room.id" class="room">
                     <room :room="room" />
                     <el-checkbox :id="room.id.toString()" :value="room.id" class="room-checkbox" size="large" @change="updateSelectedRooms(room.id)" />
@@ -13,7 +13,9 @@
                     Rezervovat ({{ numberOfSelectedRooms }})
                 </el-button>
             </div>
-            <!-- TODO: vyhodit hlasku ze po filtrovani nezbyl zadny pokoj -->
+            <div v-else class="no-rooms">
+                <p>Žádné pokoje k zobrazení!</p>
+            </div>
         </el-col>
     </el-row>
     <el-row v-else class="no-rooms">
@@ -23,6 +25,7 @@
 <script lang="js">
     import filters from '@/components/customer/filters.vue'
     import room from '@/components/customer/room.vue'
+
     export default {
         components: {
             filters,
@@ -37,7 +40,7 @@
                     maxPrice: 100,
                     minNumberOfBeds: 0,
                     maxNumberOfBeds: 10,
-                    equipment: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
+                    equipments: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
                 }
             };
         },
@@ -54,39 +57,37 @@
                 this.rooms = null;
                 this.$root.loading = !this.$root.loading
                 fetch('api/Room/GetAll')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.rooms = json;
-                        this.filterValues.minNumberOfBeds = Math.min(...json.map(item => item.numberOfBeds));
-                        this.filterValues.minPrice = Math.min(...json.map(item => item.costPerNight));
-                        this.filterValues.maxNumberOfBeds = Math.max(...json.map(item => item.numberOfBeds));
-                        this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
-                        this.$root.loading = !this.$root.loading
-                        return;
-                    });
-            },
-            filterRooms(filterData) {
-                console.log(filterData)
-                console.log(JSON.stringify(filterData))
-                //this.$root.loading = !this.$root.loading
-                fetch('api/Room/GetFiltered', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(filterData)
-                })
                 .then(r => r.json())
-                    .then(json => {
-                    console.log(json)
-                    /*this.rooms = json;
+                .then(json => {
+                    this.rooms = json;
                     this.filterValues.minNumberOfBeds = Math.min(...json.map(item => item.numberOfBeds));
                     this.filterValues.minPrice = Math.min(...json.map(item => item.costPerNight));
                     this.filterValues.maxNumberOfBeds = Math.max(...json.map(item => item.numberOfBeds));
                     this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
                     this.$root.loading = !this.$root.loading
-                    return;*/
+                    return;
+                });
+            },
+            filterRooms(filterData) {
+                let requestParams = this.$createRequestParams(filterData, true);
+                console.log(requestParams)
+                let requestBody = this.$createBodyParams(filterData);
+                console.log(requestBody)
+                this.$root.loading = !this.$root.loading
+                fetch('api/Room/GetFiltered' + requestParams, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+                .then(r => r.json())
+                .then(json => {
+                    this.rooms = json;
+                    console.log(json)
+                    this.$root.loading = !this.$root.loading
+                    return
                 });
             },
             updateSelectedRooms(id) {
@@ -142,7 +143,8 @@
         left: 8px;
     }
     .reservation-button{
-        margin: 30px 0 30px auto;
+        margin: 30px 0;
+        flex-basis: 100%;
     }
     .no-rooms p{
         text-align: center;
