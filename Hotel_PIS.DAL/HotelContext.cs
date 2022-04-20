@@ -53,7 +53,74 @@ namespace Hotel_PIS.DAL
                 },
             };
 
+            var roomReservationSeed = new List<RoomReservation>
+            {
+                new RoomReservation
+                {
+                    Id = 3,
+                    DateFrom = new DateTime(2022,04,25),
+                    DateTo = new DateTime(2022,04,28),
+                    RoomId = 1,
+                    ReservationId = 1,
+                }
+            };
+
+            var reservationSeed = new List<Reservation>
+            {
+                new Reservation
+                {
+                    Id = 1,
+                    Cost = 100,
+                    NumberOfPeople = 4,
+                    Payed = 50,
+                    ReservationState = ReservationStateEnum.Reserved,
+                }
+            };
+
+
+            var equipmentSeed = new List<Equipment>
+            {
+                new Equipment
+                {
+                    Id = 1,
+                    Name = "TV"
+                },
+                new Equipment
+                {
+                    Id = 2,
+                    Name = "WiFi"
+                },
+                new Equipment
+                {
+                    Id = 3,
+                    Name = "John Cena"
+                },
+            };
+
+            var equipmentRoomSeed = new List<RoomEquipment>
+            {
+                new RoomEquipment
+                {
+                    Id = 1,
+                    EquipmentId = 1,
+                    RoomId = 2,
+                },
+                new RoomEquipment
+                {
+                    Id = 2,
+                    EquipmentId = 3,
+                    RoomId = 2
+                },
+            };
+
+
+
+
             modelBuilder.Entity<Room>().HasData(roomSeed);
+            modelBuilder.Entity<Equipment>().HasData(equipmentSeed);
+            modelBuilder.Entity<Reservation>().HasData(reservationSeed);
+            modelBuilder.Entity<RoomReservation>().HasData(roomReservationSeed);
+            modelBuilder.Entity<RoomEquipment>().HasData(equipmentRoomSeed);
         }
 
         private void configureRelations(ModelBuilder modelBuilder)
