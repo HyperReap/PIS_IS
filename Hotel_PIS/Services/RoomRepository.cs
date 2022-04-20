@@ -78,7 +78,7 @@ namespace Hotel_PIS.Services
         {
             var equipments = equipmentsList.Equipments;
 
-            bool useDates = from != null && to != null;
+            bool useDates = from != null || to != null;
 
             var dateFrom = from == null ? new DateTime(01, 01, 01) : from;
             var dateTo = to == null ? new DateTime(2222, 01, 01) : to;
@@ -106,9 +106,9 @@ namespace Hotel_PIS.Services
                   useDates 
                   && 
                   (x.RoomReservations is null || x.RoomReservations.Count == 0 
-                  || x.RoomReservations.Any(r => 
+                  || !x.RoomReservations.Any(r => 
                       r.Reservation.ReservationState != ReservationStateEnum.Canceled
-                      && IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo)))
+                      && !IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo)))
                       ).ToList();
 
 
@@ -127,7 +127,7 @@ namespace Hotel_PIS.Services
         private bool IsNotReserved(DateTime ff, DateTime ft, DateTime rf, DateTime rt)
         {
 
-            if ((ff <= rf && ft <= rf) || (ff >= rf && ft >= rt))
+            if ((ff <= rf && ft <= rf) || (ff >= rf && ff >= rt))
                 return true;
 
             return false;

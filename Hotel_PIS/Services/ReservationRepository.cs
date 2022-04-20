@@ -79,7 +79,7 @@ namespace Hotel_PIS.Services
                 var room = db.Rooms.Where(x => x.Id == roomId).First();
 
                 reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
-                int numberOfDays = (int)(dateFrom.Date - dateTo.Date).TotalDays;
+                int numberOfDays = (int)(dateTo.Date - dateFrom.Date).TotalDays;
 
                 reservation.Cost = numberOfDays * room.CostPerNight;
                 reservation.Payed = 0;
