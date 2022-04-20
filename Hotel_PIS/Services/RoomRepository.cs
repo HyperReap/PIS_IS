@@ -92,12 +92,17 @@ namespace Hotel_PIS.Services
                     .ToList();
 
                 var tmp = rooms.Where(x =>
-                 (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Any(x=>x.Name == re.Equipment.Name)))
-                 && (minPrice is null || minPrice <= x.CostPerNight)
+                    (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
                  && (minNumberOfBeds is null || minNumberOfBeds <= x.NumberOfBeds)
                  && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
                      ).ToList();
+
+                tmp = tmp.Where(x =>
+                      (equipments is null || equipments.Count == 0 || 
+                      equipments.All(e=>x.RoomEquipments.Any(re=>re.Equipment.Name == e.Name)))
+                     ).ToList();
+
 
                 if (!useDates)
                     return tmp;
