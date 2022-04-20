@@ -16,7 +16,7 @@ namespace Hotel_PIS.DAL
         public int ClientId { get; set; }
         [ForeignKey("ClientId")]
         [InverseProperty("Reservations")]
-        public virtual Client Client { get; set; }
+        public virtual Client? Client { get; set; }
 
         public ReservationStateEnum ReservationState { get; set; }
         public ICollection<RoomReservation> RoomReservations { get; set; }

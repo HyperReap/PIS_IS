@@ -65,7 +65,7 @@ namespace Hotel_PIS.Services
             return savedReservation;
         }
         /// <summary>
-        /// in reservation send only number of people
+        /// in reservation send only number of people and clientId and client as null
         /// </summary>
         /// <param name="reservation"></param>
         /// <param name="roomId"></param>
@@ -76,7 +76,15 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
+                var room = db.Rooms.Where(x => x.Id == roomId).First();
+
                 reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
+                int numberOfDays = (int)(dateFrom.Date - dateTo.Date).TotalDays;
+
+                reservation.Cost = numberOfDays * room.CostPerNight;
+                reservation.Payed = 0;
+                reservation.ReservationState = ReservationStateEnum.Reserved;
+
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
 
