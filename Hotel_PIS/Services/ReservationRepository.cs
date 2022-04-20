@@ -64,7 +64,14 @@ namespace Hotel_PIS.Services
 
             return savedReservation;
         }
-
+        /// <summary>
+        /// in reservation send only number of people
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <param name="roomId"></param>
+        /// <param name="dateTo"></param>
+        /// <param name="dateFrom"></param>
+        /// <returns></returns>
         private Reservation CreateReservation(Reservation reservation, int roomId, DateTime dateTo, DateTime dateFrom)
         {
             using (var db = new HotelContext())

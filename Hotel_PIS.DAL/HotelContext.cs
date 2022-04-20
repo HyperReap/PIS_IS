@@ -74,6 +74,7 @@ namespace Hotel_PIS.DAL
                     NumberOfPeople = 4,
                     Payed = 50,
                     ReservationState = ReservationStateEnum.Reserved,
+                    //ClientId = 1,
                 }
             };
 
@@ -113,6 +114,19 @@ namespace Hotel_PIS.DAL
                 },
             };
 
+            var clientSeed = new List<Client>
+            {
+                new Client
+                {
+                    Id =1,
+                    SecondName = "ahoj",
+                    IdentityCardNumber = "ID_AHOJ",
+                    Email = "ahoj@seynam.com",
+                    FirstName = "seyam",
+                    PhoneNumber = "+420 605 956 987"
+                }
+            };
+            
 
 
 
@@ -146,6 +160,11 @@ namespace Hotel_PIS.DAL
             entity.HasOne(r => r.Room)
             .WithMany(rr => rr.RoomReservations)
             .HasForeignKey(e => e.RoomId));
+
+            modelBuilder.Entity<Reservation>()
+           .HasOne(p => p.Client)
+           .WithMany(b => b.Reservations)
+           .HasForeignKey(p => p.ClientId);
 
 
         }
