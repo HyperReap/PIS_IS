@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.7-alpha">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>fff996a0-3497-4f61-a036-3846c18aa59c</ProjectGuid>
+    <ProjectGuid>355f7a27-2cd9-4a61-a4e7-dfb5f910f43d</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <StartupCommand>npm run serve</StartupCommand>
     <JavaScriptTestRoot>.\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+	  <NpmInstallStampFile>node_modules/.install-stamp</NpmInstallStampFile>
   </PropertyGroup>
   <ItemGroup>
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
@@ -20,4 +21,8 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
+	<Target Name="NpmInstall" BeforeTargets="BeforeBuild" Inputs="package.json" Outputs="$(NpmInstallStampFile)">
+		<Exec Command="npm install" />
+		<Touch Files="$(NpmInstallStampFile)" AlwaysCreate="true" />
+	</Target>
 </Project>
