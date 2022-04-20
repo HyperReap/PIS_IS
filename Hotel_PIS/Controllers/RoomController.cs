@@ -42,6 +42,18 @@ namespace Hotel_PIS.Controllers
             return roomRepository.GetAll();
         }
 
+        [HttpGet]
+        public List<Equipment> GetEquipments()
+        {
+            return roomRepository.GetEquipments();
+        }
+
+        [HttpGet]
+        public List<Equipment> GetEquipmentsOfRoom(int roomId)
+        {
+            return roomRepository.GetEquipmentsOfRoom(roomId);
+        }
+
         [HttpPost]
         public List<Room> GetFiltered([FromBody]EquipmentsList equipmentsList, DateTime? dateFrom, DateTime? dateTo, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
         {

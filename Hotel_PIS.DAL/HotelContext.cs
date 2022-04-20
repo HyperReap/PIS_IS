@@ -174,6 +174,7 @@ namespace Hotel_PIS.DAL
 
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomReservation> RoomReservations { get; set; }
+        public DbSet<RoomEquipment> RoomEquipments { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Employee> Employees { get; set; }

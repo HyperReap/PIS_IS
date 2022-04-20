@@ -151,5 +151,22 @@ namespace Hotel_PIS.Services
                 return room;
             }
         }
+
+        public List<Equipment> GetEquipments()
+        {
+            using (var db = new HotelContext())
+            {
+                var equipments = db.Equipments.ToList();
+                return equipments;
+            }
+        }
+        public List<Equipment> GetEquipmentsOfRoom(int roomId)
+        {
+            using (var db = new HotelContext())
+            {
+                var equipments = db.RoomEquipments.Where(x=>x.RoomId==roomId).Select(s=>s.Equipment).ToList();
+                return equipments;
+            }
+        }
     }
 }
