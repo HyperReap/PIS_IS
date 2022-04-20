@@ -99,19 +99,37 @@ namespace Hotel_PIS.Services
                  && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
                      ).ToList();
 
-                tmp = tmp.Where(x=>
-                  (useDates && x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled &&
-                  (  (dateFrom <= r.DateFrom && dateTo >= r.DateTo) //reservation= 4-10; filter=3-11
-                  || (dateFrom <= r.DateFrom && dateTo <= r.DateTo) //reservation= 4-10; filter=1-5
-                  || (dateFrom >= r.DateFrom && dateTo >= r.DateTo) //reservation= 4-10; filter=5-11
-                  || (dateFrom >= r.DateFrom && dateTo <= r.DateTo) //reservation= 4-10; filter=3-11
-                  ))
-                )).ToList();
+                if (!useDates)
+                    return tmp;
+
+                tmp = tmp.Where(x =>
+                  useDates 
+                  && x.RoomReservations.Any(r => 
+                  r.Reservation.ReservationState != ReservationStateEnum.Canceled
+                  && IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo))).ToList();
 
 
                 return tmp;
             }
         }
+
+        /// <summary>
+        /// Reservation 4-10; want to show only rooms 0-4, 10-100000
+        /// </summary>
+        /// <param name="ff"></param>
+        /// <param name="ft"></param>
+        /// <param name="rf"></param>
+        /// <param name="rt"></param>
+        /// <returns></returns>
+        private bool IsNotReserved(DateTime ff, DateTime ft, DateTime rf, DateTime rt)
+        {
+
+            if ((ff <= rf && ft <= rf) || (ff >= rf && ft >= rt))
+                return true;
+
+            return false;
+
+        
 
         public Room Update(Room room)
         {
