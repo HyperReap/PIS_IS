@@ -78,6 +78,7 @@ namespace Hotel_PIS.Services
         {
             var equipments = equipmentsList.Equipments;
 
+            bool useDates = from != null && to != null;
 
             var dateFrom = from == null ? new DateTime(01, 01, 01) : from;
             var dateTo = to == null ? new DateTime(2222, 01, 01) : to;
@@ -91,27 +92,21 @@ namespace Hotel_PIS.Services
                     .ToList();
 
                 var tmp = rooms.Where(x =>
-                 !(x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled && (r.DateFrom >= dateFrom && r.DateTo <= dateTo )))
-                 && (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
+                 (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Contains(re.Equipment)))
                  && (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
                  && (minNumberOfBeds is null || minNumberOfBeds <= x.NumberOfBeds)
                  && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
-                     ).Select(s => new Room
-                     {
-                         CostPerNight = s.CostPerNight,
-                         NumberOfBeds = s.NumberOfBeds,
-                         Floor = s.Floor,
-                         Id = s.Id,
-                         IsCleaned = s.IsCleaned,
-                         NumberOfSideBeds = s.NumberOfSideBeds,
-                         Picture = s.Picture,
-                         RoomEquipments = s.RoomEquipments,
-                         RoomNumber = s.RoomNumber,
-                         RoomReservations = s.RoomReservations,
-                         RoomSize = s.RoomSize
-                     })
-                     .ToList();
+                     ).ToList();
+
+                tmp = tmp.Where(x=>
+                  (useDates && x.RoomReservations.Any(r => r.Reservation.ReservationState != ReservationStateEnum.Canceled &&
+                  (  (dateFrom <= r.DateFrom && dateTo >= r.DateTo) //reservation= 4-10; filter=3-11
+                  || (dateFrom <= r.DateFrom && dateTo <= r.DateTo) //reservation= 4-10; filter=1-5
+                  || (dateFrom >= r.DateFrom && dateTo >= r.DateTo) //reservation= 4-10; filter=5-11
+                  || (dateFrom >= r.DateFrom && dateTo <= r.DateTo) //reservation= 4-10; filter=3-11
+                  ))
+                )).ToList();
 
 
                 return tmp;
