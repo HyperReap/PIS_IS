@@ -5,11 +5,22 @@
     <p><full-screen class="icon" /> {{ room.roomSize }}m<sup>2</sup></p>
     <p><location class="icon" /> {{ room.floor }} patro</p>
     <p><money class="icon" />{{ room.costPerNight }} Kč/noc</p>
+    <div class="equipments">
+        <p v-for="equipment in equipments">
+            <check class="icon-equipment" />
+            {{equipment}}
+        </p>
+    </div>
 </template>
 <script lang="js">
     export default {
         name: 'Room',
         props: ['room'],
+        data() {
+            return {
+                equipments: []
+            };
+        },
         computed: {
             bedsWord() {
                 let word;
@@ -47,6 +58,22 @@
                 }
                 return word
             }
+        },
+        created() {
+            this.loadRoomEquipment();
+        },
+        methods: {
+            loadRoomEquipment() {
+                fetch('api/Room/GetEquipmentsOfRoom?roomId='+this.room.id)
+                .then(r => r.json())
+                .then(json => {
+                    let self = this;
+                    Object.keys(json).forEach(function (key) {
+                        self.equipments.push(json[key].name);
+                    });
+                    return;
+                });
+            }
         }
     };
 </script>
@@ -56,6 +83,11 @@
         color: var(--el-text-color-primary);
         width: 20px;
         margin-right: 15px
+    }
+    .icon-equipment {
+        color: var(--el-color-primary);
+        width: 20px;
+        margin-right: 4px;
     }
     h3 {
         flex-basis: 100%;
@@ -86,5 +118,12 @@
         width: 10px;
         right: 0px;
         top: -12px;
+    }
+    .equipments {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 </style>

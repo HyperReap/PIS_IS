@@ -39,8 +39,7 @@
                     minPrice: 0,
                     maxPrice: 100,
                     minNumberOfBeds: 0,
-                    maxNumberOfBeds: 10,
-                    equipments: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
+                    maxNumberOfBeds: 10
                 }
             };
         },
@@ -70,9 +69,7 @@
             },
             filterRooms(filterData) {
                 let requestParams = this.$createRequestParams(filterData, true);
-                console.log(requestParams)
                 let requestBody = this.$createBodyParams(filterData);
-                console.log(requestBody)
                 this.$root.loading = !this.$root.loading
                 fetch('api/Room/GetFiltered' + requestParams, {
                     method: 'POST',
@@ -111,13 +108,14 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: stretch;
     }
     .room {
         border: 1px solid var(--el-border-color);
         flex-basis: 49%;
         padding: 20px;
         display: flex;
+        margin-bottom: 20px;
         flex-direction: row;
         flex-wrap: wrap;
         transition: border var(--el-transition-duration);
@@ -143,7 +141,7 @@
         left: 8px;
     }
     .reservation-button{
-        margin: 30px 0;
+        margin: 0 0 30px 0;
         flex-basis: 100%;
     }
     .no-rooms p{

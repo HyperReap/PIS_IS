@@ -11,7 +11,7 @@
         <el-slider @change="setFilterBeds" range :min="filterValues.minNumberOfBeds" :max="filterValues.maxNumberOfBeds" class="range-picker" tooltip-class="range-picker-tooltip" />
         <p>Vybavení:</p>
         <el-select v-model="filteredValues.equipments" multiple collapse-tags placeholder="Vybavení">
-            <el-option v-for="item in filterValues.equipments" :key="item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in equipments" :key="item.value" :label="item.label" :value="item.label" />
         </el-select>
         <el-button class="button" @click="filterRooms">Filtrovat</el-button>
     </div>
@@ -30,8 +30,12 @@
                     minNumberOfBeds: null,
                     maxNumberOfBeds: null                    
                 },
+                equipments: [],
                 dayDuration: 86400000
             };
+        },
+        created() {
+            this.loadAllEquipment();
         },
         methods: {
             disabledDateFrom(date) {
@@ -58,6 +62,17 @@
             },
             filterRooms() {
                 this.$emit('filterRooms', this.filteredValues)
+            },
+            loadAllEquipment() {
+                fetch('api/Room/GetEquipments')
+                .then(r => r.json())
+                .then(json => {
+                    let self = this;
+                    Object.keys(json).forEach(function (key) {
+                        self.equipments.push({ "label": json[key].name, "value": json[key].id });
+                    });
+                    return;
+                });
             }
         }
     }
