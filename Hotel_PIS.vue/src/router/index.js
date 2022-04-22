@@ -9,31 +9,42 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    showInMenu: true
+    meta: {
+        showInMenu: true
+    }
   },
   {
     path: '/rezervace',
     name: 'Nová rezervace',
     component: Rooms,
-    showInMenu: true
+    meta: {
+        showInMenu: true
+    }
   },
   {
     path: '/dataily-rezervace',
     name: 'Detaily rezervace',
     component: ReservationDetails,
-    showInMenu: false
+    meta: {
+        showInMenu: false,
+        parentHighlight: '/rezervace'
+    }
   },
   {
     path: '/moje-rezervace',
     name: 'Moje rezervace',
     component: MyReservations,
-    showInMenu: true
+    meta: {
+        showInMenu: true
+    }
   },
   {
     path: "/:pathMatch(.*)*",
     name: 'Stránka nenalezena',
     component: () => import('../views/notFound.vue'),
-    showInMenu: false
+    meta: {
+        showInMenu: false
+    }
   }
 ]
 

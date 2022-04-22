@@ -2,15 +2,13 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-      reservationDetails: {
-          rooms: Array,
-          checkIn: null,
-          checkOut: null
+      reservationRooms: {
+          rooms: []
       },
   },
   mutations: {
       saveReservationRooms(state, rooms) {
-          state.reservationDetails.rooms = rooms
+          state.reservationRooms.rooms = rooms
       },
   },
   actions: {
@@ -19,5 +17,8 @@ export default createStore({
       },
   },
   getters: {
+      getReservationRooms: state => {
+          return state.reservationRooms
+      },
   }
 })
