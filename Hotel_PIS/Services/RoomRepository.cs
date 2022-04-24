@@ -48,7 +48,7 @@ namespace Hotel_PIS.Services
 
         public Room Save(int id, Room obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             Room savedClient;
 
             if (id == 0) // Create

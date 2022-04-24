@@ -7,7 +7,8 @@ namespace Hotel_PIS.IServices
     {
         public Failure Save(int id, Failure obj);
         public bool Delete(int id);
-
         public bool Solve(int id);
+        public Failure Get(int id);
+        public List<Failure> GetAll();
     }
 }

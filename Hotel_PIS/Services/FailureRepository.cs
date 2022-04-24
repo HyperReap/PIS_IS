@@ -60,7 +60,7 @@ namespace Hotel_PIS.Services
             {
                 var dbFailure = db.Failures.Where(x => x.Id == failure.Id).FirstOrDefault();
                 if (dbFailure == null)
-                    throw new Exception($"Client with id:'{failure.Id}' was not found in database.");
+                    throw new Exception($"Failure with id:'{failure.Id}' was not found in database.");
 
                 if (dbFailure.Equals(failure))
                     return failure;
@@ -79,7 +79,7 @@ namespace Hotel_PIS.Services
             {
                 var dbFailure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
                 if (dbFailure == null)
-                    throw new Exception($"Client with id:'{id}' was not found in database.");
+                    throw new Exception($"Failure with id:'{id}' was not found in database.");
                 
                 dbFailure.IsSolved = true;
                 db.Failures.Update(dbFailure);
@@ -87,6 +87,27 @@ namespace Hotel_PIS.Services
                 db.SaveChanges();
                 
                 return true;
+            }
+        }
+        
+        public Failure Get(int id)
+        {
+            using (var db = new HotelContext())
+            {
+                var failure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
+                if (failure == null)
+                    throw new Exception($"Failure with id:'{id}' was not found in database.");
+
+                return failure;
+            }
+
+        }
+
+        public List<Failure> GetAll()
+        {
+            using (var db = new HotelContext())
+            {
+                return db.Failures.ToList();
             }
         }
     }
