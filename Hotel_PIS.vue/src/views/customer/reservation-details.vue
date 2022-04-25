@@ -29,7 +29,6 @@
                         <el-form-item v-for="room in rooms" :key="room.id" :prop="'numberOfPeople.room' + room.id">
                             <el-input type="number" :min="1" :max="room.numberOfBeds + room.numberOfSideBeds" :placeholder="'Počet osob v pokoji ' + room.roomNumber" v-model.number="reservation.numberOfPeople['room' + room.id]"></el-input>
                         </el-form-item>
-                        <!--TODO: vypnout dokud nebude vyplneno vse -->
                         <el-form-item class="button">
                             <el-button type="primary" @click="createNewReservation">Rezervovat</el-button>
                         </el-form-item>
@@ -71,6 +70,7 @@
                 countDownEnabled: false,
                 countDown: 10,
                 dayDuration: 86400000,
+                disabledDays: null,
                 reservation: {
                     dateFrom: null,
                     dateTo: null,
@@ -83,6 +83,7 @@
             };
         },
         created() {
+            //TODO
             //this.rooms = this.$store.getters.getReservationRooms.rooms;
             if (this.rooms.length > 0) {
                 this.loadRooms()
@@ -181,6 +182,7 @@
                         self.rules.numberOfPeople['room' + id] = [{ required: true, type: "number", message: "Zadejte správný počet osob!", pattern: "[0-9]+", trigger: "blur", min: 1, max: room.numberOfBeds + room.numberOfSideBeds, autocomplete: "off" }];
                         if (index === self.rooms.length - 1) {
                            self.$root.loading = !self.$root.loading;
+                           self.getDisabledDays();
                         }
                         return
                     })
@@ -193,9 +195,74 @@
                     });
                 });            
             },
+            getDisabledDays() {
+                let roomIds = this.rooms.map(room => room.id);
+                let currentDate = new Date().toJSON().slice(0, 10);
+                console.log(JSON.stringify(roomIds))
+                console.log(currentDate)
+                fetch('api/Reservation/GetBookedDatesOfRooms?dateNow=' + currentDate, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        body: JSON.stringify(roomIds)
+                    }
+                })
+                .then(r => r.json())
+                .then(json => {
+                    console.log(json)
+                    return;
+                })
+                .catch(error => {
+                    self.rooms = [];
+                    self.countDownEnabled = true;
+                    ElMessage.error({ "message": "Nepodařilo se načíst obsazené termíny!", "custom-class": "message-class" });
+                    console.log(error);
+                });
+            },
+            //TODO: zkontrolovat
             createNewReservation() {
                 this.$refs.reservation.validate((result) => {
-                    console.log(result)
+                    if (result) {
+                        this.$store.dispatch('saveReservationDetails', this.reservation);
+                        let self = this;
+                        this.$root.loading = !this.$root.loading
+                        this.rooms.forEach(function (room, index) {
+                            let finalReservation = {
+                                roomId: room.id,
+                                numberOfBeds: self.reservation.numberOfPeople['room' + room.id],
+                                dateTo: self.reservation.dateTo,
+                                dateFrom: self.reservation.dateFrom,
+                                firstName: self.reservation.firstName,
+                                secondName: self.reservation.secondName,
+                                email: self.reservation.email,
+                                phoneNumber: self.reservation.phoneNumber
+                            }
+                            fetch('api/Reservation/Save', {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(finalReservation)
+                            })
+                            .then(r => r.json())
+                            .then(json => {
+                                console.log(json)
+                                if (index === self.rooms.length - 1) {
+                                    self.$root.loading = !self.$root.loading;
+                                }
+                                return
+                            })
+                            .catch(error => {
+                                self.$root.loading = false;
+                                self.rooms = [];
+                                self.countDownEnabled = true;
+                                ElMessage.error({ "message": "Nepodařilo se vytvořit rezervaci!", "custom-class": "message-class", "grouping": true });
+                                console.log(error);
+                            });
+                        });
+                    }
                 });
             },
             //TODO dodelat: chybi dam zohledneni dat, na ktere uz maji pokoje rezervaci
