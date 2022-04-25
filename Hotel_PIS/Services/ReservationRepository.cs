@@ -6,6 +6,7 @@ using System.Linq;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Hotel_PIS.DAL.Dto;
 
 namespace Hotel_PIS.Services
 {
@@ -57,7 +58,7 @@ namespace Hotel_PIS.Services
 
                 //if (clientId == 0)
                     clientId = CreateNewClient(obj.FirstName, obj.SecondName, obj.Email, obj.PhoneNumber);
-                savedReservation = CreateReservation(obj.RoomId, obj.DateTo, obj.DateFrom, clientId);
+                savedReservation = CreateReservation(obj.RoomId,obj.NumberOfPeople, obj.DateTo, obj.DateFrom, clientId);
             
 
             return savedReservation;
@@ -96,7 +97,7 @@ namespace Hotel_PIS.Services
         /// <param name="dateTo"></param>
         /// <param name="dateFrom"></param>
         /// <returns></returns>
-        private Reservation CreateReservation(int roomId, DateTime dateTo, DateTime dateFrom, int? clientId)
+        private Reservation CreateReservation(int roomId, int numberOfPeople, DateTime dateTo, DateTime dateFrom, int? clientId)
         {
             using (var db = new HotelContext())
             {
@@ -108,6 +109,7 @@ namespace Hotel_PIS.Services
                 {
                     Cost = numberOfDays * room.CostPerNight,
                     ReservationState = ReservationStateEnum.Reserved,
+                    NumberOfPeople = numberOfPeople,
                 };
                 if (clientId != null)
                     reservation.ClientId = clientId.Value;
@@ -153,6 +155,39 @@ namespace Hotel_PIS.Services
 
                 return reservation;
             }
+        }
+
+        public List<FromToDateDto> GetBookedDatesOfRooms(List<int> roomIds, DateTime dateNow)
+        {
+            using (var db = new HotelContext())
+            {
+                    var tmp = db.RoomReservations.Where(x =>
+                        roomIds.Contains(x.RoomId)
+                        && x.DateFrom >= dateNow)
+                            .Select(s => new FromToDateDto
+                            {
+                                DateFrom = s.DateFrom,
+                                DateTo= s.DateTo,
+                            }).ToList();
+                return tmp;
+            }
+        }
+
+        public List<Reservation> GetReservationsByEmail(string email)
+        {
+            using (var db = new HotelContext())
+            {
+                    var tmp =db.RoomReservations.Where(x =>x.Reservation.Client.Email == email)
+                    .Select(s=>new Reservation
+                    {
+                        Cost = s.Reservation.Cost,
+                        Payed = s.Reservation.Payed,
+                        NumberOfPeople = s.Reservation.NumberOfPeople,
+                        ReservationState = s.Reservation.ReservationState
+                    }).ToList();
+                return tmp;
+
+                }
         }
 
         public void CancelReservation(int id)

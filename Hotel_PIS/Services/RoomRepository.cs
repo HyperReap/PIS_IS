@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,7 +75,7 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public List<Room> GetFiltered(EquipmentsList equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        public List<Room> GetFiltered(EquipmentListDto equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
         {
             var equipments = equipmentsList.Equipments;
 

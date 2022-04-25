@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 
 namespace Hotel_PIS.IServices
 {
@@ -9,7 +10,7 @@ namespace Hotel_PIS.IServices
         List<Room> GetAll();
         List<Equipment> GetEquipments();
         List<Equipment> GetEquipmentsOfRoom(int roomId);
-        List<Room> GetFiltered(EquipmentsList equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds);
+        List<Room> GetFiltered(EquipmentListDto equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds);
         Room Save(int id, Room obj);
     }
 }

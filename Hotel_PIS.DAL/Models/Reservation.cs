@@ -22,15 +22,5 @@ namespace Hotel_PIS.DAL
         public ICollection<RoomReservation> RoomReservations { get; set; }
 
     }
-    public class ReservationDto
-    {
-        public int RoomId { get; set; }
-        public int NumberOfPeople { get; set; }
-        public DateTime DateTo { get; set; }
-        public DateTime DateFrom { get; set; }
-        public string? FirstName { get; set; }
-        public string? SecondName { get; set; }
-        public string? Email { get; set; }
-        public string? PhoneNumber { get; set; }
-    }
+
 }

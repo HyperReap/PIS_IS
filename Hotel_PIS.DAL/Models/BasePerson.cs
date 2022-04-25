@@ -9,6 +9,7 @@ namespace Hotel_PIS.DAL
         [Required]
         public string SecondName { get; set; }
         [EmailAddress]
+        //TOOD consider required
         public string Email { get; set; }
     }
 }
