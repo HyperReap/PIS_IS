@@ -196,16 +196,15 @@
                 });            
             },
             getDisabledDays() {
-                let roomIds = this.rooms.map(room => room.id);
-                let currentDate = new Date().toJSON().slice(0, 10);
-                console.log(JSON.stringify(roomIds))
-                console.log(currentDate)
-                fetch('api/Reservation/GetBookedDatesOfRooms?dateNow=' + currentDate, {
-                    method: 'POST',
+                let params = "?dateNow=" + new Date().toJSON().slice(0, 10);
+                this.rooms.forEach(function (room, index) {
+                    params += "&roomIds=" + room.id;
+                });
+                fetch('api/Reservation/GetBookedDatesOfRooms' + params, {
+                    method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        body: JSON.stringify(roomIds)
+                        'Content-Type': 'application/json'
                     }
                 })
                 .then(r => r.json())
