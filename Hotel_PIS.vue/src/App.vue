@@ -52,4 +52,7 @@
         height: 100%;
         background: var(--el-color-primary-light-9);
     }
+    .message-class {
+        font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    }
 </style>

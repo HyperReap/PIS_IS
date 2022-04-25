@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -55,7 +56,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public List<Room> GetFiltered([FromBody]EquipmentsList equipmentsList, DateTime? dateFrom, DateTime? dateTo, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        public List<Room> GetFiltered([FromBody] EquipmentListDto equipmentsList, DateTime? dateFrom, DateTime? dateTo, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
         {
             return roomRepository.GetFiltered(equipmentsList, dateFrom, dateTo, minPrice, maxPrice, minNumberOfBeds, maxNumberOfBeds);
         }

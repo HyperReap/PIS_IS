@@ -25,11 +25,12 @@
 <script lang="js">
     import filters from '@/components/customer/filters.vue'
     import room from '@/components/customer/room.vue'
-
+    import { ElMessage } from 'element-plus'
     export default {
         components: {
             filters,
-            room
+            room,
+            ElMessage
         },
         data() {
             return {
@@ -39,8 +40,7 @@
                     minPrice: 0,
                     maxPrice: 100,
                     minNumberOfBeds: 0,
-                    maxNumberOfBeds: 10,
-                    equipments: [{ value: 'TODO1', label: 'TODO1' }, { value: 'TODO2', label: 'TODO2'}]
+                    maxNumberOfBeds: 10
                 }
             };
         },
@@ -66,13 +66,16 @@
                     this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
                     this.$root.loading = !this.$root.loading
                     return;
+                })
+                .catch(error => {
+                    this.$root.loading = !this.$root.loading
+                    ElMessage.error({ "message": "Nepodařilo se načíst pokoje!", "custom-class": "message-class"});
+                    console.log(error);
                 });
             },
             filterRooms(filterData) {
                 let requestParams = this.$createRequestParams(filterData, true);
-                console.log(requestParams)
                 let requestBody = this.$createBodyParams(filterData);
-                console.log(requestBody)
                 this.$root.loading = !this.$root.loading
                 fetch('api/Room/GetFiltered' + requestParams, {
                     method: 'POST',
@@ -88,6 +91,11 @@
                     console.log(json)
                     this.$root.loading = !this.$root.loading
                     return
+                })
+                .catch(error => {
+                    this.$root.loading = !this.$root.loading
+                    ElMessage.error({ "message": "Nepodařilo se vyfiltrovat pokoje!", "custom-class": "message-class"});
+                    console.log(error);
                 });
             },
             updateSelectedRooms(id) {
@@ -111,13 +119,14 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: stretch;
     }
     .room {
         border: 1px solid var(--el-border-color);
         flex-basis: 49%;
         padding: 20px;
         display: flex;
+        margin-bottom: 20px;
         flex-direction: row;
         flex-wrap: wrap;
         transition: border var(--el-transition-duration);
@@ -142,8 +151,9 @@
         top: 2px;
         left: 8px;
     }
+
     .reservation-button{
-        margin: 30px 0;
+        margin: 0 0 30px 0;
         flex-basis: 100%;
     }
     .no-rooms p{

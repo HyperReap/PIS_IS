@@ -22,4 +22,5 @@ namespace Hotel_PIS.DAL
         public ICollection<RoomReservation> RoomReservations { get; set; }
 
     }
+
 }

@@ -18,7 +18,7 @@ namespace Hotel_PIS.Controllers
         private readonly IFailureRepository failureRepository;
         private readonly ILogger logger;
 
-        public FailureController(ILogger<FailureController> logger, FailureController failureRepository)
+        public FailureController(ILogger<FailureController> logger, IFailureRepository failureRepository)
         {
             this.failureRepository = failureRepository;
             this.logger = logger;
@@ -40,6 +40,18 @@ namespace Hotel_PIS.Controllers
         public bool Solve(int id)
         {
             return failureRepository.Solve(id);
+        }
+
+        [HttpGet]
+        public Failure Get(int id)
+        {
+            return failureRepository.Get(id);
+        }
+        
+        [HttpGet]
+        public List<Failure> GetAll()
+        {
+            return failureRepository.GetAll();
         }
     }
 }

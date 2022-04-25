@@ -1,8 +1,10 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,6 +61,18 @@ namespace Hotel_PIS.Controllers
             return reservationRepository.GetAll();
         }
 
+        [HttpGet]
+        public List<FromToDateDto> GetBookedDatesOfRooms([FromQuery]List<int> roomIds, DateTime dateNow)
+        {
+            return reservationRepository.GetBookedDatesOfRooms(roomIds, dateNow);
+        }
+
+        [HttpGet]
+        public List<Reservation> GetReservationsByEmail([Required]string email)
+        {
+            return reservationRepository.GetReservationsByEmail(email);
+        }
+
         [HttpPost]
         public void Pay(int id)
         {
@@ -78,9 +92,9 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Reservation Save([FromBody]Reservation obj, int roomId, DateTime dateTo, DateTime dateFrom)
+        public Reservation Save([FromBody]ReservationDto obj)
         {
-            return reservationRepository.Save(obj, roomId, dateTo, dateFrom);
+            return reservationRepository.Save(obj);
         }
     }
 }

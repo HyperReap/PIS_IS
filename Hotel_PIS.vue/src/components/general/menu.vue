@@ -1,7 +1,7 @@
 <template>
-    <el-menu router :default-active="$route.path" mode="horizontal">
+    <el-menu router :default-active="activeLink" mode="horizontal">
         <template v-for="(item, index) in $router.options.routes">
-            <el-menu-item :key="index" :index="item.path" v-if="item.showInMenu == true">
+            <el-menu-item :key="index" :index="item.path" v-if="item.meta.showInMenu == true">
                 {{ item.name }}
             </el-menu-item>
         </template>
@@ -21,7 +21,7 @@
         },
         watch: {
             $route(newVal, oldVal) {
-                this.activeLink = newVal.path
+                this.activeLink = !newVal.meta.parentHighlight ? newVal.path : newVal.meta.parentHighlight;
             }
         }
     };

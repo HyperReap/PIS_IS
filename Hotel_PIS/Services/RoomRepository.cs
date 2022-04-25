@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,7 +49,7 @@ namespace Hotel_PIS.Services
 
         public Room Save(int id, Room obj)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             Room savedClient;
 
             if (id == 0) // Create
@@ -74,11 +75,11 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public List<Room> GetFiltered(EquipmentsList equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
+        public List<Room> GetFiltered(EquipmentListDto equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds)
         {
             var equipments = equipmentsList.Equipments;
 
-            bool useDates = from != null && to != null;
+            bool useDates = from != null || to != null;
 
             var dateFrom = from == null ? new DateTime(01, 01, 01) : from;
             var dateTo = to == null ? new DateTime(2222, 01, 01) : to;
@@ -92,12 +93,17 @@ namespace Hotel_PIS.Services
                     .ToList();
 
                 var tmp = rooms.Where(x =>
-                 (equipments is null || equipments.Count == 0 || x.RoomEquipments.Any(re => equipments.Any(x=>x.Name == re.Equipment.Name)))
-                 && (minPrice is null || minPrice <= x.CostPerNight)
+                    (minPrice is null || minPrice <= x.CostPerNight)
                  && (maxPrice is null || maxPrice >= x.CostPerNight)
                  && (minNumberOfBeds is null || minNumberOfBeds <= x.NumberOfBeds)
                  && (maxNumberOfBeds is null || maxNumberOfBeds >= x.NumberOfBeds)
                      ).ToList();
+
+                tmp = tmp.Where(x =>
+                      (equipments is null || equipments.Count == 0 || 
+                      equipments.All(e=>x.RoomEquipments.Any(re=>re.Equipment.Name == e.Name)))
+                     ).ToList();
+
 
                 if (!useDates)
                     return tmp;
@@ -106,9 +112,9 @@ namespace Hotel_PIS.Services
                   useDates 
                   && 
                   (x.RoomReservations is null || x.RoomReservations.Count == 0 
-                  || x.RoomReservations.Any(r => 
+                  || !x.RoomReservations.Any(r => 
                       r.Reservation.ReservationState != ReservationStateEnum.Canceled
-                      && IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo)))
+                      && !IsNotReserved(dateFrom.Value, dateTo.Value, r.DateFrom, r.DateTo)))
                       ).ToList();
 
 
@@ -127,7 +133,7 @@ namespace Hotel_PIS.Services
         private bool IsNotReserved(DateTime ff, DateTime ft, DateTime rf, DateTime rt)
         {
 
-            if ((ff <= rf && ft <= rf) || (ff >= rf && ft >= rt))
+            if ((ff <= rf && ft <= rf) || (ff >= rf && ff >= rt))
                 return true;
 
             return false;
