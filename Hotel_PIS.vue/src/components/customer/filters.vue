@@ -17,8 +17,12 @@
     </div>
 </template>
 <script lang="js">
+    import { ElMessage } from 'element-plus'
     export default {
         props: ['filterValues'],
+        components: {
+            ElMessage
+        },
         data() {
             return {
                 filteredValues: {
@@ -72,6 +76,10 @@
                         self.equipments.push({ "label": json[key].name, "value": json[key].id });
                     });
                     return;
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se vybavení do filtrů!", "custom-class": "message-class"});
+                    console.log(error);
                 });
             }
         }

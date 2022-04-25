@@ -13,9 +13,13 @@
     </div>
 </template>
 <script lang="js">
+    import { ElMessage } from 'element-plus'
     export default {
         name: 'Room',
         props: ['room'],
+        components: {
+            ElMessage
+        },
         data() {
             return {
                 equipments: []
@@ -64,15 +68,21 @@
         },
         methods: {
             loadRoomEquipment() {
-                fetch('api/Room/GetEquipmentsOfRoom?roomId='+this.room.id)
-                .then(r => r.json())
-                .then(json => {
-                    let self = this;
-                    Object.keys(json).forEach(function (key) {
-                        self.equipments.push(json[key].name);
+                if (this.room.id) {
+                    fetch('api/Room/GetEquipmentsOfRoom?roomId='+this.room.id)
+                    .then(r => r.json())
+                    .then(json => {
+                        let self = this;
+                        Object.keys(json).forEach(function (key) {
+                            self.equipments.push(json[key].name);
+                        });
+                        return;
+                    })
+                    .catch(error => {
+                        ElMessage.error({ "message": "Nepodařilo se načíst vybavení do pokoje!", "custom-class": "message-class", "grouping": true});
+                        console.log(error);
                     });
-                    return;
-                });
+                }
             }
         }
     };

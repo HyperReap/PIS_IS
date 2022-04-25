@@ -25,11 +25,12 @@
 <script lang="js">
     import filters from '@/components/customer/filters.vue'
     import room from '@/components/customer/room.vue'
-
+    import { ElMessage } from 'element-plus'
     export default {
         components: {
             filters,
-            room
+            room,
+            ElMessage
         },
         data() {
             return {
@@ -65,6 +66,11 @@
                     this.filterValues.maxPrice = Math.max(...json.map(item => item.costPerNight));
                     this.$root.loading = !this.$root.loading
                     return;
+                })
+                .catch(error => {
+                    this.$root.loading = !this.$root.loading
+                    ElMessage.error({ "message": "Nepodařilo se načíst pokoje!", "custom-class": "message-class"});
+                    console.log(error);
                 });
             },
             filterRooms(filterData) {
@@ -85,6 +91,11 @@
                     console.log(json)
                     this.$root.loading = !this.$root.loading
                     return
+                })
+                .catch(error => {
+                    this.$root.loading = !this.$root.loading
+                    ElMessage.error({ "message": "Nepodařilo se vyfiltrovat pokoje!", "custom-class": "message-class"});
+                    console.log(error);
                 });
             },
             updateSelectedRooms(id) {
@@ -140,6 +151,7 @@
         top: 2px;
         left: 8px;
     }
+
     .reservation-button{
         margin: 0 0 30px 0;
         flex-basis: 100%;
