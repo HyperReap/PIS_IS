@@ -173,7 +173,7 @@ namespace Hotel_PIS.Services
                                 DateFrom = s.DateFrom,
                                 DateTo= s.DateTo,
                             }).ToList();
-                return tmp;
+                return tmp.DistinctBy(x=>new {x.DateTo, x.DateFrom}).ToList();
             }
         }
 
