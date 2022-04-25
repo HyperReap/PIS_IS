@@ -229,7 +229,7 @@
                         this.rooms.forEach(function (room, index) {
                             let finalReservation = {
                                 roomId: room.id,
-                                numberOfBeds: self.reservation.numberOfPeople['room' + room.id],
+                                numberOfPeople: self.reservation.numberOfPeople['room' + room.id],
                                 dateTo: self.reservation.dateTo,
                                 dateFrom: self.reservation.dateFrom,
                                 firstName: self.reservation.firstName,
