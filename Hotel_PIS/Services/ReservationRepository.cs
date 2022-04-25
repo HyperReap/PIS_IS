@@ -50,20 +50,44 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public Reservation Save(Reservation obj, int roomId, DateTime dateTo, DateTime dateFrom)
+        public Reservation Save(ReservationDto obj)
         {
             Reservation savedReservation;
-            if (obj.Id == 0)
-            {
-                savedReservation = CreateReservation(obj, roomId, dateTo,dateFrom);
-            }
-            else
-            {
-                savedReservation = UpdateReservation(obj, roomId, dateTo, dateFrom);
-            }
+            int? clientId = null;
+
+                //if (clientId == 0)
+                    clientId = CreateNewClient(obj.FirstName, obj.SecondName, obj.Email, obj.PhoneNumber);
+                savedReservation = CreateReservation(obj.RoomId, obj.DateTo, obj.DateFrom, clientId);
+            
 
             return savedReservation;
         }
+
+        private int? CreateNewClient(string firstName, string secondName, string email, string phoneNumber)
+        {
+            using (var db = new HotelContext())
+            {
+                var client = db.Clients.FirstOrDefault(x=>Equals(x.Email, email));
+                if (client == null)
+                {
+
+                    client = new Client
+                    {
+                        FirstName = firstName,
+                        Email = email,
+                        PhoneNumber = phoneNumber,
+                        SecondName = secondName,
+                    };
+                    db.Clients.Add(client);
+                    db.SaveChanges();
+
+                    //client = db.Clients.FirstOrDefault(x => Equals(x.Email, client.Email));
+                }
+
+                return client?.Id;
+            }
+        }
+
         /// <summary>
         /// in reservation send only number of people and clientId and client as null
         /// </summary>
@@ -72,18 +96,24 @@ namespace Hotel_PIS.Services
         /// <param name="dateTo"></param>
         /// <param name="dateFrom"></param>
         /// <returns></returns>
-        private Reservation CreateReservation(Reservation reservation, int roomId, DateTime dateTo, DateTime dateFrom)
+        private Reservation CreateReservation(int roomId, DateTime dateTo, DateTime dateFrom, int? clientId)
         {
             using (var db = new HotelContext())
             {
                 var room = db.Rooms.Where(x => x.Id == roomId).First();
-
-                reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
                 int numberOfDays = (int)(dateTo.Date - dateFrom.Date).TotalDays;
 
-                reservation.Cost = numberOfDays * room.CostPerNight;
-                reservation.Payed = 0;
-                reservation.ReservationState = ReservationStateEnum.Reserved;
+
+                Reservation reservation = new Reservation
+                {
+                    Cost = numberOfDays * room.CostPerNight,
+                    ReservationState = ReservationStateEnum.Reserved,
+                };
+                if (clientId != null)
+                    reservation.ClientId = clientId.Value;
+
+
+                reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
 
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
@@ -100,6 +130,7 @@ namespace Hotel_PIS.Services
         /// <exception cref="Exception"></exception>
         private Reservation UpdateReservation(Reservation reservation, int roomId, DateTime dateTo, DateTime dateFrom)
         {
+            //MIGHT BE NEEDED SOME TIME //TODO DELETE BEFORE RELEASE
             using (var db = new HotelContext())
             {
                 var dbReservation = db.Reservations

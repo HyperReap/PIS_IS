@@ -78,9 +78,9 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Reservation Save([FromBody]Reservation obj, int roomId, DateTime dateTo, DateTime dateFrom)
+        public Reservation Save([FromBody]ReservationDto obj)
         {
-            return reservationRepository.Save(obj, roomId, dateTo, dateFrom);
+            return reservationRepository.Save(obj);
         }
     }
 }
