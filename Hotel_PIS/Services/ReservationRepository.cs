@@ -12,6 +12,7 @@ namespace Hotel_PIS.Services
 {
     public class ReservationRepository : IReservationRepository
     {
+        static object linksLock = new object();
         public bool Delete(int id)
         {
             using (var db = new HotelContext())
@@ -56,10 +57,13 @@ namespace Hotel_PIS.Services
             Reservation savedReservation;
             int? clientId = null;
 
-                //if (clientId == 0)
-                    clientId = CreateNewClient(obj.FirstName, obj.SecondName, obj.Email, obj.PhoneNumber);
-                savedReservation = CreateReservation(obj.RoomId,obj.NumberOfPeople, obj.DateTo, obj.DateFrom, clientId);
-            
+            //if (clientId == 0)
+            lock (linksLock)
+            {
+                clientId = CreateNewClient(obj.FirstName, obj.SecondName, obj.Email, obj.PhoneNumber);
+            }
+            savedReservation = CreateReservation(obj.RoomId, obj.NumberOfPeople, obj.DateTo, obj.DateFrom, clientId);
+
 
             return savedReservation;
         }

@@ -61,7 +61,7 @@ namespace Hotel_PIS.Controllers
             return reservationRepository.GetAll();
         }
 
-        [HttpPost]
+        [HttpGet]
         public List<FromToDateDto> GetBookedDatesOfRooms([FromQuery]List<int> roomIds, DateTime dateNow)
         {
             return reservationRepository.GetBookedDatesOfRooms(roomIds, dateNow);
