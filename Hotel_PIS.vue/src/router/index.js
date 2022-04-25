@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Rooms from '../views/customer/rooms.vue'
 import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/myReservations.vue'
+import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
 
 const routes = [
   {
@@ -25,6 +26,15 @@ const routes = [
     path: '/dataily-rezervace',
     name: 'Detaily rezervace',
     component: ReservationDetails,
+    meta: {
+        showInMenu: false,
+        parentHighlight: '/rezervace'
+    }
+  },
+  {
+    path: '/potvrzeni-rezervace',
+    name: 'Potvrzení rezervace',
+    component: ReservationConfirmation,
     meta: {
         showInMenu: false,
         parentHighlight: '/rezervace'
