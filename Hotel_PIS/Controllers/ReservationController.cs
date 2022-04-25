@@ -62,7 +62,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public List<FromToDateDto> GetBookedDatesOfRooms([FromBody]List<int> roomIds, DateTime dateNow)
+        public List<FromToDateDto> GetBookedDatesOfRooms([FromQuery]List<int> roomIds, DateTime dateNow)
         {
             return reservationRepository.GetBookedDatesOfRooms(roomIds, dateNow);
         }
