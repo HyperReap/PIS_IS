@@ -24,7 +24,7 @@ namespace Hotel_PIS.Controllers
             this.logger = logger;
         }
 
-        [HttpPost]
+        [HttpGet]
         public void CancelReservation(int id)
         {
             reservationRepository.CancelReservation(id);
@@ -78,7 +78,7 @@ namespace Hotel_PIS.Controllers
             reservationRepository.PayArrear(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void PayDeposit(int id, decimal amount)
         {
             reservationRepository.PayDeposit(id, amount);

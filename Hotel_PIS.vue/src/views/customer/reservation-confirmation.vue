@@ -53,15 +53,31 @@
                 <p class="bold-font">Přijezd do hotelu je možný od 14:00. Při příjezdu nahlaste na recepci číslo rezervace.</p>
             </div>
         </el-col>
-        <el-col :span="4" class="reservation-col-buttons">
-            <el-button type="primary" class="button">Zaplatit zálohu</el-button>
+        <el-col :span="4" class="reservation-col-buttons" v-if="!reservation.paid">
+            <el-button type="primary" class="button" @click="openPaymentGateway(reservation.reservationId, reservation.cost)">Zaplatit zálohu</el-button>
             <el-popconfirm confirmButtonType="danger" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="red" title="Opravdu chcete zručit rezervaci?" @confirm="cancelReservation(reservation.reservationId)">
                 <template #reference>
                     <el-button type="danger" class="button">Zrušit rezervaci</el-button>
                 </template>
-            </el-popconfirm>            
+            </el-popconfirm>
+        </el-col>
+        <el-col :span="4" class="reservation-col-paid" v-else>
+            <p>Záloha zaplacena</p>
         </el-col>
     </el-row>
+    <el-drawer v-model="drawer" direction="rtl">
+        <h2>Platební brána</h2>
+        <p>Platba za rezervaci číslo <span class="bold-font">{{payInfo.id}}</span></p>
+        <el-form ref="payInfo" :model="payInfo" :rules="rules" class="data-form">
+            <el-form-item prop="amount" label="Částka">
+                <el-input type="number" :min="1" placeholder="Zadejte částku do výše 33%" :max="payInfo.maxPrice" v-model.number="payInfo.amount"></el-input>
+            </el-form-item>
+            <el-form-item class="button">
+                <el-button type="primary" @click="payDeposit()">Zaplatit zálohu</el-button>
+            </el-form-item>
+        </el-form>
+        <img src="../../assets/gopay.png" class="cards">
+    </el-drawer>
 </template>
 <script lang="js">
     import { ElMessage } from 'element-plus'
@@ -71,38 +87,39 @@
         },
         data() {
             return {
-                reservations: [
-                    {
-                        "roomId": 1,
-                        "numberOfPeople": 3,
-                        "dateTo": "2024-05-09",
-                        "dateFrom": "2024-05-02",
-                        "firstName": "Ondřej",
-                        "secondName": "Studnička",
-                        "email": "studnicka39@seznam.cz",
-                        "phoneNumber": "732564138",
-                        "cost": 847,
-                        "reservationId": 19,
-                        "roomNumber": 11111
-                    },
-                    {
-                        "roomId": 2,
-                        "numberOfPeople": 150,
-                        "dateTo": "2024-05-05",
-                        "dateFrom": "2024-05-02",
-                        "firstName": "Ondřej",
-                        "secondName": "Studnička",
-                        "email": "studnicka39@seznam.cz",
-                        "phoneNumber": "732564138",
-                        "cost": 1484,
-                        "reservationId": 20,
-                        "roomNumber": 22222
-                    }
-                ],
+                drawer: false,
+                payInfo: {
+                    maxPrice: null,
+                    id: null,                
+                    amount: null,
+                },
+                reservations: [],
                 days: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So']
             };
         },
-        //TODO: created - nacist data ze store a nasledne je okamzite vymazat, pokud bude store prazdny tak redirect na nova rezervace
+        computed: {
+            rules() {                
+                return {
+                    amount: {
+                        required: true,
+                        type: "number",
+                        message: "Zadejte částku do výše max 33%",
+                        pattern: "[0-9]+",
+                        trigger: "blur",
+                        min: 1,
+                        max: this.payInfo.maxPrice,
+                        autocomplete: "off"
+                    }
+                };
+            },
+        },
+        created() {
+            this.reservations = this.$store.getters.getReservationDetails;
+            this.$store.dispatch('clearReservationsDetails', []);
+            if (!this.reservations.length) {
+                this.$router.push({ path: '/rezervace' });
+            }
+        },
         methods: {
             stayLength(dateFrom, dateTo) {
                 let diff = new Date(dateTo) - new Date(dateFrom)
@@ -144,12 +161,61 @@
                 date = new Date(date);
                 return this.days[date.getDay()] + ", " + date.getDate() + '. ' + (date.getMonth() + 1) + '. ' + date.getFullYear();
             },
+            openPaymentGateway(id, maxPrice) {
+                this.payInfo.id = id;
+                this.payInfo.maxPrice = Math.ceil(maxPrice / 3);
+                this.payInfo.amount = Math.ceil(maxPrice / 3);
+                this.drawer = true
+            },
+            payDeposit() {
+                this.$refs.payInfo.validate((result) => {
+                    if (result) {
+                        let requestParams = this.$createRequestParams(this.payInfo, true);
+                        fetch('api/Reservation/PayDeposit' + requestParams, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(r => {
+                            if (r.status === 200) {
+                                ElMessage({ "message": "Záloha zaplacena!", "type": "success", "custom-class": "message-class" });
+                                let index = this.reservations.findIndex(reservation => {return reservation.reservationId === this.payInfo.id;});
+                                this.reservations[index].paid = true;
+                                this.drawer = false;
+                            }
+                            else {
+                                ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
+                            }
+                            return;
+                        })
+                        .catch(error => {
+                            ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
+                            console.log(error);
+                        });
+                    }
+                });
+            },
             cancelReservation(id) {
-                fetch('api/Reservation/CancelReservation?id=' + id)
-                .then(r => r.json())
-                .then(json => {
-                    console.log(json)
-                    ElMessage({ "message": "Rezervace zrušena!", "type": "success", "custom-class": "message-class" });
+                fetch('api/Reservation/CancelReservation?id=' + id, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(r => {
+                    if (r.status === 200) {
+                        ElMessage({ "message": "Rezervace zrušena!", "type": "success", "custom-class": "message-class" });
+                        this.reservations = this.reservations.filter(function (reservation) { return reservation.reservationId !== id; });
+                        if (!this.reservations.length) {
+                            this.$router.push({ path: '/rezervace' });
+                        }
+                    }
+                    else {
+                        ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
+                    }
                     return;
                 })
                 .catch(error => {
@@ -227,5 +293,41 @@
         width: 100%;
         margin: 0 0 20px 0;
     }
-
+    span.bold-font{
+        font-size: unset;
+    }
+    .data-form{
+        margin-top: 20px;
+    }
+    .data-form >>> input::-webkit-outer-spin-button,
+    .data-form >>> input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .data-form >>> input[type=number] {
+        -moz-appearance: textfield;
+    }
+    .data-form >>> .el-form-item{
+        flex-direction: column;
+    }
+    .data-form >>> .el-form-item__label{
+        text-align: left;
+    }
+    .cards{
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        max-width: 100%;
+    }
+    .data-form .button,
+    .data-form .button >>> .el-button {
+        flex-basis: 100%;
+    }
+    .reservation-col-paid p{
+        margin-top: 14px;
+        color: var(--el-color-primary);
+        font-weight: 500;
+        font-size: 24px;
+        text-align: right
+    }
 </style>
