@@ -42,13 +42,6 @@ namespace Hotel_PIS.Controllers
             reservationRepository.CheckOut(id);
         }
 
-
-        [HttpDelete]
-        public bool Delete(int id)
-        {
-            return reservationRepository.Delete(id);
-        }
-
         [HttpGet]
         public Reservation Get(int id)
         {

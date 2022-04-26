@@ -13,23 +13,6 @@ namespace Hotel_PIS.Services
     public class ReservationRepository : IReservationRepository
     {
         static object linksLock = new object();
-        public bool Delete(int id)
-        {
-            using (var db = new HotelContext())
-            {
-                try
-                {
-                    var reservation = db.Reservations.FirstOrDefault(x => x.Id == id);
-                    db.Entry(reservation).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         public Reservation Get(int id)
         {
@@ -167,6 +150,7 @@ namespace Hotel_PIS.Services
             {
                     var tmp = db.RoomReservations.Where(x =>
                         roomIds.Contains(x.RoomId)
+                        && x.Reservation.ReservationState != ReservationStateEnum.Canceled
                         && x.DateFrom >= dateNow)
                             .Select(s => new FromToDateDto
                             {

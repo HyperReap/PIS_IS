@@ -6,7 +6,6 @@ namespace Hotel_PIS.IServices
 {
     public interface IReservationRepository
     {
-        public bool Delete(int id);
         public Reservation Get(int id);
         public List<Reservation> GetAll();
         public void CancelReservation(int id);
