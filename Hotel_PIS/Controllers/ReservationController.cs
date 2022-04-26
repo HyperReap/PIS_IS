@@ -30,13 +30,13 @@ namespace Hotel_PIS.Controllers
             reservationRepository.CancelReservation(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void CheckIn(int id)
         {
             reservationRepository.CheckIn(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void CheckOut(int id)
         {
             reservationRepository.CheckOut(id);
@@ -61,18 +61,18 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
-        public List<Reservation> GetReservationsByEmail([Required]string email)
+        public List<ReservationDto> GetReservationsByEmail([Required]string email)
         {
             return reservationRepository.GetReservationsByEmail(email);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void Pay(int id)
         {
             reservationRepository.Pay(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void PayArrear(int id)
         {
             reservationRepository.PayArrear(id);

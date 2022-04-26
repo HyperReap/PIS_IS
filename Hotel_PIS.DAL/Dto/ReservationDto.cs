@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hotel_PIS.DAL.Dto
+﻿namespace Hotel_PIS.DAL.Dto
 {
     public class ReservationDto
     {
@@ -16,5 +10,11 @@ namespace Hotel_PIS.DAL.Dto
         public string? SecondName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+
+        public int RoomNumber { get; set; }
+        public decimal Cost { get; set; }
+        public decimal Paid { get; set; }
+        public int ReservationId { get; set; }
+        public ReservationStateEnum ReservationState { get; set; }
     }
 }

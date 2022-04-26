@@ -16,6 +16,6 @@ namespace Hotel_PIS.IServices
         public void CheckOut(int id);
         Reservation Save(ReservationDto obj);
         List<FromToDateDto> GetBookedDatesOfRooms(List<int> roomIds, DateTime dateNow);
-        List<Reservation> GetReservationsByEmail(string email);
+        List<ReservationDto> GetReservationsByEmail(string email);
     }
 }

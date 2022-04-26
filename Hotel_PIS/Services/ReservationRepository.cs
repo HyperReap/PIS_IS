@@ -161,17 +161,26 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public List<Reservation> GetReservationsByEmail(string email)
+        public List<ReservationDto> GetReservationsByEmail(string email)
         {
             using (var db = new HotelContext())
             {
                     var tmp =db.RoomReservations.Where(x =>x.Reservation.Client.Email == email)
-                    .Select(s=>new Reservation
+                    .Select(s=>new ReservationDto
                     {
                         Cost = s.Reservation.Cost,
-                        Payed = s.Reservation.Payed,
+                        Paid = s.Reservation.Payed,
                         NumberOfPeople = s.Reservation.NumberOfPeople,
-                        ReservationState = s.Reservation.ReservationState
+                        ReservationState = s.Reservation.ReservationState,
+                        DateFrom = s.DateFrom,
+                        DateTo = s.DateTo,
+                        Email = email,
+                        FirstName = s.Reservation.Client.FirstName, //no reservation can exist without client
+                        SecondName = s.Reservation.Client.SecondName,
+                        PhoneNumber = s.Reservation.Client.PhoneNumber,
+                        ReservationId =s.ReservationId,
+                        RoomNumber = s.Room.RoomNumber, //no reservation withou room can exist in db
+                        
                     }).ToList();
                 return tmp;
 
