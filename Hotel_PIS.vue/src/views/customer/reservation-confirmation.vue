@@ -145,7 +145,17 @@
                 return this.days[date.getDay()] + ", " + date.getDate() + '. ' + (date.getMonth() + 1) + '. ' + date.getFullYear();
             },
             cancelReservation(id) {
-                console.log(id)
+                fetch('api/Reservation/CancelReservation?id=' + id)
+                .then(r => r.json())
+                .then(json => {
+                    console.log(json)
+                    ElMessage({ "message": "Rezervace zrušena!", "type": "success", "custom-class": "message-class" });
+                    return;
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
+                    console.log(error);
+                });
             }
         }
     }
