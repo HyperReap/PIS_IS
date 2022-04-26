@@ -215,7 +215,7 @@
             createNewReservation() {
                 this.$refs.reservation.validate((result) => {
                     if (result) {
-                        this.$store.dispatch('saveReservationDetails', this.reservation);
+                        this.$store.dispatch('saveCustomerEmail', this.reservation.email);
                         let self = this;
                         this.$root.loading = !this.$root.loading
                         this.rooms.forEach(function (room, index) {
@@ -239,8 +239,12 @@
                             })
                             .then(r => r.json())
                             .then(json => {
-                                console.log(json)
+                                finalReservation.cost = json.cost;
+                                finalReservation.reservationId = json.id;
+                                finalReservation.roomNumber = room.roomNumber;
+                                self.$store.dispatch('saveReservationDetails', finalReservation);
                                 if (index === self.rooms.length - 1) {
+                                    self.$store.dispatch('saveReservationRooms', []);
                                     self.$root.loading = !self.$root.loading;
                                     self.$router.push({ path: '/potvrzeni-rezervace' });
                                 }
@@ -337,10 +341,7 @@
 </script>
 <style scoped>
     .selected-rooms{
-        padding-left: 10px;
-    }
-    .data{
-        padding-right: 10px;
+        padding-left: 90px;
     }
     h2 {
         margin-bottom: 20px;

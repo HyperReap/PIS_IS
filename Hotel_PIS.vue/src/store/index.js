@@ -5,14 +5,18 @@ export default createStore({
       reservationRooms: {
           rooms: []
       },
-      reservationDetails: {}
+      reservationDetails: [],
+      customerEmail: null
   },
   mutations: {
       saveReservationRooms(state, rooms) {
           state.reservationRooms.rooms = rooms
       },
       saveReservationDetails(state, reservationDetails) {
-          state.reservationDetails = reservationDetails
+          state.reservationDetails.push(reservationDetails);
+      },
+      saveCustomerEmail(state, email) {
+          state.customerEmail = email
       }
   },
   actions: {
@@ -21,6 +25,9 @@ export default createStore({
       },
       saveReservationDetails(context, reservationDetails) {
           context.commit('saveReservationDetails', reservationDetails)
+      },
+      saveCustomerEmail(context, email) {
+          context.commit('saveCustomerEmail', email)
       }
   },
   getters: {
@@ -29,6 +36,9 @@ export default createStore({
       },
       getReservationDetails: state => {
           return state.reservationDetails
+      },
+      getCustomerEmail: state => {
+          return state.customerEmail
       },
   }
 })
