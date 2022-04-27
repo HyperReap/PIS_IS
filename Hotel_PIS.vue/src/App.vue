@@ -1,6 +1,6 @@
 <template>
     <loading v-if="loading" />
-    <mainMenu />
+    <mainMenu v-if="!$route.meta.hideMenu"/>
     <div class="common-layout">
         <el-container>
             <el-main>

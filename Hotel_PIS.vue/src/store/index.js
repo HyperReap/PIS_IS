@@ -6,7 +6,13 @@ export default createStore({
           rooms: []
       },
       reservationDetails: [],
-      customerEmail: null
+      customerEmail: null,
+      loggedUser: {
+          email: null,
+          firstName: null,
+          secondName: null,
+          token: null
+      }
   },
   mutations: {
       saveReservationRooms(state, rooms) {
@@ -20,6 +26,9 @@ export default createStore({
       },
       saveCustomerEmail(state, email) {
           state.customerEmail = email
+      },
+      setLoggedUser(state, user) {
+          state.loggedUser = user
       }
   },
   actions: {
@@ -34,6 +43,9 @@ export default createStore({
       },
       saveCustomerEmail(context, email) {
           context.commit('saveCustomerEmail', email)
+      },
+      setLoggedUser(context, user) {
+          context.commit('setLoggedUser', user)
       }
   },
   getters: {
@@ -46,5 +58,14 @@ export default createStore({
       getCustomerEmail: state => {
           return state.customerEmail
       },
+      getLoggedUser: state => {
+          return state.loggedUser
+      },
+      isAuthenticated: state => {
+          return !!state.loggedUser.email
+      },
+      getLoggedUserToken: state => {
+          return state.loggedUser.token
+      }
   }
 })

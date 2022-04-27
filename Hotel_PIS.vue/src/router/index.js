@@ -4,6 +4,7 @@ import Rooms from '../views/customer/rooms.vue'
 import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/customer/my-reservations.vue'
 import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
+import Login from '../views/admin/login.vue'
 
 const routes = [
   {
@@ -46,6 +47,15 @@ const routes = [
     component: MyReservations,
     meta: {
         showInMenu: true
+    }
+  },
+  {
+    path: '/login',
+    name: 'Přihlášení',
+    component: Login,
+    meta: {
+        showInMenu: false,
+        hideMenu: true,
     }
   },
   {
