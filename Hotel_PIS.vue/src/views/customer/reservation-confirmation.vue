@@ -428,6 +428,7 @@
 
         .reservation-col-small div {
             margin-bottom: 20px;
+            flex-basis: 37.5%;
         }
 
         .final-price {
