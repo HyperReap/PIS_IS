@@ -12,6 +12,8 @@ FE 2/2
 **/api/Auth/login:**
 - zadne userName, ale email (prejmenovat)
 
+- vracet roli přihlášeného uživatele
+
 **/api/Auth/register:**
 - zadne userName, ale email (prejmenovat)
 - nebude se vyuzivat primo, ale v ramci Employee/Save
