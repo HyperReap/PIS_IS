@@ -65,7 +65,7 @@
             <p>Záloha zaplacena</p>
         </el-col>
     </el-row>
-    <el-drawer v-model="drawer" direction="rtl">
+    <el-drawer v-model="drawer" custom-class="drawer-min-width" direction="rtl">
         <h2>Platební brána</h2>
         <p>Platba za rezervaci číslo <span class="bold-font">{{payInfo.id}}</span></p>
         <el-form ref="payInfo" :model="payInfo" :rules="rules" class="data-form">
@@ -90,7 +90,7 @@
                 drawer: false,
                 payInfo: {
                     maxPrice: null,
-                    id: null,                
+                    id: null,
                     amount: null,
                 },
                 reservations: [],
@@ -98,7 +98,7 @@
             };
         },
         computed: {
-            rules() {                
+            rules() {
                 return {
                     amount: {
                         required: true,
@@ -178,22 +178,22 @@
                                 'Content-Type': 'application/json'
                             },
                         })
-                        .then(r => {
-                            if (r.status === 200) {
-                                ElMessage({ "message": "Záloha zaplacena!", "type": "success", "custom-class": "message-class" });
-                                let index = this.reservations.findIndex(reservation => {return reservation.reservationId === this.payInfo.id;});
-                                this.reservations[index].paid = true;
-                                this.drawer = false;
-                            }
-                            else {
+                            .then(r => {
+                                if (r.status === 200) {
+                                    ElMessage({ "message": "Záloha zaplacena!", "type": "success", "custom-class": "message-class" });
+                                    let index = this.reservations.findIndex(reservation => { return reservation.reservationId === this.payInfo.id; });
+                                    this.reservations[index].paid = true;
+                                    this.drawer = false;
+                                }
+                                else {
+                                    ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
+                                }
+                                return;
+                            })
+                            .catch(error => {
                                 ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
-                            }
-                            return;
-                        })
-                        .catch(error => {
-                            ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
-                            console.log(error);
-                        });
+                                console.log(error);
+                            });
                     }
                 });
             },
@@ -205,31 +205,32 @@
                         'Content-Type': 'application/json'
                     },
                 })
-                .then(r => {
-                    if (r.status === 200) {
-                        ElMessage({ "message": "Rezervace zrušena!", "type": "success", "custom-class": "message-class" });
-                        this.reservations = this.reservations.filter(function (reservation) { return reservation.reservationId !== id; });
-                        if (!this.reservations.length) {
-                            this.$router.push({ path: '/rezervace' });
+                    .then(r => {
+                        if (r.status === 200) {
+                            ElMessage({ "message": "Rezervace zrušena!", "type": "success", "custom-class": "message-class" });
+                            this.reservations = this.reservations.filter(function (reservation) { return reservation.reservationId !== id; });
+                            if (!this.reservations.length) {
+                                this.$router.push({ path: '/rezervace' });
+                            }
                         }
-                    }
-                    else {
+                        else {
+                            ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
+                        }
+                        return;
+                    })
+                    .catch(error => {
                         ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
-                    }
-                    return;
-                })
-                .catch(error => {
-                    ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
-                    console.log(error);
-                });
+                        console.log(error);
+                    });
             }
         }
     }
 </script>
 <style scoped>
-    h2{
-        margin-bottom:20px;
+    h2 {
+        margin-bottom: 20px;
     }
+
     .reservation {
         border-top: 3px solid var(--el-border-color);
         border-right: 1px solid var(--el-border-color);
@@ -238,96 +239,249 @@
         margin-bottom: 20px;
         padding: 20px;
     }
+
     .reservation-col-small {
         border-right: 1px solid var(--el-border-color);
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
     }
+
     .reservation-col-big {
         padding-left: 20px;
     }
+
     .smaller-letters {
         font-size: 12px;
         color: var(--el-text-color-secondary);
     }
-    .bigger-letters{
+
+    .bigger-letters {
         font-size: 24px;
         font-weight: 500;
     }
-    .reservation-col-small div{
+
+    .reservation-col-small div {
         flex-basis: 50%;
     }
-    .reservation-col-big div{
+
+    .reservation-col-big div {
         margin-bottom: 20px;
     }
+
     .blue-letters {
         color: var(--el-color-primary)
     }
-    .bold-font{
+
+    .bold-font {
         font-weight: 500;
         font-size: 18px;
     }
+
     .contact {
         color: var(--el-color-primary);
         font-weight: 500;
     }
-    div.line div{
+
+    div.line div {
         margin-bottom: 0;
         flex-basis: 37.5%;
     }
-    div.line{
+
+    div.line {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: flex-start;
     }
-    .final-price{
+
+    .final-price {
         margin-top: 50px;
     }
-    .reservation-col-buttons{
+
+    .reservation-col-buttons {
         display: flex;
         flex-direction: column;
     }
-    .reservation-col-buttons .button{
+
+    .reservation-col-buttons .button {
         width: 100%;
         margin: 0 0 20px 0;
     }
-    span.bold-font{
+
+    span.bold-font {
         font-size: unset;
     }
-    .data-form{
+
+    .data-form {
         margin-top: 20px;
     }
+
     .data-form >>> input::-webkit-outer-spin-button,
     .data-form >>> input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
+
     .data-form >>> input[type=number] {
         -moz-appearance: textfield;
     }
-    .data-form >>> .el-form-item{
+
+    .data-form >>> .el-form-item {
         flex-direction: column;
     }
-    .data-form >>> .el-form-item__label{
+
+    .data-form >>> .el-form-item__label {
         text-align: left;
     }
-    .cards{
+
+    .cards {
         position: absolute;
         bottom: 20px;
         left: 20px;
-        max-width: 100%;
+        max-width: 90%;
     }
+
     .data-form .button,
     .data-form .button >>> .el-button {
         flex-basis: 100%;
     }
-    .reservation-col-paid p{
+
+    .reservation-col-paid p {
         margin-top: 14px;
         color: var(--el-color-primary);
         font-weight: 500;
         font-size: 24px;
         text-align: right
+    }
+
+    @media screen and (max-width: 1410px) {
+        .reservation-col-paid p,
+        .reservation-col-canceled p,
+        .bigger-letters {
+            font-size: 20px;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .screen-size-edit {
+            max-width: 41.6666666667%;
+            flex: 0 0 41.6666666667%;
+        }
+
+        div.line:nth-child(2) {
+            flex-direction: column
+        }
+
+        div.line:nth-child(2) div:nth-child(2) {
+            margin-top: 20px;
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        div.line:nth-child(2) {
+            flex-direction: row;
+        }
+
+        div.line:nth-child(2) div:nth-child(2) {
+            margin-top: 0;
+        }
+
+        .reservation-col-paid p,
+        .reservation-col-canceled p {
+            text-align: left;
+        }
+
+        .reservation-col-buttons,
+        .reservation-col-canceled,
+        .screen-size-edit,
+        .reservation-col-paid {
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+
+        .reservation-col-buttons {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .reservation-col-buttons .button {
+            width: 45%;
+        }
+
+        .email-form .button,
+        .email-form .button .el-button {
+            flex-basis: unset;
+        }
+
+        .reservation {
+            flex-direction: column;
+        }
+
+        .reservation-col-small {
+            border-right: none;
+            border-bottom: 1px solid var(--el-border-color);
+            padding-bottom: 20px;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+
+        .reservation-col-small div {
+            margin-bottom: 20px;
+        }
+
+        .final-price {
+            margin-top: 0;
+        }
+
+        .reservation-col-big {
+            padding-left: unset;
+            padding-top: 20px;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+    }
+
+    @media screen and (max-width: 680px) {
+        div.line:nth-child(2) {
+            flex-direction: column
+        }
+
+        div.line:nth-child(2) div:nth-child(2) {
+            margin-top: 20px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .email-form {
+            flex-direction: column
+        }
+
+        .email-form .button,
+        .email-form .button .el-button {
+            flex-basis: 100%;
+        }
+
+        .email-form .el-form-item.is-required,
+        .reservation-col-small div {
+            flex-basis: 100%
+        }
+
+        div.line div {
+            flex-basis: 50%;
+        }
+
+        div.line:nth-child(3) {
+            flex-wrap: wrap;
+        }
+
+        div.line:nth-child(3) div:nth-child(3) {
+            margin-top: 20px;
+        }
+    }
+</style>
+<style>
+    .drawer-min-width {
+        min-width: 320px;
     }
 </style>

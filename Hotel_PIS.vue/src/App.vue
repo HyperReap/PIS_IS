@@ -54,7 +54,8 @@
         background: var(--el-color-primary-light-9);
     }
     .message-class,
-    .el-popconfirm {
+    .el-popconfirm,
+    .el-popper {
         font-family: 'Roboto', Helvetica, Arial, sans-serif;
     }
 </style>

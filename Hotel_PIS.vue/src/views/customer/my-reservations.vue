@@ -1,7 +1,7 @@
 <template>
     <h2>Moje rezervace</h2>
     <el-row>
-        <el-col :span="8">
+        <el-col :span="8" class="screen-size-edit">
             <el-form ref="clientInfo" :model="clientInfo" :rules="clientInfoRules" class="data-form email-form">
                 <el-form-item prop="email">
                     <el-input type="email" placeholder="Email" v-model="clientInfo.email"></el-input>
@@ -81,13 +81,13 @@
             <p>Rezervace zrušena</p>
         </el-col>
         <el-col :span="4" class="reservation-col-paid" v-else>
-            <p>Zaplaceno {{reservation.paid}} Kč</p>
+            <p>Zaplaceno {{reservation.paid}}&nbsp;Kč</p>
         </el-col>
     </el-row>
     <el-row v-else>
         <p>Žádné rezervace k zobrazení</p>
     </el-row>
-    <el-drawer v-model="drawer" direction="rtl">
+    <el-drawer v-model="drawer" custom-class="drawer-min-width" direction="rtl">
         <h2 class="set-margin-bottom">Platební brána</h2>
         <p>Platba za rezervaci číslo <span class="bold-font">{{payInfo.id}}</span></p>
         <el-form ref="payInfo" :model="payInfo" :rules="rules" class="data-form">
@@ -402,7 +402,7 @@
         position: absolute;
         bottom: 20px;
         left: 20px;
-        max-width: 100%;
+        max-width: 90%;
     }
 
     .data-form .button,
@@ -439,5 +439,112 @@
     }
     .set-margin-bottom{
         margin-bottom: 20px;
+    }
+    @media screen and (max-width: 1410px) {
+        .reservation-col-paid p,
+        .reservation-col-canceled p,
+        .bigger-letters {
+            font-size: 20px;
+        }
+    }
+    @media screen and (max-width: 1200px) {
+        .screen-size-edit {
+            max-width: 41.6666666667%;
+            flex: 0 0 41.6666666667%;
+        }
+        div.line:nth-child(2){
+            flex-direction: column
+        }
+        div.line:nth-child(2) div:nth-child(2){
+            margin-top: 20px;
+        }
+    }
+    @media screen and (max-width: 992px) {
+        div.line:nth-child(2){
+            flex-direction: row;
+        }
+        div.line:nth-child(2) div:nth-child(2){
+            margin-top: 0;
+        }
+        .reservation-col-paid p,
+        .reservation-col-canceled p {
+            text-align: left;
+        }
+        .reservation-col-buttons,
+        .reservation-col-canceled,
+        .screen-size-edit,
+        .reservation-col-paid {
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+        .reservation-col-buttons{
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .reservation-col-buttons .button{
+            width: 45%;
+        }
+        .email-form .button,
+        .email-form .button .el-button 
+        {
+            flex-basis: unset;
+        }
+        .reservation{
+            flex-direction: column;
+        }
+        .reservation-col-small {
+            border-right: none;
+            border-bottom: 1px solid var(--el-border-color);
+            padding-bottom: 20px;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+        .reservation-col-small div{
+            margin-bottom: 20px;
+        }
+        .final-price{
+            margin-top: 0;
+        }
+        .reservation-col-big {
+            padding-left: unset;
+            padding-top: 20px;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+    }
+    @media screen and (max-width: 680px) {
+        div.line:nth-child(2) {
+            flex-direction: column
+        }
+        div.line:nth-child(2) div:nth-child(2) {
+            margin-top: 20px;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        .email-form{
+            flex-direction: column
+        }
+        .email-form .button,
+        .email-form .button .el-button {
+                flex-basis: 100%;
+        }
+        .email-form .el-form-item.is-required,
+        .reservation-col-small div{
+            flex-basis: 100%
+        }
+        div.line div{
+            flex-basis: 50%;
+        }
+        div.line:nth-child(3) {
+            flex-wrap: wrap;
+        }
+        div.line:nth-child(3) div:nth-child(3) {
+            margin-top: 20px;
+        }
+    }
+</style>
+<style>
+    .drawer-min-width {
+        min-width: 320px;
     }
 </style>

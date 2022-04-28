@@ -136,4 +136,16 @@
         flex-wrap: wrap;
         justify-content: flex-start;
     }
+    @media screen and (max-width: 500px) {
+        p {
+            flex-basis: 50%;
+            margin-bottom: 20px;
+        }
+    }
+    @media screen and (max-width: 380px) {
+        p {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
+    }
 </style>

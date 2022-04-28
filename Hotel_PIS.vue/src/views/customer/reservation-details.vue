@@ -405,4 +405,28 @@
     {
         flex-basis: 100%;
     }
+    @media screen and (max-width: 1200px) {
+        .selected-rooms {
+            padding-left: 20px;
+        }
+    }
+    @media screen and (max-width: 992px) {
+        .selected-rooms {
+            padding-left: 0px;
+        }
+        .selected-rooms,
+        .data{
+            max-width: 100%;
+            flex: 0 0 100%;
+            width: 100%;
+        }
+        div.have-rooms{
+            flex-direction: column-reverse;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        .data-form{
+            flex-direction: column;
+        }
+    }
 </style>
