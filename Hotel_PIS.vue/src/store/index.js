@@ -11,6 +11,7 @@ export default createStore({
           email: null,
           firstName: null,
           secondName: null,
+          role: null,
           token: null
       }
   },
@@ -66,6 +67,9 @@ export default createStore({
       },
       getLoggedUserToken: state => {
           return state.loggedUser.token
+      },
+      getLoggedUserRole: state => {
+          return state.loggedUser.role
       }
   }
 })
