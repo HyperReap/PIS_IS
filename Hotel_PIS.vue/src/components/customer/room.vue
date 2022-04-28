@@ -6,7 +6,7 @@
     <p><location class="icon" /> {{ room.floor }} patro</p>
     <p><money class="icon" />{{ room.costPerNight }} Kč/noc</p>
     <div class="equipments">
-        <p v-for="equipment in equipments">
+        <p v-for="(equipment, index) in equipments" :key="index">
             <check class="icon-equipment" />
             {{equipment}}
         </p>
