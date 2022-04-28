@@ -4,6 +4,7 @@ xurban70:
 
 Ondra_stuD: Front-end 1/2
 
+kredenc: technik a upratovačka - BE + FE
 
 TODO: dodelat controllery podle navrhu
 

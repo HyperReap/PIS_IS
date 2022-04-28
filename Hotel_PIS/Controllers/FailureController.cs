@@ -36,7 +36,7 @@ namespace Hotel_PIS.Controllers
             return failureRepository.Save(id, obj);
         }
         
-        [HttpPost]
+        [HttpGet]
         public bool Solve(int id)
         {
             return failureRepository.Solve(id);
