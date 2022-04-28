@@ -3,8 +3,8 @@ import Home from '../views/Home.vue'
 import Rooms from '../views/customer/rooms.vue'
 import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/customer/my-reservations.vue'
-import Failure from "@/views/failures";
 import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
+import Failure from "@/views/admin/technician/failures.vue";
 import Login from '../views/admin/login.vue'
 
 const routes = [

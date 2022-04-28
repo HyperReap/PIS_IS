@@ -7,19 +7,13 @@
       <p class="icon" v-else><el-icon><close /></el-icon></p>
     </el-container>
   </el-container>
-  <el-dialog
-      v-model="dialogVisible"
-      :title="'Závada na pokoji ' + failure.roomId"
-      width="40%"
-  >
+  <el-dialog v-model="dialogVisible" :title="'Závada na pokoji ' + failure.roomId">
     <p class="detail-solved">Vyřešeno: {{ this.yesOrNo(failure.isSolved) }}</p>
-
     <p class="detail-desc">{{ failure.description }}</p>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Zavřít</el-button>
-        <el-button v-if="!failure.isSolved" type="primary" @click="solveFailure(failure.id)"
-        >Vyřešeno</el-button>
+        <el-button v-if="!failure.isSolved" type="primary" @click="solveFailure(failure.id)">Vyřešeno</el-button>
       </span>
     </template>
   </el-dialog>
