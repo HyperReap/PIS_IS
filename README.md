@@ -41,6 +41,9 @@ kazdy nove pouzity nuget package napsat do README
 ## ZAPOMENUTO:
 Sem dopiste co si vsimnete ze jeste chybi
 
+## NEDĚLAT:
+CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
+
 
 ## Project for Advanced information Systems.
 
