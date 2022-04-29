@@ -32,7 +32,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Failure Save(Failure obj)
+        public FailureDto Save(Failure obj)
         {
             return failureRepository.Save(obj);
         }
