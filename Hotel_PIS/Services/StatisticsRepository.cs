@@ -7,21 +7,31 @@ namespace Hotel_PIS.Services
 {
     public class StatisticsRepository : IStatisticsRepository
     {
-        public StatisticsDto getStats()
+        public StatisticsDto GetStatistics()
         {
-            throw new NotImplementedException();
             using(var db = new HotelContext())
             {
                 var dbRooms = db.Rooms.Include(e => e.RoomReservations).ToList();
 
                 //TODO nejvytizenehjsi pokoj, prumerna delka pobytu apod..
 
-                var busyRooms = dbRooms.Select(x => new { x.RoomNumber, x.RoomReservations.Count }).ToList();
-                var mostBusy = busyRooms.Max(x => x.Count);
+                var busyRooms = dbRooms.Select(x => new {x.Id, x.RoomNumber, x.RoomReservations.Count }).ToList();
+                var mostBusy = busyRooms.OrderByDescending(x => x.Count);
 
-                //var dbRR = db.RoomReservations.
+                var dbRR = db.RoomReservations.Select(s => new RoomReservation {Id = s.Id, DateFrom= s.DateFrom.Date, DateTo = s.DateTo.Date });
 
+                int sum = 0;
+                foreach (var rr in dbRR)
+                    sum += (rr.DateTo.Date - rr.DateFrom.Date).Days;
 
+                float averageLenOfStay = sum/dbRR.Count();
+
+                return new StatisticsDto
+                {
+                    AverageStay = averageLenOfStay,
+                    MostBusyRoomId = mostBusy.First().Id,
+                    MostBusyRoomNumber = mostBusy.First().Count,
+                };
             }
         }
 

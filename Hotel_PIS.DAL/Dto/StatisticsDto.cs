@@ -8,5 +8,8 @@ namespace Hotel_PIS.DAL.Dto
 {
     public  class StatisticsDto
     {
+        public int MostBusyRoomNumber { get; set; }
+        public int MostBusyRoomId { get; set; }
+        public float AverageStay { get; set; }
     }
 }
