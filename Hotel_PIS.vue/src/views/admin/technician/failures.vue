@@ -2,7 +2,7 @@
     <newFailure @newFailure="newFailure" />
     <el-row v-if="failures">
         <el-col :span="24" class="failures">
-            <div class="failure" v-for="failure in failures" :key="failure.id" @click="openFailureDialog(failure)">
+            <div :class="[{ 'disable-pointer-events': !isTechnician }, 'failure']" v-for="failure in failures" :key="failure.id" @click="openFailureDialog(failure)">
                 <p><strong>Pokoj {{ failure.roomNumber }}</strong></p>
                 <p>{{ failure.description }}</p>
             </div>
@@ -37,11 +37,13 @@
                     description: null,
                     isSolved: null
                 },
-                dialogVisible: false
+                dialogVisible: false,
+                isTechnician: false
             };
         },
         created() {
             this.loadFailures();
+            this.isTechnician = this.$store.getLoggedUserRole == 3 ? true : false;
         },
         methods: {
             loadFailures() {
@@ -61,8 +63,10 @@
                 });
             },
             openFailureDialog(failure) {
-                this.currentlySolvedFailure = failure;
-                this.dialogVisible = true;
+                if (this.isTechnician) {
+                    this.currentlySolvedFailure = failure;
+                    this.dialogVisible = true;
+                }                
             },
             solveFailure(id) {
                 this.dialogVisible = false;
@@ -123,6 +127,9 @@
     .failure:hover{
         border: 1px solid var(--el-color-primary);
         cursor: pointer;
+    }
+    .failure.disable-pointer-events{
+        pointer-events: none;
     }
     strong{
         font-weight: 500;

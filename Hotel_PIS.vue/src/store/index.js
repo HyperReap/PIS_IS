@@ -64,13 +64,13 @@ export default createStore({
           return state.loggedUser
       },
       isAuthenticated: state => {
-          return !!state.loggedUser.email
+          return !!state.loggedUser.email && !!state.loggedUser.jwt
       },
       getLoggedUserToken: state => {
           return state.loggedUser.jwt
       },
       getLoggedUserRole: state => {
-          return state.loggedUser.role
+          return state.loggedUser.roleId
       }
   }
 })
