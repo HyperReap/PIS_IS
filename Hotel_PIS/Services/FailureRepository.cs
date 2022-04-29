@@ -125,6 +125,7 @@ namespace Hotel_PIS.Services
 
                 return res.Select(s=>new FailureDto
                 {
+                    Id = s.Id,
                     Description = s.Description,
                     IsSolved = s.IsSolved,
                     RoomId = s.RoomId,

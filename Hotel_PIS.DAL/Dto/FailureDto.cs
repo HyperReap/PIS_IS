@@ -8,6 +8,7 @@ namespace Hotel_PIS.DAL.Dto
 {
     public  class FailureDto
     {
+        public int Id { get; set; }
         public int? RoomId { get; set; }
         public int? RoomNumber { get; set; }
         public string Description { get; set; }
