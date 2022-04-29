@@ -13,7 +13,8 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-        showInMenu: true
+        showInMenu: true,
+        users: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -21,7 +22,8 @@ const routes = [
     name: 'Nová rezervace',
     component: Rooms,
     meta: {
-        showInMenu: true
+        showInMenu: true,
+        users: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -30,7 +32,8 @@ const routes = [
     component: ReservationDetails,
     meta: {
         showInMenu: false,
-        parentHighlight: '/rezervace'
+        parentHighlight: '/rezervace',
+        users: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -39,7 +42,8 @@ const routes = [
     component: ReservationConfirmation,
     meta: {
         showInMenu: false,
-        parentHighlight: '/rezervace'
+        parentHighlight: '/rezervace',
+        users: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -47,7 +51,8 @@ const routes = [
     name: 'Moje rezervace',
     component: MyReservations,
     meta: {
-        showInMenu: true
+        showInMenu: true,
+        users: [0]
     }
   },
   {
@@ -55,7 +60,8 @@ const routes = [
     name: 'Závady',
     component: Failure,
     meta: {
-      showInMenu: true
+        showInMenu: true,
+        users: [1, 2, 3, 4]
     }
   },
   {

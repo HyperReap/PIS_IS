@@ -11,8 +11,9 @@ export default createStore({
           email: null,
           firstName: null,
           secondName: null,
-          role: null,
-          token: null
+          roleId: null,
+          role: 0,
+          jwt: null
       }
   },
   mutations: {
@@ -66,7 +67,7 @@ export default createStore({
           return !!state.loggedUser.email
       },
       getLoggedUserToken: state => {
-          return state.loggedUser.token
+          return state.loggedUser.jwt
       },
       getLoggedUserRole: state => {
           return state.loggedUser.role

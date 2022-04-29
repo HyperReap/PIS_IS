@@ -1,29 +1,28 @@
 <template>
-  <el-button type="primary" @click="openDialog()">Přidat závadu</el-button>
-  <el-dialog v-model="dialogVisible" title="Přidat novou závadu">
-      <el-form :model="failure" :rules="rules" ref="failure">
-          <el-form-item prop="roomId">
-              <el-select v-model="failure.roomId" placeholder="Vybrat pokoj">
-                  <el-option v-for="room in rooms" :key="room.id" :label="'Pokoj ' + room.roomNumber" :value="room.id" />
-              </el-select>
-          </el-form-item>
-          <el-form-item prop="description">
-              <el-input type="text" v-model="failure.description" placeholder="Popis závady" />
-          </el-form-item>
-      </el-form>
-      <template #footer>
-          <span class="dialog-footer">
-              <el-button type="primary" @click="sendFailure()">Odeslat</el-button>
-          </span>
-      </template>
-  </el-dialog>
+    <el-button type="primary" @click="openDialog()">Přidat závadu</el-button>
+    <el-dialog v-model="dialogVisible" title="Přidat novou závadu">
+        <el-form :model="failure" :rules="rules" ref="failure">
+            <el-form-item prop="roomId">
+                <el-select v-model="failure.roomId" placeholder="Vybrat pokoj">
+                    <el-option v-for="room in rooms" :key="room.id" :label="'Pokoj ' + room.roomNumber" :value="room.id" />
+                </el-select>
+            </el-form-item>
+            <el-form-item prop="description">
+                <el-input type="text" v-model="failure.description" placeholder="Popis závady" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button type="primary" @click="sendFailure()">Odeslat</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
-
-
 <script lang="js">
     import { ElMessage } from 'element-plus'
     export default {
         name: 'NewFailure',
+        emits: ['newFailure'],
         components: {
             ElMessage,
         },
@@ -71,23 +70,38 @@
             },    
             sendFailure() {
                 this.$refs.failure.validate((result) => {
-                    console.log(result);
-                    /*TODO: fetch + fixnout API bych rekl + zpracovani odpovedi a pripadny catch ; pracovat s this.failure!!!
-                    fetch('api/Failure/Save' + requestParams, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                    })
-                    */
+                    if (result) {
+                        fetch('api/Failure/Save', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.failure)
+                        })
+                        .then(r => r.json())
+                        .then(json => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage({ "message": "Závada nahlášena", "type": "success", "custom-class": "message-class", "grouping": true });
+                            if ("id" in json && "roomId" in json && "description" in json) {
+                                this.$emit('newFailure', json);
+                            }
+                            else {
+                                ElMessage({ "message": "Aktualizujte stránku pro nová data", "type": "success", "custom-class": "message-class", "grouping": true });
+                            }
+                            return
+                        })
+                        .catch(error => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage.error({ "message": "Nepodařilo se nahlásit závadu!", "custom-class": "message-class", "grouping": true });
+                            console.log(error);
+                        });
+                    }
                 });
             }
         }
     }
 </script>
-
 <style scoped>
 .failure-wrap {
   height: 70px;

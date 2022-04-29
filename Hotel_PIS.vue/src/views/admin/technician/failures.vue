@@ -1,5 +1,5 @@
 <template>
-    <newFailure/>
+    <newFailure @newFailure="newFailure"/>
     <el-row v-if="failures">
         <el-col :span="24">
             <failure v-for="failure in failures" :key="failure.id" :failure="failure" />
@@ -7,34 +7,42 @@
     </el-row>
 </template>
 <script lang="js">
-import failure from "@/components/admin/technician/failure.vue";
-import newFailure from "@/components/admin/technician/newFailure.vue";
-
-export default {
-  components: {
-    failure,
-    newFailure
-  },
-  data() {
-    return {
-      failures: null,
-    };
-  },
-  created() {
-    this.loadFailures();
-  },
-  methods: {
-    loadFailures() {
-      this.failures = null;
-      //this.$root.loading = !this.$root.loading
-      fetch('api/Failure/GetAll')
-          .then(r => r.json())
-          .then(json => {
-            this.failures = json;
-          });
+    import failure from "@/components/admin/technician/failure.vue";
+    import newFailure from "@/components/admin/technician/newFailure.vue";
+    import { ElMessage } from 'element-plus'
+    export default {
+        components: {
+            failure,
+            newFailure,
+            ElMessage
+        },
+        data() {
+            return {
+                failures: [],
+            };
+        },
+        created() {
+            this.loadFailures();
+        },
+        methods: {
+            loadFailures() {
+                this.failures = [];
+                fetch('api/Failure/GetAll')
+                .then(r => r.json())
+                .then(json => {
+                    this.failures = json;
+                    ElMessage({ "message": "Závada načteny", "type": "success", "custom-class": "message-class" });
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se načíst závady!", "custom-class": "message-class", "grouping": true });
+                    console.log(error);
+                });
+            },
+            newFailure(failure) {
+                this.failures.push(failure);
+            }
+        }
     }
-  }
-}
 </script>
 <style scoped>
     .failures {

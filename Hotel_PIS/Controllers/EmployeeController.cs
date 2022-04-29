@@ -47,6 +47,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public UserDto Login(UserDto user)
         {
             return employeeRepository.Login(user);

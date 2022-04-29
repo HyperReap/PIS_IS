@@ -1,24 +1,23 @@
 <template>
-  <el-container class="failure-wrap">
-    <el-container class="failure" @click="dialogVisible = true">
-      <p class="room-num">Pokoj {{ failure.roomId }}</p>
-      <p class="desc">{{ failure.description }}</p>
-      <p class="icon" v-if="failure.isSolved"><el-icon><check /></el-icon></p>
-      <p class="icon" v-else><el-icon><close /></el-icon></p>
+    <el-container class="failure-wrap">
+        <el-container class="failure" @click="dialogVisible = true">
+            <p class="room-num">Pokoj {{ failure.roomId }}</p>
+            <p class="desc">{{ failure.description }}</p>
+            <p class="icon" v-if="failure.isSolved"><el-icon><check /></el-icon></p>
+            <p class="icon" v-else><el-icon><close /></el-icon></p>
+        </el-container>
     </el-container>
-  </el-container>
-  <el-dialog v-model="dialogVisible" :title="'Závada na pokoji ' + failure.roomId">
-    <p class="detail-solved">Vyřešeno: {{ this.yesOrNo(failure.isSolved) }}</p>
-    <p class="detail-desc">{{ failure.description }}</p>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Zavřít</el-button>
-        <el-button v-if="!failure.isSolved" type="primary" @click="solveFailure(failure.id)">Vyřešeno</el-button>
-      </span>
-    </template>
-  </el-dialog>
+    <el-dialog v-model="dialogVisible" :title="'Závada na pokoji ' + failure.roomNumber">
+        <p class="detail-solved">Vyřešeno: {{ this.yesOrNo(failure.isSolved) }}</p>
+        <p class="detail-desc">{{ failure.description }}</p>
+        <template #footer>
+                <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">Zavřít</el-button>
+                <el-button v-if="!failure.isSolved" type="primary" @click="solveFailure(failure.id)">Vyřešeno</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
-
 <script setup>
 import { ref } from 'vue';
 
@@ -26,26 +25,25 @@ const dialogVisible = ref(false)
 </script>
 
 <script>
-
 export default {
-  name: 'Failure',
-  props: ['failure'],
-
-  methods: {
-    yesOrNo(isSolved) {
-      if (isSolved) {
-        return "Ano";
-      } else {
-        return "Ne";
-      }
-    },
-    solveFailure(id) {
-      this.dialogVisible = false;
-      fetch('api/Failure/Solve?id=' + id, {
-        method: 'GET'
-        });
+    name: 'Failure',
+    props: ['failure'],
+    methods: {
+        yesOrNo(isSolved) {
+            if (isSolved) {
+                return "Ano";
+            }
+            else {
+                return "Ne";
+            }
+        },
+        solveFailure(id) {
+            this.dialogVisible = false;
+            fetch('api/Failure/Solve?id=' + id, {
+            method: 'GET'
+            });
+        }
     }
-  }
 }
 </script>
 
