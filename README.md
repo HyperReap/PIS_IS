@@ -11,8 +11,6 @@ TODO: dodelat controllery podle navrhu
 FE 2/2
 
 **/api/Auth/login:**
-- zadne userName, ale email (prejmenovat)
-
 - vracet roli přihlášeného uživatele
 
 **/api/Auth/register:**
@@ -26,6 +24,10 @@ FE 2/2
 **uplne chybi logout (otazka je jestli je treba)**
 
 **kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
+
+
+
+
 
 odmazat WeatherForecast files
 

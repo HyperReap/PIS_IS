@@ -10,7 +10,8 @@ using System.Text;
 
 namespace Hotel_PIS.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace Hotel_PIS.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         public async Task<ActionResult<User>> Register(Employee user)
         {
             CreatePasswordHash(user.Password, out byte[] passwordHash);
@@ -36,7 +37,7 @@ namespace Hotel_PIS.Controllers
             }
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<ActionResult<string>> Login(UserDto user)
         {
 
