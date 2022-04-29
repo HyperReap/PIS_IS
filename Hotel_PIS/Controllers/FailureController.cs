@@ -1,4 +1,5 @@
 using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,13 +44,13 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
-        public Failure Get(int failureId)
+        public FailureDto Get(int failureId)
         {
             return failureRepository.Get(failureId);
         }
         
         [HttpGet]
-        public List<Failure> GetAll()
+        public List<FailureDto> GetAll()
         {
             return failureRepository.GetAll();
         }

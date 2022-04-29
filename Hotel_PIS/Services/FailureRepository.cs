@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Hotel_PIS.DAL.Dto;
 
 namespace Hotel_PIS.Services
 {
@@ -88,24 +90,38 @@ namespace Hotel_PIS.Services
             }
         }
         
-        public Failure Get(int id)
+        public FailureDto Get(int id)
         {
             using (var db = new HotelContext())
             {
-                var failure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
+                var failure = db.Failures.Where(x => x.Id == id).Include(e => e.Room).FirstOrDefault();
                 if (failure == null)
                     throw new Exception($"Failure with id:'{id}' was not found in database.");
 
-                return failure;
+                return  new FailureDto
+                {
+                    Description = failure.Description,
+                    IsSolved = failure.IsSolved,
+                    RoomId = failure.RoomId,
+                    RoomNumber = failure.Room.RoomNumber
+                };
             }
 
         }
 
-        public List<Failure> GetAll()
+        public List<FailureDto> GetAll()
         {
             using (var db = new HotelContext())
             {
-                return db.Failures.ToList();
+                    var res = db.Failures.Include(e=>e.Room).ToList();
+
+                return res.Select(s=>new FailureDto
+                {
+                    Description = s.Description,
+                    IsSolved = s.IsSolved,
+                    RoomId = s.RoomId,
+                    RoomNumber = s.Room.RoomNumber
+                }).ToList();
             }
         }
     }
