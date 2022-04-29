@@ -8,8 +8,26 @@ namespace Hotel_PIS.DAL.Dto
 {
     public  class StatisticsDto
     {
+        /// <summary>
+        /// most reservation ordered for this room
+        /// </summary>
         public int MostBusyRoomNumber { get; set; }
         public int MostBusyRoomId { get; set; }
+        public int MostBusyRoomCount { get; set; }
+        /// <summary>
+        /// average of all reservations date range
+        /// </summary>
         public float AverageStay { get; set; }
+        /// <summary>
+        /// most reservations ordered
+        /// </summary>
+        public string mostLoyalClient { get; set; }
+
+        /// <summary>
+        /// least wanted room, least number of reservations
+        /// </summary>
+        public int NotWantedRoomNumber { get; set; }
+        public int NotWantedRoomId { get; set; }
+        public int NotWantedRoomCount { get; set; }
     }
 }
