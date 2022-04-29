@@ -1,7 +1,7 @@
 <template>
     <el-container class="failure-wrap">
         <el-container class="failure" @click="dialogVisible = true">
-            <p class="room-num">Pokoj {{ failure.roomId }}</p>
+            <p class="room-num">Pokoj {{ failure.roomNumber }}</p>
             <p class="desc">{{ failure.description }}</p>
             <p class="icon" v-if="failure.isSolved"><el-icon><check /></el-icon></p>
             <p class="icon" v-else><el-icon><close /></el-icon></p>

@@ -27,13 +27,16 @@
         methods: {
             loadFailures() {
                 this.failures = [];
+                this.$root.loading = !this.$root.loading
                 fetch('api/Failure/GetAll')
                 .then(r => r.json())
                 .then(json => {
                     this.failures = json;
+                    this.$root.loading = !this.$root.loading
                     ElMessage({ "message": "Závada načteny", "type": "success", "custom-class": "message-class" });
                 })
                 .catch(error => {
+                    this.$root.loading = !this.$root.loading
                     ElMessage.error({ "message": "Nepodařilo se načíst závady!", "custom-class": "message-class", "grouping": true });
                     console.log(error);
                 });
