@@ -28,11 +28,11 @@ namespace Hotel_PIS.Services
             return true;
         }
 
-        public Failure Save(int id, Failure obj)
+        public Failure Save(Failure obj)
         {
             Failure savedFailure;
 
-            if (id == 0) // Create
+            if (obj.Id == 0) // Create
             {
                 savedFailure = CreateNewFailure(obj);
             }
@@ -73,17 +73,15 @@ namespace Hotel_PIS.Services
                 return dbFailure;
             }
         }
-        public bool Solve(int id)
+        public bool Solve(int failureId)
         {
             using (var db = new HotelContext())
             {
-                var dbFailure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
+                var dbFailure = db.Failures.Where(x => x.Id == failureId).FirstOrDefault();
                 if (dbFailure == null)
-                    throw new Exception($"Failure with id:'{id}' was not found in database.");
+                    throw new Exception($"Failure with id:'{failureId}' was not found in database.");
                 
                 dbFailure.IsSolved = true;
-                db.Failures.Update(dbFailure);
-
                 db.SaveChanges();
                 
                 return true;

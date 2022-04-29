@@ -25,27 +25,27 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpDelete]
-        public bool Delete(int id)
+        public bool Delete(int failureId)
         {
-            return failureRepository.Delete(id);
+            return failureRepository.Delete(failureId);
         }
 
         [HttpPost]
-        public Failure Save(int id, Failure obj)
+        public Failure Save(Failure obj)
         {
-            return failureRepository.Save(id, obj);
+            return failureRepository.Save(obj);
         }
         
         [HttpGet]
-        public bool Solve(int id)
+        public bool Solve(int failureId)
         {
-            return failureRepository.Solve(id);
+            return failureRepository.Solve(failureId);
         }
 
         [HttpGet]
-        public Failure Get(int id)
+        public Failure Get(int failureId)
         {
-            return failureRepository.Get(id);
+            return failureRepository.Get(failureId);
         }
         
         [HttpGet]

@@ -6,7 +6,7 @@ namespace Hotel_PIS.DAL
     {
         public int RoomId { get; set; }
         [ForeignKey("RoomId")]
-        public virtual Room Room { get; set; }
+        public virtual Room? Room { get; set; }
         public string Description { get; set; }
         public bool IsSolved { get; set; }
     }
