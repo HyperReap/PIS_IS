@@ -9,6 +9,6 @@ namespace Hotel_PIS.DAL
         }
         public string NameOfRole { get; set; }
         [JsonIgnore]
-        public ICollection<Employee> EmployeesWithRole { get; set; }
+        public ICollection<Employee>? EmployeesWithRole { get; set; }
     }
 }

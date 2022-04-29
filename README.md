@@ -14,7 +14,6 @@ FE 2/2
 - vracet roli přihlášeného uživatele
 
 **/api/Auth/register:**
-- zadne userName, ale email (prejmenovat)
 - nebude se vyuzivat primo, ale v ramci Employee/Save
 - teoreticky nemusi vracet nove vytvoreneho uzivatele, ale jen ok (minimalne nemusi vubec vracet passwordSalt) - ve finale, kdyz se to predela do toho Employee/Save tak uz je mi to jedno a kontrola operace bude na vas
 
@@ -50,7 +49,7 @@ CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
 
 ## Project for Advanced information Systems.
 
-Implemented in .NET 6.0, EntityFrameworkCore 6.0.3
+Implemented in .NET 6.0, EntityFrameworkCore 6.0.3, BCrypt.Net-Next 4.0.3
 
 Application should contain REST API with EF Core Database Access, with vue.js frontend.
 

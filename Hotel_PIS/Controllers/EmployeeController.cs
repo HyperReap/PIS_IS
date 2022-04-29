@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -38,6 +39,13 @@ namespace Hotel_PIS.Controllers
         public List<Employee> GetAll()
         {
             return employeeRepository.GetAll();
+        }
+
+        [HttpPost]
+        public UserDto Login(UserDto user)
+        {
+            return employeeRepository.Login(user);
+
         }
 
         [HttpPost]
