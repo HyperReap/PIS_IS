@@ -126,10 +126,35 @@ namespace Hotel_PIS.DAL
                     PhoneNumber = "+420 605 956 987"
                 }
             };
-            
+
+
+            var roleSeed = new List<Role>
+            {
+                new Role
+                {
+                    Id =1,
+                    NameOfRole = "Manager"
+                },
+                new Role
+                {
+                    Id =2,
+                    NameOfRole = "Reception"
+                },
+                new Role
+                {
+                    Id =3,
+                    NameOfRole = "Techncian"
+                },
+                new Role
+                {
+                    Id =4,
+                    NameOfRole = "Cleaner"
+                },
+            };
 
 
 
+            modelBuilder.Entity<Role>().HasData(roleSeed);
             modelBuilder.Entity<Client>().HasData(clientSeed);
             modelBuilder.Entity<Room>().HasData(roomSeed);
             modelBuilder.Entity<Equipment>().HasData(equipmentSeed);

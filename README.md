@@ -10,20 +10,11 @@ TODO: dodelat controllery podle navrhu
 
 FE 2/2
 
-**/api/Auth/login:**
-- vracet roli přihlášeného uživatele
-
-**/api/Auth/register:**
-- nebude se vyuzivat primo, ale v ramci Employee/Save
-- teoreticky nemusi vracet nove vytvoreneho uzivatele, ale jen ok (minimalne nemusi vubec vracet passwordSalt) - ve finale, kdyz se to predela do toho Employee/Save tak uz je mi to jedno a kontrola operace bude na vas
-
-**/api/Employee/Save**
-- zavolat metodu register se zadanym emailem a heslem
-
-**uplne chybi logout (otazka je jestli je treba)**
+**uplne chybi logout (otazka je jestli je treba) - logout ciste FE**
 
 **kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
 
+PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
 
 
