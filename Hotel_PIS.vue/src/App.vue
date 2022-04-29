@@ -58,4 +58,8 @@
     .el-popper {
         font-family: 'Roboto', Helvetica, Arial, sans-serif;
     }
+    .failure-dialog,
+    .new-failure-dialog {
+        min-width: 280px;
+    }
 </style>

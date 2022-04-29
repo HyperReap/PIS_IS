@@ -178,22 +178,22 @@
                                 'Content-Type': 'application/json'
                             },
                         })
-                            .then(r => {
-                                if (r.status === 200) {
-                                    ElMessage({ "message": "Záloha zaplacena!", "type": "success", "custom-class": "message-class" });
-                                    let index = this.reservations.findIndex(reservation => { return reservation.reservationId === this.payInfo.id; });
-                                    this.reservations[index].paid = true;
-                                    this.drawer = false;
-                                }
-                                else {
-                                    ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
-                                }
-                                return;
-                            })
-                            .catch(error => {
+                        .then(r => {
+                            if (r.status === 200) {
+                                ElMessage({ "message": "Záloha zaplacena!", "type": "success", "custom-class": "message-class" });
+                                let index = this.reservations.findIndex(reservation => { return reservation.reservationId === this.payInfo.id; });
+                                this.reservations[index].paid = true;
+                                this.drawer = false;
+                            }
+                            else {
                                 ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
-                                console.log(error);
-                            });
+                            }
+                            return;
+                        })
+                        .catch(error => {
+                            ElMessage.error({ "message": "Zálohu se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });
+                            console.log(error);
+                        });
                     }
                 });
             },

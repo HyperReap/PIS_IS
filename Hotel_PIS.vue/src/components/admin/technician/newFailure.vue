@@ -1,6 +1,6 @@
 <template>
     <el-button type="primary" @click="openDialog()">Přidat závadu</el-button>
-    <el-dialog v-model="dialogVisible" title="Přidat novou závadu">
+    <el-dialog v-model="dialogVisible" title="Přidat novou závadu" custom-class="failure-dialog">
         <el-form :model="failure" :rules="rules" ref="failure">
             <el-form-item prop="roomId">
                 <el-select v-model="failure.roomId" placeholder="Vybrat pokoj">

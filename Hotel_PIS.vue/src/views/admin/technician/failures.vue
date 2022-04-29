@@ -3,17 +3,18 @@
     <el-row v-if="failures">
         <el-col :span="24" class="failures">
             <div class="failure" v-for="failure in failures" :key="failure.id" @click="openFailureDialog(failure)">
-                <p>Pokoj {{ failure.roomNumber }}</p>
+                <p><strong>Pokoj {{ failure.roomNumber }}</strong></p>
                 <p>{{ failure.description }}</p>
             </div>
         </el-col>
     </el-row>
-    <el-dialog v-model="dialogVisible" :title="'Závada na pokoji ' + currentlySolvedFailure.roomNumber">
+    <el-dialog v-model="dialogVisible" custom-class="new-failure-dialog">
+        <h3>Pokoj {{currentlySolvedFailure.roomNumber}}</h3>
         <p><strong>Popis závady:</strong></p>
         <p class="detail-desc">{{ currentlySolvedFailure.description }}</p>
         <template #footer>
-                <span class="dialog-footer">
-                <el-button type="primary" @click="solveFailure(failure.id)">Označit jako vyřešeno</el-button>
+            <span class="dialog-footer">
+                <el-button type="primary" @click="solveFailure(currentlySolvedFailure.id)">Označit jako vyřešeno</el-button>
             </span>
         </template>
     </el-dialog>
@@ -60,12 +61,31 @@
                 });
             },
             openFailureDialog(failure) {
-                console.log(failure)
+                this.currentlySolvedFailure = failure;
+                this.dialogVisible = true;
             },
             solveFailure(id) {
                 this.dialogVisible = false;
-                fetch('api/Failure/Solve?id=' + id, {
-                    method: 'GET'
+                fetch('api/Failure/Solve?failureId=' + id, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(r => {
+                    if (r.status === 200) {
+                        ElMessage({ "message": "Vyřešeno!", "type": "success", "custom-class": "message-class" });
+                        this.failures = this.failures.filter(function (failure) { return failure.id !== id; });
+                    }
+                    else {
+                        ElMessage.error({ "message": "Nepodařilo se označit jako vyřešeno!", "custom-class": "message-class", "grouping": true });
+                    }
+                    return;
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se označit jako vyřešeno!", "custom-class": "message-class", "grouping": true });
+                    console.log(error);
                 });
             },
             newFailure(failure) {
@@ -79,7 +99,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin-top: 20px;
     }
     .failure {
@@ -89,9 +109,47 @@
         margin-bottom: 20px;
         padding: 20px;
         border: 1px solid var(--el-border-color);
+        margin-right: 5%;
     }
+    .failure:nth-child(3n){
+        margin-right: 0;
+    }
+    .failure p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        white-space: nowrap;
+     }
     .failure:hover{
         border: 1px solid var(--el-color-primary);
         cursor: pointer;
+    }
+    strong{
+        font-weight: 500;
+        display: block;
+    }
+    .failure strong{
+        margin-bottom: 20px;
+    }
+    h3{
+        font-weight: 500;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    @media screen and (max-width: 992px) {
+        .failures{
+            justify-content: space-between
+        }
+        .failure {
+            width: 45%;
+            flex-basis: 45%;
+            margin-right: 0;
+        }
+    }
+    @media screen and (max-width: 630px) {
+        .failure {
+            width: 100%;
+            flex-basis: 100%;
+        }
     }
 </style>
