@@ -49,6 +49,7 @@ namespace Hotel_PIS.Services
 
             return new FailureDto
             {
+                Id = savedFailure.Id,
                 Description = savedFailure.Description,
                 IsSolved = savedFailure.IsSolved,
                 RoomId = savedFailure.RoomId,
@@ -106,6 +107,7 @@ namespace Hotel_PIS.Services
 
                 return  new FailureDto
                 {
+                    Id = failure.Id,
                     Description = failure.Description,
                     IsSolved = failure.IsSolved,
                     RoomId = failure.RoomId,
