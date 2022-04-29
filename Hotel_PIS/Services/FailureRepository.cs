@@ -99,7 +99,8 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
-                var failure = db.Failures.Where(x => x.Id == id).Include(e => e.Room).FirstOrDefault();
+                var failure = db.Failures.Where(x => x.Id == id)
+                    .Include(e => e.Room).FirstOrDefault();
                 if (failure == null)
                     throw new Exception($"Failure with id:'{id}' was not found in database.");
 
@@ -118,7 +119,9 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
-                    var res = db.Failures.Include(e=>e.Room).ToList();
+                    var res = db.Failures
+                    .Where(x=>!x.IsSolved)
+                    .Include(e=>e.Room).ToList();
 
                 return res.Select(s=>new FailureDto
                 {
