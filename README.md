@@ -10,13 +10,18 @@ TODO: dodelat controllery podle navrhu
 
 FE 2/2
 
-**uplne chybi logout (otazka je jestli je treba) - logout ciste FE**
-
 **kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
 
 PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
+**Stats navrhy**
+- vytizeni pokoju v sooucasnem mesici
 
+- nejvytizenejsi mesice
+
+- pokoje s nejvice zavadami
+
+- list zamestnancu, kterym konci smlouva do 3 mesicu
 
 
 odmazat WeatherForecast files
