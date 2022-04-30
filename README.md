@@ -37,7 +37,7 @@ kazdy nove pouzity nuget package napsat do README
  Sprava zamestnancu
 
 ## ZAPOMENUTO:
-Sem dopiste co si vsimnete ze jeste chybi
+Spraviť migráciu pre userov
 
 ## NEDĚLAT:
 CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
