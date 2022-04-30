@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from "../store";
 import Home from '../views/Home.vue'
 import Rooms from '../views/customer/rooms.vue'
 import ReservationDetails from '../views/customer/reservation-details.vue'
@@ -14,7 +15,7 @@ const routes = [
     component: Home,
     meta: {
         showInMenu: true,
-        users: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -23,7 +24,7 @@ const routes = [
     component: Rooms,
     meta: {
         showInMenu: true,
-        users: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -33,7 +34,7 @@ const routes = [
     meta: {
         showInMenu: false,
         parentHighlight: '/rezervace',
-        users: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -43,7 +44,7 @@ const routes = [
     meta: {
         showInMenu: false,
         parentHighlight: '/rezervace',
-        users: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2, 3, 4]
     }
   },
   {
@@ -52,7 +53,7 @@ const routes = [
     component: MyReservations,
     meta: {
         showInMenu: true,
-        users: [0]
+        acceptedUserRoles: [0]
     }
   },
   {
@@ -61,7 +62,7 @@ const routes = [
     component: Failure,
     meta: {
         showInMenu: true,
-        users: [1, 2, 3, 4]
+        acceptedUserRoles: [1, 2, 3, 4]
     }
   },
   {
@@ -71,6 +72,7 @@ const routes = [
     meta: {
         showInMenu: false,
         hideMenu: true,
+        acceptedUserRoles: [0]
     }
   },
   {
@@ -78,7 +80,8 @@ const routes = [
     name: 'Stránka nenalezena',
     component: () => import('../views/notFound.vue'),
     meta: {
-        showInMenu: false
+        showInMenu: false,
+        acceptedUserRoles: [0, 1, 2, 3, 4]
     }
   }
 ]
@@ -90,7 +93,25 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = to.name;
-    next();
+    let routerRoleId = store.getters.getLoggedUserRole
+    //pokud stranka patri k roli aktualniho uzivatele
+    if (to.meta.acceptedUserRoles.includes(routerRoleId)) {
+        next()
+        return
+    }
+    //aktualni uzivatel nemuze jit na tuto stranku
+    else {
+        //uzivatel je prihlasen a chce jit znova na login
+        if (store.getters.isAuthenticated) {
+            document.title = 'Home';
+            next('/');
+        }
+        //guest chtel jit na stranku adminu -> login
+        else {
+            document.title = 'Přihlášení';
+            next('/login');
+        }
+    }
 });
 
 export default router

@@ -11,8 +11,8 @@ export default createStore({
           email: null,
           firstName: null,
           secondName: null,
-          roleId: null,
-          role: 0,
+          roleId: 0,
+          role: null,
           jwt: null
       }
   },
@@ -48,6 +48,17 @@ export default createStore({
       },
       setLoggedUser(context, user) {
           context.commit('setLoggedUser', user)
+      },
+      logout(context) {
+          let defaultUser = {
+              email: null,
+              firstName: null,
+              secondName: null,
+              roleId: 0,
+              role: null,
+              jwt: null
+          }
+          context.commit('setLoggedUser', defaultUser)
       }
   },
   getters: {
