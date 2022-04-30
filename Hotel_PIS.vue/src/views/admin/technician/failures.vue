@@ -54,7 +54,7 @@
                 .then(json => {
                     this.failures = json;
                     this.$root.loading = !this.$root.loading
-                    ElMessage({ "message": "Závada načteny", "type": "success", "custom-class": "message-class" });
+                    ElMessage({ "message": "Závady načteny", "type": "success", "custom-class": "message-class" });
                 })
                 .catch(error => {
                     this.$root.loading = !this.$root.loading

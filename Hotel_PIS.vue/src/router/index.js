@@ -6,6 +6,11 @@ import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/customer/my-reservations.vue'
 import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
 import Failure from "@/views/admin/technician/failures.vue";
+
+import StatsManagement from "@/views/admin/manager/statsManagement.vue";
+import EmployeesManagement from "@/views/admin/manager/employeesManagement.vue";
+import RoomsManagement from "@/views/admin/manager/roomManagement.vue";
+
 import Login from '../views/admin/login.vue'
 
 const routes = [
@@ -16,6 +21,33 @@ const routes = [
     meta: {
         showInMenu: true,
         acceptedUserRoles: [0, 1, 2, 3, 4]
+    }
+  },
+  {
+    path: '/sprava-pokoju',
+    name: 'Správa pokojů',
+    component: RoomsManagement,
+    meta: {
+        showInMenu: true,
+        acceptedUserRoles: [0, 1]
+    }
+  },
+  {
+    path: '/sprava-zamestnancu',
+    name: 'Správa zaměstnanců',
+    component: EmployeesManagement,
+    meta: {
+        showInMenu: true,
+        acceptedUserRoles: [1]
+    }
+  },
+  {
+    path: '/statistiky',
+    name: 'Statistiky',
+    component: StatsManagement,
+    meta: {
+        showInMenu: true,
+        acceptedUserRoles: [0, 1]
     }
   },
   {
