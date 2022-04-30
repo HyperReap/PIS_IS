@@ -12,7 +12,7 @@
                 <el-input type="email" placeholder="Email" v-model="employee.email"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="employee.password" placeholder="Heslo" type="password" class="password" prefix-icon="Lock"></el-input>
+                <el-input v-model="employee.password" placeholder="Heslo" type="password" prefix-icon="Lock" class="password"></el-input>
             </el-form-item>
             <el-form-item prop="dateFrom">
                 <el-date-picker v-model="employee.contractDueDae" type="date" placeholder="Smlouva do" popper-class="date-dropdown"
@@ -155,5 +155,21 @@
     .new-employee-form >>> .password input
     {
         padding-left: 30px!important;
+    }
+    .new-employee-form {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .new-employee-form >>> .el-form-item{
+        width: 47.5%;
+        flex-basis: 47.5%;
+    }
+    @media screen and (max-width: 992px) {
+        .new-employee-form >>> .el-form-item {
+            width: 100%;
+            flex-basis: 100%;
+        }
     }
 </style>

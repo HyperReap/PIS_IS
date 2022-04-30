@@ -17,8 +17,8 @@
                                 <el-avatar class="user-avatar"> {{initials}} </el-avatar>
                             </div>
                             <div class="right">
-                                <p class="name">Petr Novák</p>
-                                <p>manager@manager.cz</p>
+                                <p class="name">{{activeUserData.firstName}} {{activeUserData.secondName}}</p>
+                                <p>{{activeUserData.email}}</p>
                                 <a href="#" @click="logout()" class="logout-link">Odhlásit</a>
                             </div>
                         </div>

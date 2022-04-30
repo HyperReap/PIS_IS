@@ -43,7 +43,7 @@
         },
         created() {
             this.loadFailures();
-            this.isTechnician = this.$store.getLoggedUserRole == 3 ? true : false;
+            this.isTechnician = (this.$store.getters.getLoggedUserRole === 3) ? true : false;
         },
         methods: {
             loadFailures() {
