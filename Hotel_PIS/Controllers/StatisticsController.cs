@@ -15,7 +15,7 @@ namespace Hotel_PIS.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "Manager")]
+    //[Authorize(Roles = "Manager")]
     public class StatisticsController : ControllerBase, IStatisticsRepository
     {
         private readonly IStatisticsRepository statsRepository;

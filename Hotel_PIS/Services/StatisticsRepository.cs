@@ -41,7 +41,7 @@ namespace Hotel_PIS.Services
                     var rcs = reservationClients.MaxBy(x=>x.Email); //collection of 1 client with most records
 
 
-                var roomWithMostFailures = db.Rooms.Include(e => e.Failures).OrderBy(x => x.Failures.Count).FirstOrDefault();
+                var roomWithMostFailures = db.Rooms.Where(x => x.Failures.Count > 0).Include(e => e.Failures).OrderByDescending(x => x.Failures.Count).FirstOrDefault();
 
                 var employees = db.Employees.Where(x => x.ContractDueDae != null && x.ContractDueDae <= DateTime.Now.AddMonths(3)).Take(6).ToList();
 
@@ -61,9 +61,9 @@ namespace Hotel_PIS.Services
                     MostBusyRoomNumber = mostBusy.First().RoomNumber,
                     MostBusyRoomCount = mostBusy.First().Count,
 
-                    RoomWithMostFailuresId = mostBusy.First().Id,
-                    RoomWithMostFailuresNumber = mostBusy.First().RoomNumber,
-                    RoomWithMostFailuresCount = mostBusy.First().Count,
+                    RoomWithMostFailuresId = roomWithMostFailures?.Id ?? 0,
+                    RoomWithMostFailuresNumber = roomWithMostFailures?.RoomNumber ?? 0,
+                    RoomWithMostFailuresCount = roomWithMostFailures?.Failures?.Count() ?? 0,
 
                     mostLoyalClient = rcs.Email,
                     EmployeesWithEndingContract = employees,
