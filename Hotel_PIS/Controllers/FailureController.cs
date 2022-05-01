@@ -2,6 +2,7 @@ using Hotel_PIS.DAL;
 using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,30 +27,35 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public bool Delete(int failureId)
         {
             return failureRepository.Delete(failureId);
         }
 
         [HttpPost]
+        [Authorize]
         public FailureDto Save(Failure obj)
         {
             return failureRepository.Save(obj);
         }
         
         [HttpGet]
+        [Authorize(Roles = "Techncian")]
         public bool Solve(int failureId)
         {
             return failureRepository.Solve(failureId);
         }
 
         [HttpGet]
+        [Authorize]
         public FailureDto Get(int failureId)
         {
             return failureRepository.Get(failureId);
         }
         
         [HttpGet]
+        [Authorize]
         public List<FailureDto> GetAll()
         {
             return failureRepository.GetAll();

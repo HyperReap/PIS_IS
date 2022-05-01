@@ -2,6 +2,7 @@
 using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,12 +32,14 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void CheckIn(int id)
         {
             reservationRepository.CheckIn(id);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void CheckOut(int id)
         {
             reservationRepository.CheckOut(id);
@@ -61,6 +64,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public List<ReservationDto> GetInProgressReservations()
         {
             return reservationRepository.GetInProgressReservations();
@@ -73,12 +77,14 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void Pay(int id)
         {
             reservationRepository.Pay(id);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void PayArrear(int id)
         {
             reservationRepository.PayArrear(id);
