@@ -41,6 +41,8 @@ Spraviť migráciu pre userov
 
 Update zamestnancu
 
+Pri save pokoje nejde pridat Equipment
+
 ## NEDĚLAT:
 CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
 
