@@ -94,7 +94,7 @@ namespace Hotel_PIS.Services
             }
             else
             {
-                savedRoom = Update(obj);
+                savedRoom = Update(id,obj);
             }
 
             AssignEquipmentsToRoom(savedRoom.Id, equipmentIds);
@@ -177,17 +177,25 @@ namespace Hotel_PIS.Services
 
         }
 
-        public Room Update(Room room)
+        public Room Update(int id, Room room)
         {
             using (var db = new HotelContext())
             {
-                var dbRoom = db.Rooms.Where(x => x.Id == room.Id).FirstOrDefault();
+                var dbRoom = db.Rooms.Where(x => x.Id == id).FirstOrDefault();
                 if (dbRoom == null)
                     throw new Exception($"Room with id:'{room.Id}' was not found in database.");
 
                 if (dbRoom.Equals(room))
                     return room;
 
+                dbRoom.NumberOfBeds = room.NumberOfBeds;
+                dbRoom.NumberOfSideBeds = room.NumberOfSideBeds;
+                dbRoom.RoomNumber = room.RoomNumber;
+                dbRoom.CostPerNight = room.CostPerNight;
+                dbRoom.Floor = room.Floor;
+                dbRoom.IsCleaned = room.IsCleaned;
+                dbRoom.Picture = room.Picture;
+                dbRoom.RoomSize = room.RoomSize;
 
                 db.SaveChanges();
 
