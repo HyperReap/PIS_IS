@@ -20,6 +20,8 @@ PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
 - list zamestnancu, kterym konci smlouva do 3 mesicu
 
+- nejdelsi pobyt
+
 
 odmazat WeatherForecast files
 
