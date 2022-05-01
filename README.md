@@ -10,9 +10,6 @@ TODO: dodelat controllery podle navrhu
 
 FE 2/2
 
-**kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
-
-PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
 
 sepsat dokumentaci - doc.html
@@ -22,24 +19,20 @@ kazdy nove pouzity nuget package napsat do README
 
 ## STEZEJNI BODY:
 
- Sprava zamestnancu (chybi jen update)
+ Sprava zamestnancu (chybi jen update a to jen na FE)
  
- Sprava pokoju (chybi jen update)
+ Sprava pokoju (chybi jen update a to jen na FE)
  
- Zabezpecit endpointy
- 
- Spraviť migráciu pre userov
+ Zabezpecit endpoint
 
 ## ZAPOMENUTO:
-
-Pri save pokoje nejde pridat Equipment
-
 Predelat PDF dle aktualnich use-case??
-
-
 
 ## NEDĚLAT:
 CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
+
+## DALŠÍ MOŽNOSTI:
+filtrování seznamu rezervací na FE na základě inputu
 
 
 ## Project for Advanced information Systems.
