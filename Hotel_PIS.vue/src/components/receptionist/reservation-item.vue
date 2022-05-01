@@ -21,22 +21,24 @@
 
     <td>{{reservationStateWord(reservation.reservationState)}}</td>
     <td>
-        <el-popconfirm v-if="reservation.reservationState == 0 && isPayed()" confirmButtonType="primary" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="blue" title="Opravdu chcete změnit stav rezervace ne check-in?" @confirm="checkIn()">
-            <template #reference>
-                <el-button type="primary" class="button button-width">Check-in</el-button>
-            </template>
-        </el-popconfirm>
-        <el-popconfirm v-if="reservation.reservationState == 1 && isPayed()" confirmButtonType="primary" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="blue" title="Opravdu chcete změnit stav rezervace ne check-out?" @confirm="checkOut()">
-            <template #reference>
-                <el-button type="primary" class="button button-width">Check-out</el-button>
-            </template>
-        </el-popconfirm>
-        <el-button type="primary" v-if="!isPayed()" class="button button-width" @click="openPaymentGateway()">Zaplatit nedoplatek</el-button>
-        <el-popconfirm v-if="reservation.reservationState == 0 && !isPayed()" confirmButtonType="danger" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="red" title="Opravdu chcete zrušit rezervaci?" @confirm="cancelReservation()">
-            <template #reference>
-                <el-button type="danger" class="button button-width">Zrušit</el-button>
-            </template>
-        </el-popconfirm>
+        <div class="d-flex">
+            <el-popconfirm v-if="reservation.reservationState == 0 && isPayed() && isRoomCleaned()" confirmButtonType="primary" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="blue" title="Opravdu chcete změnit stav rezervace ne check-in?" @confirm="checkIn()">
+                <template #reference>
+                    <el-button type="primary" class="button button-width">Check-in</el-button>
+                </template>
+            </el-popconfirm>
+            <el-popconfirm v-if="reservation.reservationState == 1 && isPayed()" confirmButtonType="primary" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="blue" title="Opravdu chcete změnit stav rezervace ne check-out?" @confirm="checkOut()">
+                <template #reference>
+                    <el-button type="primary" class="button button-width">Check-out</el-button>
+                </template>
+            </el-popconfirm>
+            <el-button type="primary" v-if="!isPayed()" class="button button-width" @click="openPaymentGateway()">Zaplatit nedoplatek</el-button>
+            <el-popconfirm v-if="reservation.reservationState == 0 && !isPayed()" confirmButtonType="danger" confirm-button-text="Ano" cancel-button-text="Ne" icon-color="red" title="Opravdu chcete zrušit rezervaci?" @confirm="cancelReservation()">
+                <template #reference>
+                    <el-button type="danger" class="button button-width">Zrušit</el-button>
+                </template>
+            </el-popconfirm>
+        </div>
     </td>
 
     <el-drawer v-model="drawer" custom-class="drawer-min-width" direction="rtl">
@@ -58,6 +60,7 @@
     export default {
         name: 'ReservationItem',
         props: ['reservation', 'rooms'],
+        emits: ['reservationItem'],
         components: {
             ElMessage
         },
@@ -97,12 +100,15 @@
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                     },
                 })
                     .then(r => {
                         if (r.status === 200) {
                             ElMessage({ "message": "Stav rezervace změněn na check in!", "type": "success", "custom-class": "message-class" });
+                            this.$emit('reservationItem');
+                            this.reservation.reservationState = 1;
                         }
                         else {
                             ElMessage.error({ "message": "Nepodařilo se změnit stav rezervace na check in!", "custom-class": "message-class", "grouping": true });
@@ -112,19 +118,22 @@
                     .catch(error => {
                         ElMessage.error({ "message": "Nepodařilo se změnit stav rezervace na check in!", "custom-class": "message-class", "grouping": true });
                         console.log(error);
-                    }); 
+                    });
             },
             checkOut() {
                 fetch('api/Reservation/CheckOut?id=' + this.reservation.reservationId, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                     },
                 })
                     .then(r => {
                         if (r.status === 200) {
                             ElMessage({ "message": "Stav rezervace změněn na check out!", "type": "success", "custom-class": "message-class" });
+                            this.reservation.reservationState = 2;
+                            this.$emit('reservationItem');
                         }
                         else {
                             ElMessage.error({ "message": "Nepodařilo se změnit stav rezervace na check out!", "custom-class": "message-class", "grouping": true });
@@ -141,12 +150,15 @@
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                     },
                 })
                     .then(r => {
                         if (r.status === 200) {
                             ElMessage({ "message": "Rezervace byla zrušena!", "type": "success", "custom-class": "message-class" });
+                            this.reservation.reservationState = 3;
+                            this.$emit('reservationItem');
                         }
                         else {
                             ElMessage.error({ "message": "Nepodařilo se zrušit rezervaci!", "custom-class": "message-class", "grouping": true });
@@ -163,13 +175,15 @@
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                     },
                 })
                     .then(r => {
                         if (r.status === 200) {
                             ElMessage({ "message": "Nedoplatek zaplacen!", "type": "success", "custom-class": "message-class" });
-                            this.reservation.paid = this.payInfo.amount;          
+                            this.$emit('reservationItem');
+                            this.reservation.paid = this.payInfo.amount;
                             this.drawer = false;
                         } else {
                             ElMessage.error({ "message": "Nedoplatek se nepodařilo zaplatit!", "custom-class": "message-class", "grouping": true });

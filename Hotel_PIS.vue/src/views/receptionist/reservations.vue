@@ -16,7 +16,7 @@
                         <th class="text-center">Akce</th>
                     </thead>
                     <tr v-for="reservation in reservations" :key="reservations.id">
-                        <reservation-item :reservation="reservation" :rooms="rooms" />
+                        <reservation-item :reservation="reservation" :rooms="rooms" @reservationItem="loadReservations"/>
                     </tr>
                 </table>
             </div>
@@ -53,7 +53,14 @@
                 this.reservations = null;
                 this.rooms = null;
                 this.$root.loading = !this.$root.loading
-                fetch('api/Reservation/GetInProgressReservations')
+                fetch('api/Reservation/GetInProgressReservations', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
+                    },
+                })
                     .then(r => r.json())
                     .then(json => {
                         this.reservations = json;
@@ -67,7 +74,14 @@
                         console.log(error);
                     });
                 this.$root.loading = !this.$root.loading
-                fetch('api/Room/GetAll')
+                fetch('api/Room/GetAll', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
+                    },
+                })
                     .then(r => r.json())
                     .then(json => {
                         this.rooms = json;
@@ -79,11 +93,6 @@
                         ElMessage.error({ "message": "Nepodařilo se načíst rezervaci!", "custom-class": "message-class" });
                         console.log(error);
                     });
-            },
-            getReservation() {
-                for (reservation in this.reservations) {
-
-                }
             },
             formatDate(date) {
                 date = new Date(date);

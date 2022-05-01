@@ -67,6 +67,7 @@ const routes = [
     component: Reservations,
     meta: {
         showInMenu: true,
+        acceptedUserRoles: [1, 2]
     }
   },
   {
