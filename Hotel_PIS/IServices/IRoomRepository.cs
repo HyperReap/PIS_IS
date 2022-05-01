@@ -14,6 +14,7 @@ namespace Hotel_PIS.IServices
         List<Equipment> GetEquipmentsOfRoom(int roomId);
         List<Room> GetFiltered(EquipmentListDto equipmentsList, DateTime? from, DateTime? to, decimal? minPrice, decimal? maxPrice, int? minNumberOfBeds, int? maxNumberOfBeds);
         bool MarkAsCleaned(int roomId);
+        bool MarkAsUncleaned(int roomId);
         Room Save(int id, Room obj, List<int> equipmentIds);
     }
 }

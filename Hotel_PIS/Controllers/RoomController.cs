@@ -52,7 +52,7 @@ namespace Hotel_PIS.Controllers
         [HttpGet]
         public List<Room> GetAllCleaned()
         {
-            return roomRepository.GetAllUncleaned();
+            return roomRepository.GetAllCleaned();
         }
 
         [HttpGet]
@@ -83,6 +83,12 @@ namespace Hotel_PIS.Controllers
         public bool MarkAsCleaned(int roomId)
         {
             return roomRepository.MarkAsCleaned(roomId);
+        }
+
+        [HttpGet]
+        public bool MarkAsUncleaned(int roomId)
+        {
+            return roomRepository.MarkAsUncleaned(roomId);
         }
     }
 }

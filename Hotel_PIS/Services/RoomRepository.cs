@@ -232,5 +232,19 @@ namespace Hotel_PIS.Services
                 return true;
             }
         }
+        
+        public bool MarkAsUncleaned(int roomId)
+        {
+            using (var db = new HotelContext())
+            {
+                var room = db.Rooms.Where(x => x.Id == roomId).FirstOrDefault();
+                if (room == null)
+                    throw new Exception($"Room with id:'{roomId}' was not found in database.");
+                room.IsCleaned = false;
+
+                db.SaveChanges();
+                return true;
+            }
+        }
     }
 }
