@@ -2,6 +2,7 @@
 using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Manager")]
         public bool Delete(int id)
         {
             return roomRepository.Delete(id);
@@ -41,6 +43,20 @@ namespace Hotel_PIS.Controllers
         public List<Room> GetAll()
         {
             return roomRepository.GetAll();
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public List<Room> GetAllUncleaned()
+        {
+            return roomRepository.GetAllUncleaned();
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public List<Room> GetAllCleaned()
+        {
+            return roomRepository.GetAllCleaned();
         }
 
         [HttpGet]
@@ -62,10 +78,24 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Room Save(int id, Room obj)
+        [Authorize(Roles = "Manager")]
+        public Room Save(int id, [FromBody]Room obj, [FromQuery]List<int> equipmentIds)
         {
-            return roomRepository.Save(id, obj);
+            return roomRepository.Save(id, obj,equipmentIds);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Cleaner")]
+        public bool MarkAsCleaned(int roomId)
+        {
+            return roomRepository.MarkAsCleaned(roomId);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Techncian")]
+        public bool MarkAsUncleaned(int roomId)
+        {
+            return roomRepository.MarkAsUncleaned(roomId);
+        }
     }
 }

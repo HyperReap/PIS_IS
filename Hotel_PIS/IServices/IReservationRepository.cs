@@ -6,7 +6,6 @@ namespace Hotel_PIS.IServices
 {
     public interface IReservationRepository
     {
-        public bool Delete(int id);
         public Reservation Get(int id);
         public List<Reservation> GetAll();
         public void CancelReservation(int id);
@@ -17,6 +16,7 @@ namespace Hotel_PIS.IServices
         public void CheckOut(int id);
         Reservation Save(ReservationDto obj);
         List<FromToDateDto> GetBookedDatesOfRooms(List<int> roomIds, DateTime dateNow);
-        List<Reservation> GetReservationsByEmail(string email);
+        List<ReservationDto> GetReservationsByEmail(string email);
+        List<ReservationDto> GetInProgressReservations();
     }
 }

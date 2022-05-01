@@ -2,6 +2,7 @@
 using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,29 +25,24 @@ namespace Hotel_PIS.Controllers
             this.logger = logger;
         }
 
-        [HttpPost]
+        [HttpGet]
         public void CancelReservation(int id)
         {
             reservationRepository.CancelReservation(id);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void CheckIn(int id)
         {
             reservationRepository.CheckIn(id);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void CheckOut(int id)
         {
             reservationRepository.CheckOut(id);
-        }
-
-
-        [HttpDelete]
-        public bool Delete(int id)
-        {
-            return reservationRepository.Delete(id);
         }
 
         [HttpGet]
@@ -68,24 +64,33 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
-        public List<Reservation> GetReservationsByEmail([Required]string email)
+        [Authorize(Roles = "Manager,Reception")]
+        public List<ReservationDto> GetInProgressReservations()
+        {
+            return reservationRepository.GetInProgressReservations();
+        }
+
+        [HttpGet]
+        public List<ReservationDto> GetReservationsByEmail([Required]string email)
         {
             return reservationRepository.GetReservationsByEmail(email);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void Pay(int id)
         {
             reservationRepository.Pay(id);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "Manager,Reception")]
         public void PayArrear(int id)
         {
             reservationRepository.PayArrear(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         public void PayDeposit(int id, decimal amount)
         {
             reservationRepository.PayDeposit(id, amount);

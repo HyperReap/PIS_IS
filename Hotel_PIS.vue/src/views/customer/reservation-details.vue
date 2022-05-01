@@ -33,12 +33,6 @@
                             <el-button type="primary" @click="createNewReservation">Rezervovat</el-button>
                         </el-form-item>
                     </el-form>
-                    <ul>
-                        <li>při vybírání data už musí být vypnuté obsazené termíny</li>
-                        <li>odesilani na BE 2x (prvne klient, melo by se vratit jeho id ; pak rezervace, mel bych poslat id klienta)</li>
-                        <li>mel bych si do store ulozit email klienta pro pouziti v mych rezervacich</li>
-                        <li>mel bych presmerovat na stranku s detaily rezervace</li>
-                    </ul>
                 </el-col>
                 <el-col :span="12" class="selected-rooms">
                     <h3>Zvolené pokoje</h3>
@@ -70,7 +64,7 @@
                 countDownEnabled: false,
                 countDown: 10,
                 dayDuration: 86400000,
-                disabledDays: null,
+                disabledDays: [],
                 reservation: {
                     dateFrom: null,
                     dateTo: null,
@@ -83,8 +77,7 @@
             };
         },
         created() {
-            //TODO
-            //this.rooms = this.$store.getters.getReservationRooms.rooms;
+            this.rooms = this.$store.getters.getReservationRooms.rooms;
             if (this.rooms.length > 0) {
                 this.loadRooms()
             }
@@ -209,7 +202,7 @@
                 })
                 .then(r => r.json())
                 .then(json => {
-                    console.log(json)
+                    this.disabledDays = json;
                     return;
                 })
                 .catch(error => {
@@ -219,11 +212,10 @@
                     console.log(error);
                 });
             },
-            //TODO: zkontrolovat
             createNewReservation() {
                 this.$refs.reservation.validate((result) => {
                     if (result) {
-                        this.$store.dispatch('saveReservationDetails', this.reservation);
+                        this.$store.dispatch('saveCustomerEmail', this.reservation.email);
                         let self = this;
                         this.$root.loading = !this.$root.loading
                         this.rooms.forEach(function (room, index) {
@@ -247,9 +239,14 @@
                             })
                             .then(r => r.json())
                             .then(json => {
-                                console.log(json)
+                                finalReservation.cost = json.cost;
+                                finalReservation.reservationId = json.id;
+                                finalReservation.roomNumber = room.roomNumber;
+                                self.$store.dispatch('saveReservationDetails', finalReservation);
                                 if (index === self.rooms.length - 1) {
+                                    self.$store.dispatch('saveReservationRooms', []);
                                     self.$root.loading = !self.$root.loading;
+                                    self.$router.push({ path: '/potvrzeni-rezervace' });
                                 }
                                 return
                             })
@@ -264,17 +261,52 @@
                     }
                 });
             },
-            //TODO dodelat: chybi dam zohledneni dat, na ktere uz maji pokoje rezervaci
             disabledDateFrom(date) {
-                return date.getTime() < Date.now() - this.dayDuration
+                let enabled = true;
+                this.disabledDays.forEach(function (loadedDate, index) {
+                    if (Date.parse(loadedDate.dateFrom) <= date.getTime() && date.getTime() <= Date.parse(loadedDate.dateTo)) {
+                        enabled = false;
+                    }
+                });
+
+                if (!enabled) {
+                    return !enabled;
+                }
+
+                if (date.getTime() < Date.now()) {
+                    return true;
+                }
+
+                return false;
             },
-            disabledDateTo(date) {
+            disabledDateTo(date) {      
+                let enabled = true;
+                this.disabledDays.forEach(function (loadedDate, index) {
+                    if (Date.parse(loadedDate.dateFrom) <= date.getTime() && date.getTime() <= Date.parse(loadedDate.dateTo)) {
+                        enabled = false;
+                    }
+                });
+                if (!enabled) {
+                    return !enabled;
+                }
+
                 if (this.reservation.dateFrom === null) {
                     return date.getTime() < Date.now()
                 }
                 else {
+                    let self = this;
+                    let filteredReservations = this.disabledDays.filter(function (loadedDate) {
+                        return Date.parse(loadedDate.dateFrom) >= Date.parse(self.reservation.dateFrom);
+                    });
+                    filteredReservations = Math.min(...filteredReservations.map(element => {return new Date(element.dateFrom);}));
+                    if (date >= filteredReservations) {
+                        return true;
+                    }
                     return date.getTime() < this.getTimeStamp(this.reservation.dateFrom)
                 }
+
+                return false;
+
             },
             getTimeStamp(strDate) {
                 return ((new Date(strDate).getTime()))
@@ -282,9 +314,7 @@
         },
         watch: {
             'reservation.dateFrom': function (newVal, oldVal) {
-                if (newVal >= this.reservation.dateTo) {
-                    this.reservation.dateTo = null
-                }
+                this.reservation.dateTo = null
             },
             countDownEnabled(value) {
                 if (value) {
@@ -311,10 +341,7 @@
 </script>
 <style scoped>
     .selected-rooms{
-        padding-left: 10px;
-    }
-    .data{
-        padding-right: 10px;
+        padding-left: 90px;
     }
     h2 {
         margin-bottom: 20px;
@@ -377,5 +404,29 @@
     .button >>> .el-button
     {
         flex-basis: 100%;
+    }
+    @media screen and (max-width: 1200px) {
+        .selected-rooms {
+            padding-left: 20px;
+        }
+    }
+    @media screen and (max-width: 992px) {
+        .selected-rooms {
+            padding-left: 0px;
+        }
+        .selected-rooms,
+        .data{
+            max-width: 100%;
+            flex: 0 0 100%;
+            width: 100%;
+        }
+        div.have-rooms{
+            flex-direction: column-reverse;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        .data-form{
+            flex-direction: column;
+        }
     }
 </style>

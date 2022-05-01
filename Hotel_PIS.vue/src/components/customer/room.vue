@@ -6,7 +6,7 @@
     <p><location class="icon" /> {{ room.floor }} patro</p>
     <p><money class="icon" />{{ room.costPerNight }} Kč/noc</p>
     <div class="equipments">
-        <p v-for="equipment in equipments">
+        <p v-for="(equipment, index) in equipments" :key="index">
             <check class="icon-equipment" />
             {{equipment}}
         </p>
@@ -135,5 +135,17 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
+    }
+    @media screen and (max-width: 500px) {
+        p {
+            flex-basis: 50%;
+            margin-bottom: 20px;
+        }
+    }
+    @media screen and (max-width: 380px) {
+        p {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
     }
 </style>

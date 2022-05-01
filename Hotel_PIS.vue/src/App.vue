@@ -1,6 +1,6 @@
 <template>
     <loading v-if="loading" />
-    <mainMenu />
+    <mainMenu v-if="!$route.meta.hideMenu"/>
     <div class="common-layout">
         <el-container>
             <el-main>
@@ -29,11 +29,12 @@
     }
 </script>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap&display=swap&subset=latin-ext');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap&display=swap&subset=latin-ext');
     *{
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-weight: 300;
     }
     sup{
         line-height: 0;
@@ -52,7 +53,14 @@
         height: 100%;
         background: var(--el-color-primary-light-9);
     }
-    .message-class {
+    .message-class,
+    .el-popconfirm,
+    .el-popper {
         font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    }
+    .failure-dialog,
+    .new-failure-dialog,
+    .employee-dialog{
+        min-width: 280px;
     }
 </style>

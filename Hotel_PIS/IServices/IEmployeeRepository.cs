@@ -1,4 +1,5 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices.Shared;
 
 namespace Hotel_PIS.IServices
@@ -9,8 +10,7 @@ namespace Hotel_PIS.IServices
         public bool Delete(int id);
         public Employee Get(int id);
         public List<Employee> GetAll();
-        /**
-         * TODO: login and logout
-         */
+        UserDto Login(UserDto user);
+
     }
 }

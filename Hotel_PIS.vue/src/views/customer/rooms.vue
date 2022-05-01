@@ -1,9 +1,9 @@
 <template>
-    <el-row v-if="rooms">
-        <el-col :span="4">
+    <el-row v-if="rooms" class="custom-row">
+        <el-col :span="4" class="screen-size-edit filters-edit">
             <filters :filterValues="filterValues" @filterRooms="filterRooms"/>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="20" class="screen-size-edit rooms-edit">
             <div class="rooms" v-if="rooms.length">
                 <div v-for="room in rooms" :key="room.id" class="room">
                     <room :room="room" />
@@ -88,7 +88,6 @@
                 .then(r => r.json())
                 .then(json => {
                     this.rooms = json;
-                    console.log(json)
                     this.$root.loading = !this.$root.loading
                     return
                 })
@@ -159,5 +158,19 @@
     .no-rooms p{
         text-align: center;
         flex-basis: 100%;
+    }
+    @media screen and (max-width: 1200px) {
+        .custom-row{
+            flex-direction: column;
+        }
+        .screen-size-edit{
+            max-width: unset;
+            flex: unset;
+        }
+    }
+    @media screen and (max-width: 992px) {
+        .rooms {
+            flex-direction: column;
+        }
     }
 </style>

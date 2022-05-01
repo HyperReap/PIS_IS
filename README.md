@@ -1,37 +1,13 @@
 ## TODO-LIST
 
-xurban70:
+sepsat dokumentaci - doc.html (zbyva instalace)
 
-Ondra_stuD: Front-end 1/2
-
-
-TODO: dodelat controllery podle navrhu
-
-FE 2/2
-
-**udelat authorize (login apod..)**
-
-**kompletni zpracovani metod pro zachazeni s equipmenutem pokoje (napr. WIFI, TV, ...) - uz mozna asi ne, bude nejspis natvrdo**
-
-odmazat WeatherForecast files
-
-sepsat dokumentaci - doc.html
-
-kazdy nove pouzity nuget package napsat do README
-
-
-## STEZEJNI BODY:
- autorizace
-
- Sprava zamestnancu
-
-## ZAPOMENUTO:
-Sem dopiste co si vsimnete ze jeste chybi
+zkusit rozjet odevzdane veci
 
 
 ## Project for Advanced information Systems.
 
-Implemented in .NET 6.0, EntityFrameworkCore 6.0.3
+Implemented in .NET 6.0, EntityFrameworkCore 6.0.3, BCrypt.Net-Next 4.0.3
 
 Application should contain REST API with EF Core Database Access, with vue.js frontend.
 

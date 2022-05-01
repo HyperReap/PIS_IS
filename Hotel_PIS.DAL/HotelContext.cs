@@ -126,10 +126,81 @@ namespace Hotel_PIS.DAL
                     PhoneNumber = "+420 605 956 987"
                 }
             };
-            
+
+
+            var roleSeed = new List<Role>
+            {
+                new Role
+                {
+                    Id =1,
+                    NameOfRole = "Manager"
+                },
+                new Role
+                {
+                    Id =2,
+                    NameOfRole = "Reception"
+                },
+                new Role
+                {
+                    Id =3,
+                    NameOfRole = "Techncian"
+                },
+                new Role
+                {
+                    Id =4,
+                    NameOfRole = "Cleaner"
+                },
+            };
+
+            var employeeSeed = new List<Employee>
+            {
+                new Employee
+                {
+                    ContractDueDae = null,
+                    Email = "manager@manager.cz",
+                    FirstName = "Petr",
+                    SecondName = "Novák",
+                    RoleId = 1,
+                    Id = 1,
+                    Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW", //123-aaa-BBB
+                },
+                   new Employee
+                {
+                    ContractDueDae = new DateTime(2022,05,07),
+                    Email = "recepce@recepce.cz",
+                    FirstName = "Michal",
+                    SecondName = "Bloudný",
+                    RoleId = 2,
+                    Id = 2,
+                    Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW", //123-aaa-BBB
+                },
+                      new Employee
+                {
+                    ContractDueDae = new DateTime(2022,12,07),
+                    Email = "uklizecka@uklizecka.cz",
+                    FirstName = "Alena",
+                    SecondName = "Novotná",
+                    RoleId = 4,
+                    Id = 4,
+                    Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW", //123-aaa-BBB
+                },
+                                  new Employee
+                {
+                    ContractDueDae = null,
+                    Email = "technik@technik.cz",
+                    FirstName = "Oto",
+                    SecondName = "Ladský",
+                    RoleId = 3,
+                    Id = 3,
+                    Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW", //123-aaa-BBB
+                },
+
+            };
 
 
 
+            modelBuilder.Entity<Employee>().HasData(employeeSeed);
+            modelBuilder.Entity<Role>().HasData(roleSeed);
             modelBuilder.Entity<Client>().HasData(clientSeed);
             modelBuilder.Entity<Room>().HasData(roomSeed);
             modelBuilder.Entity<Equipment>().HasData(equipmentSeed);

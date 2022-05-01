@@ -64,7 +64,7 @@ namespace Hotel_PIS.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("ContractDueDae")
+                    b.Property<DateTime?>("ContractDueDae")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -91,6 +91,46 @@ namespace Hotel_PIS.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "manager@manager.cz",
+                            FirstName = "Petr",
+                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
+                            RoleId = 1,
+                            SecondName = "Novák"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContractDueDae = new DateTime(2022, 5, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "recepce@recepce.cz",
+                            FirstName = "Michal",
+                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
+                            RoleId = 2,
+                            SecondName = "Bloudný"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ContractDueDae = new DateTime(2022, 12, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "uklizecka@uklizecka.cz",
+                            FirstName = "Alena",
+                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
+                            RoleId = 4,
+                            SecondName = "Novotná"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "technik@technik.cz",
+                            FirstName = "Oto",
+                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
+                            RoleId = 3,
+                            SecondName = "Ladský"
+                        });
                 });
 
             modelBuilder.Entity("Hotel_PIS.DAL.Equipment", b =>
@@ -200,6 +240,28 @@ namespace Hotel_PIS.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NameOfRole = "Manager"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NameOfRole = "Reception"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NameOfRole = "Techncian"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NameOfRole = "Cleaner"
+                        });
                 });
 
             modelBuilder.Entity("Hotel_PIS.DAL.Room", b =>
@@ -338,15 +400,17 @@ namespace Hotel_PIS.DAL.Migrations
 
             modelBuilder.Entity("Hotel_PIS.DAL.Employee", b =>
                 {
-                    b.HasOne("Hotel_PIS.DAL.Role", null)
+                    b.HasOne("Hotel_PIS.DAL.Role", "Role")
                         .WithMany("EmployeesWithRole")
                         .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Hotel_PIS.DAL.Failure", b =>
                 {
                     b.HasOne("Hotel_PIS.DAL.Room", "Room")
-                        .WithMany()
+                        .WithMany("Failures")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -425,6 +489,8 @@ namespace Hotel_PIS.DAL.Migrations
 
             modelBuilder.Entity("Hotel_PIS.DAL.Room", b =>
                 {
+                    b.Navigation("Failures");
+
                     b.Navigation("RoomEquipments");
 
                     b.Navigation("RoomReservations");

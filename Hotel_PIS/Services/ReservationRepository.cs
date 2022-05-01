@@ -13,23 +13,6 @@ namespace Hotel_PIS.Services
     public class ReservationRepository : IReservationRepository
     {
         static object linksLock = new object();
-        public bool Delete(int id)
-        {
-            using (var db = new HotelContext())
-            {
-                try
-                {
-                    var reservation = db.Reservations.FirstOrDefault(x => x.Id == id);
-                    db.Entry(reservation).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         public Reservation Get(int id)
         {
@@ -120,7 +103,7 @@ namespace Hotel_PIS.Services
 
 
                 reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
-
+               
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
 
@@ -167,6 +150,7 @@ namespace Hotel_PIS.Services
             {
                     var tmp = db.RoomReservations.Where(x =>
                         roomIds.Contains(x.RoomId)
+                        && x.Reservation.ReservationState != ReservationStateEnum.Canceled
                         && x.DateFrom >= dateNow)
                             .Select(s => new FromToDateDto
                             {
@@ -177,21 +161,55 @@ namespace Hotel_PIS.Services
             }
         }
 
-        public List<Reservation> GetReservationsByEmail(string email)
+        public List<ReservationDto> GetReservationsByEmail(string email)
         {
             using (var db = new HotelContext())
             {
                     var tmp =db.RoomReservations.Where(x =>x.Reservation.Client.Email == email)
-                    .Select(s=>new Reservation
+                    .Select(s=>new ReservationDto
                     {
                         Cost = s.Reservation.Cost,
-                        Payed = s.Reservation.Payed,
+                        Paid = s.Reservation.Payed,
                         NumberOfPeople = s.Reservation.NumberOfPeople,
-                        ReservationState = s.Reservation.ReservationState
+                        ReservationState = s.Reservation.ReservationState,
+                        DateFrom = s.DateFrom,
+                        DateTo = s.DateTo,
+                        Email = email,
+                        FirstName = s.Reservation.Client.FirstName, //no reservation can exist without client
+                        SecondName = s.Reservation.Client.SecondName,
+                        PhoneNumber = s.Reservation.Client.PhoneNumber,
+                        ReservationId =s.ReservationId,
+                        RoomNumber = s.Room.RoomNumber, //no reservation withou room can exist in db
+                        
                     }).ToList();
                 return tmp;
 
                 }
+        }
+
+        public List<ReservationDto> GetInProgressReservations()
+        {
+            using (var db = new HotelContext())
+            {
+                var tmp = db.RoomReservations.Where(x => x.Reservation.ReservationState == ReservationStateEnum.Reserved || x.Reservation.ReservationState == ReservationStateEnum.Check_in)
+                .Select(s => new ReservationDto
+                {
+                    Cost = s.Reservation.Cost,
+                    Paid = s.Reservation.Payed,
+                    NumberOfPeople = s.Reservation.NumberOfPeople,
+                    ReservationState = s.Reservation.ReservationState,
+                    DateFrom = s.DateFrom,
+                    DateTo = s.DateTo,
+                    Email = s.Reservation.Client.Email,
+                    FirstName = s.Reservation.Client.FirstName, //no reservation can exist without client
+                    SecondName = s.Reservation.Client.SecondName,
+                    PhoneNumber = s.Reservation.Client.PhoneNumber,
+                    ReservationId = s.ReservationId,
+                    RoomNumber = s.Room.RoomNumber, //no reservation withou room can exist in db
+                    }).ToList();
+                return tmp;
+
+            }
         }
 
         public void CancelReservation(int id)
