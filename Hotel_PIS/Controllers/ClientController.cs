@@ -1,6 +1,7 @@
 ﻿using Hotel_PIS.DAL;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Hotel_PIS.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class ClientController : ControllerBase, IClientRepository
     {
         private readonly IClientRepository clientRepository;

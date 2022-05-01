@@ -2,7 +2,7 @@
     <div class="login">
         <el-card shadow="always">
             <template #header>
-                <div class="card-header">
+                <div class="card-head">
                     <h2>Přihlášení</h2>
                 </div>
             </template>
@@ -107,7 +107,7 @@
         flex-direction: column;
         justify-content: center;
     }
-    .card-header h2{
+    .card-head h2{
         text-align: center;
     }
     .button,
