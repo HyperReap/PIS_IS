@@ -16,7 +16,7 @@ PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
 **Stats - TODO!!**
 
-- pokoje s nejvice zavadami
+- list poctu zamestnancu dle role (recepcni: 4ks, technik: 1:ks, ...)
 
 - list zamestnancu, kterym konci smlouva do 3 mesicu
 
