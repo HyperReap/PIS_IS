@@ -14,12 +14,6 @@ FE 2/2
 
 PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
-**Stats - TODO!!**
-
-
-
-
-odmazat WeatherForecast files
 
 sepsat dokumentaci - doc.html
 

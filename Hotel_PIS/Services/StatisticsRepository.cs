@@ -17,8 +17,6 @@ namespace Hotel_PIS.Services
             {
                 var dbRooms = db.Rooms.Include(e => e.RoomReservations).ToList();
 
-                //TODO  rooms none wants
-
                 var busyRooms = dbRooms.Select(x => new {x.Id, x.RoomNumber, x.RoomReservations.Count }).ToList();
                 var mostBusy = busyRooms.OrderByDescending(x => x.Count);
 
