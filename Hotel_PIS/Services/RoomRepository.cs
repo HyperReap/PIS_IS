@@ -51,7 +51,7 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
-                var rooms = db.Rooms.Where(x => x.IsCleaned == false).ToList();
+                var rooms = db.Rooms.Where(x => !x.IsCleaned).ToList();
                 return rooms;
             }
         }
@@ -60,26 +60,45 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
-                var rooms = db.Rooms.Where(x => x.IsCleaned == false).ToList();
+                var rooms = db.Rooms.Where(x => x.IsCleaned).ToList();
                 return rooms;
             }
         }
 
-        public Room Save(int id, Room obj)
+        private bool AssignEquipmentsToRoom(int roomId, List<int> equipmentIds)
+        {
+            using (var db = new HotelContext())
+            {
+                foreach (var eqId in equipmentIds)
+                {
+                    db.RoomEquipments.Add(new RoomEquipment
+                    {
+                        RoomId = roomId,
+                        EquipmentId = eqId
+                    });
+                }
+
+                db.SaveChanges();
+            }
+            return true;
+        }
+
+
+        public Room Save(int id, Room obj,List<int> equipmentIds)
         {
             //throw new NotImplementedException();
-            Room savedClient;
-
+            Room savedRoom;
             if (id == 0) // Create
             {
-                savedClient = CreateNew(obj);
+                savedRoom = CreateNew(obj);
             }
             else
             {
-                savedClient = Update(obj);
+                savedRoom = Update(obj);
             }
 
-            return savedClient;
+            AssignEquipmentsToRoom(savedRoom.Id, equipmentIds);
+            return savedRoom;
         }
 
         public Room CreateNew(Room client)

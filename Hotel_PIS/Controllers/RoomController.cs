@@ -74,9 +74,9 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpPost]
-        public Room Save(int id, Room obj)
+        public Room Save(int id, [FromBody]Room obj, [FromQuery]List<int> equipmentIds)
         {
-            return roomRepository.Save(id, obj);
+            return roomRepository.Save(id, obj,equipmentIds);
         }
 
         [HttpGet]
