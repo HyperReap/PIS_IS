@@ -29,5 +29,10 @@ namespace Hotel_PIS.DAL.Dto
         public int NotWantedRoomNumber { get; set; }
         public int NotWantedRoomId { get; set; }
         public int NotWantedRoomCount { get; set; }
+        public int RoomWithMostFailuresCount { get; set; }
+        public int RoomWithMostFailuresNumber { get; set; }
+        public int RoomWithMostFailuresId { get; set; }
+        public List<Employee> EmployeesWithEndingContract { get; set; }
+        public int LongestStay { get; set; }
     }
 }

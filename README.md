@@ -16,11 +16,7 @@ PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
 **Stats - TODO!!**
 
-- pokoj s nejvice zavadami (roomNumber a count zavad)
 
-- list zamestnancu, kterym konci smlouva do 3 mesicu
-
-- nejdelsi pobyt
 
 
 odmazat WeatherForecast files
