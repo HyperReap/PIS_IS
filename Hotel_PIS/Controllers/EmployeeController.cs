@@ -1,5 +1,7 @@
 ﻿using Hotel_PIS.DAL;
+using Hotel_PIS.DAL.Dto;
 using Hotel_PIS.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,10 @@ namespace Hotel_PIS.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    //pro swagger zkouseni ve format: Bearer JWT
+    //e.g. Bearer BJFNEWQJKHFBKASBDFHJAVFJAHBFV.AJVJXGHVUASVBDFJHAQ
+    //[Authorize(Roles = "TODO, nameOfRole")]
+    [Authorize(Roles = "Manager")]
     public class EmployeeController : Controller, IEmployeeRepository
     {
         private readonly IEmployeeRepository employeeRepository;
@@ -38,6 +44,14 @@ namespace Hotel_PIS.Controllers
         public List<Employee> GetAll()
         {
             return employeeRepository.GetAll();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public UserDto Login(UserDto user)
+        {
+            return employeeRepository.Login(user);
+
         }
 
         [HttpPost]

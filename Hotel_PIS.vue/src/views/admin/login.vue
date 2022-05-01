@@ -31,7 +31,7 @@
         data() {
             return {
                 user: {
-                    username: null,
+                    email: null,
                     password: null
                 },
                 loading: false,
@@ -56,17 +56,36 @@
             };
         },
         created() {
-            console.log("TODO")
-            console.log("pokud uz je prihlasen, tak redirect nekam")
         },
         methods: {
             login() {
                 this.$refs.login.validate((result) => {
                     if (result) {
-                        console.log("TODO");
-                        console.log("udelat fetch na login a redirect")
-                        console.log("Vyhazovat el message - chyba, spatny user, prihlaseno")
-                        this.loading = true;
+                        this.loading = !this.loading;
+                        fetch('api/Employee/Login', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.user)
+                        })
+                        .then(r => r.json())
+                        .then(loggedUser => {
+                            if (loggedUser.hasOwnProperty('password')) {
+                                delete loggedUser.password;
+                            }
+                            ElMessage({ "message": "Uživatel přihlášen", "type": "success", "custom-class": "message-class" });
+                            this.$store.dispatch('setLoggedUser', loggedUser)
+                            this.loading = !this.loading;
+                            this.$router.push({ path: '/' });
+                            return
+                        })
+                        .catch(error => {
+                            ElMessage.error({ "message": "Přihlášení se nezdařilo!", "custom-class": "message-class", "grouping": true });
+                            this.loading = !this.loading;
+                            console.log(error);
+                        });
                     }
                 });
             }

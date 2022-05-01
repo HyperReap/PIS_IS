@@ -1,5 +1,5 @@
 <template>
-    <h1>TODO: page not found</h1>
+    <h1>Stránka nenalezena</h1>
 </template>
 
 <script>

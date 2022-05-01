@@ -46,22 +46,76 @@ namespace Hotel_PIS.Services
                 return rooms;
             }
         }
+        
+        public List<Room> GetAllUncleaned()
+        {
+            using (var db = new HotelContext())
+            {
+                var rooms = db.Rooms.Where(x => !x.IsCleaned).ToList();
+                return rooms;
+            }
+        }
+        
+        public List<Room> GetAllCleaned()
+        {
+            using (var db = new HotelContext())
+            {
+                var rooms = db.Rooms.Where(x => x.IsCleaned).ToList();
+                return rooms;
+            }
+        }
 
-        public Room Save(int id, Room obj)
+        private bool AssignEquipmentsToRoom(int roomId, List<int> equipmentIds)
+        {
+            using (var db = new HotelContext())
+            {
+                var dbEqs = db.RoomEquipments.Where(x => x.RoomId == roomId).ToList();
+
+                foreach (var eqId in equipmentIds)
+                {
+                    var eq = dbEqs.FirstOrDefault(x => x.EquipmentId == eqId);
+                    if (eq is null) //if not found in db, add to db
+                    {
+                        db.RoomEquipments.Add(new RoomEquipment
+                        {
+                            RoomId = roomId,
+                            EquipmentId = eqId
+                        });
+                    }
+                }
+
+                foreach (var eq in dbEqs)
+                {
+                    //if in db but not in eqs
+                    var isIn = equipmentIds.Any(x => x == eq.EquipmentId);
+                    if (!isIn)
+                        db.RoomEquipments.Remove(eq);
+
+                }
+
+
+
+                db.SaveChanges();
+            }
+            return true;
+        }
+
+
+        public Room Save(int id, Room obj,List<int> equipmentIds)
         {
             //throw new NotImplementedException();
-            Room savedClient;
-
+            Room savedRoom;
             if (id == 0) // Create
             {
-                savedClient = CreateNew(obj);
+                savedRoom = CreateNew(obj);
             }
             else
             {
-                savedClient = Update(obj);
+                savedRoom = Update(id,obj);
             }
 
-            return savedClient;
+            AssignEquipmentsToRoom(savedRoom.Id, equipmentIds);
+            return savedRoom;
         }
 
         public Room CreateNew(Room client)
@@ -140,17 +194,25 @@ namespace Hotel_PIS.Services
 
         }
 
-        public Room Update(Room room)
+        public Room Update(int id, Room room)
         {
             using (var db = new HotelContext())
             {
-                var dbRoom = db.Rooms.Where(x => x.Id == room.Id).FirstOrDefault();
+                var dbRoom = db.Rooms.Where(x => x.Id == id).FirstOrDefault();
                 if (dbRoom == null)
                     throw new Exception($"Room with id:'{room.Id}' was not found in database.");
 
                 if (dbRoom.Equals(room))
                     return room;
 
+                dbRoom.NumberOfBeds = room.NumberOfBeds;
+                dbRoom.NumberOfSideBeds = room.NumberOfSideBeds;
+                dbRoom.RoomNumber = room.RoomNumber;
+                dbRoom.CostPerNight = room.CostPerNight;
+                dbRoom.Floor = room.Floor;
+                dbRoom.IsCleaned = room.IsCleaned;
+                dbRoom.Picture = room.Picture;
+                dbRoom.RoomSize = room.RoomSize;
 
                 db.SaveChanges();
 
@@ -172,6 +234,33 @@ namespace Hotel_PIS.Services
             {
                 var equipments = db.RoomEquipments.Where(x=>x.RoomId==roomId).Select(s=>s.Equipment).ToList();
                 return equipments;
+            }
+        }
+        public bool MarkAsCleaned(int roomId)
+        {
+            using (var db = new HotelContext())
+            {
+                var room = db.Rooms.Where(x => x.Id == roomId).FirstOrDefault();
+                if (room == null)
+                    throw new Exception($"Room with id:'{roomId}' was not found in database.");
+                room.IsCleaned = true;
+
+                db.SaveChanges();
+                return true;
+            }
+        }
+        
+        public bool MarkAsUncleaned(int roomId)
+        {
+            using (var db = new HotelContext())
+            {
+                var room = db.Rooms.Where(x => x.Id == roomId).FirstOrDefault();
+                if (room == null)
+                    throw new Exception($"Room with id:'{roomId}' was not found in database.");
+                room.IsCleaned = false;
+
+                db.SaveChanges();
+                return true;
             }
         }
     }

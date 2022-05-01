@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Hotel_PIS.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Hotel_PIS.DAL.Dto;
 
 namespace Hotel_PIS.Services
 {
@@ -28,86 +30,109 @@ namespace Hotel_PIS.Services
             return true;
         }
 
-        public Failure Save(int id, Failure obj)
+        public FailureDto Save(Failure obj)
         {
             Failure savedFailure;
-
-            if (id == 0) // Create
-            {
-                savedFailure = CreateNewFailure(obj);
-            }
-            else
-            {
-                savedFailure = UpdateFailure(obj);
-            }
-
-            return savedFailure;
-        }
-        private Failure CreateNewFailure(Failure failure)
-        {
             using (var db = new HotelContext())
             {
-                db.Failures.Add(failure);
-                db.SaveChanges();
+                if (obj.Id == 0) // Create
+                {
+                    savedFailure = CreateNewFailure(obj,db);
+                }
+                else
+                {
+                    savedFailure = UpdateFailure(obj, db);
+                }
+                //jenom kvuli cislu Pokoje.. nechce se mi vic premyslet
+                savedFailure = db.Failures.Where(x => x.Id == obj.Id).Include(e => e.Room).First(); 
+            }
 
+            return new FailureDto
+            {
+                Id = savedFailure.Id,
+                Description = savedFailure.Description,
+                IsSolved = savedFailure.IsSolved,
+                RoomId = savedFailure.RoomId,
+                RoomNumber = savedFailure.Room.RoomNumber
+            };
+        }
+        private Failure CreateNewFailure(Failure failure, HotelContext db)
+        {
+            db.Failures.Add(failure);
+            db.SaveChanges();
+
+            return failure;
+        }
+
+        private Failure UpdateFailure(Failure failure, HotelContext db)
+        {
+            var dbFailure = db.Failures.Where(x => x.Id == failure.Id).FirstOrDefault();
+            if (dbFailure == null)
+                throw new Exception($"Failure with id:'{failure.Id}' was not found in database.");
+
+            if (dbFailure.Equals(failure))
                 return failure;
-            }
+
+            dbFailure.Description = failure.Description;
+            db.Failures.Update(dbFailure);
+
+            db.SaveChanges();
+
+            return dbFailure;
         }
 
-        private Failure UpdateFailure(Failure failure)
+        public bool Solve(int failureId)
         {
             using (var db = new HotelContext())
             {
-                var dbFailure = db.Failures.Where(x => x.Id == failure.Id).FirstOrDefault();
+                var dbFailure = db.Failures.Where(x => x.Id == failureId).FirstOrDefault();
                 if (dbFailure == null)
-                    throw new Exception($"Failure with id:'{failure.Id}' was not found in database.");
-
-                if (dbFailure.Equals(failure))
-                    return failure;
-
-                dbFailure.Description = failure.Description;
-                db.Failures.Update(dbFailure);
-
-                db.SaveChanges();
-
-                return dbFailure;
-            }
-        }
-        public bool Solve(int id)
-        {
-            using (var db = new HotelContext())
-            {
-                var dbFailure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
-                if (dbFailure == null)
-                    throw new Exception($"Failure with id:'{id}' was not found in database.");
+                    throw new Exception($"Failure with id:'{failureId}' was not found in database.");
                 
                 dbFailure.IsSolved = true;
-                db.Failures.Update(dbFailure);
-
                 db.SaveChanges();
                 
                 return true;
             }
         }
         
-        public Failure Get(int id)
+        public FailureDto Get(int id)
         {
             using (var db = new HotelContext())
             {
-                var failure = db.Failures.Where(x => x.Id == id).FirstOrDefault();
+                var failure = db.Failures.Where(x => x.Id == id)
+                    .Include(e => e.Room).FirstOrDefault();
                 if (failure == null)
                     throw new Exception($"Failure with id:'{id}' was not found in database.");
 
-                return failure;
+                return  new FailureDto
+                {
+                    Id = failure.Id,
+                    Description = failure.Description,
+                    IsSolved = failure.IsSolved,
+                    RoomId = failure.RoomId,
+                    RoomNumber = failure.Room.RoomNumber
+                };
             }
 
         }
 
-        public List<Failure> GetAll()
+        public List<FailureDto> GetAll()
         {
             using (var db = new HotelContext())
             {
-                return db.Failures.ToList();
+                    var res = db.Failures
+                    .Where(x=>!x.IsSolved)
+                    .Include(e=>e.Room).ToList();
+
+                return res.Select(s=>new FailureDto
+                {
+                    Id = s.Id,
+                    Description = s.Description,
+                    IsSolved = s.IsSolved,
+                    RoomId = s.RoomId,
+                    RoomNumber = s.Room.RoomNumber
+                }).ToList();
             }
         }
     }

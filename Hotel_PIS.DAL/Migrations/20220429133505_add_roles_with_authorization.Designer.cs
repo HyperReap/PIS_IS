@@ -3,6 +3,7 @@ using System;
 using Hotel_PIS.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel_PIS.DAL.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    partial class HotelContextModelSnapshot : ModelSnapshot
+    [Migration("20220429133505_add_roles_with_authorization")]
+    partial class add_roles_with_authorization
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
@@ -91,46 +93,6 @@ namespace Hotel_PIS.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "manager@manager.cz",
-                            FirstName = "Petr",
-                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
-                            RoleId = 1,
-                            SecondName = "Novák"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ContractDueDae = new DateTime(2022, 5, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "recepce@recepce.cz",
-                            FirstName = "Michal",
-                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
-                            RoleId = 2,
-                            SecondName = "Bloudný"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ContractDueDae = new DateTime(2022, 12, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "uklizecka@uklizecka.cz",
-                            FirstName = "Alena",
-                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
-                            RoleId = 4,
-                            SecondName = "Novotná"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "technik@technik.cz",
-                            FirstName = "Oto",
-                            Password = "$2a$11$qahanh6DohzXdzZxzRuYAe.Bf01JgZTqXPgDI/OfZfLSIueZI3LIW",
-                            RoleId = 3,
-                            SecondName = "Ladský"
-                        });
                 });
 
             modelBuilder.Entity("Hotel_PIS.DAL.Equipment", b =>

@@ -11,8 +11,9 @@ export default createStore({
           email: null,
           firstName: null,
           secondName: null,
+          roleId: 0,
           role: null,
-          token: null
+          jwt: null
       }
   },
   mutations: {
@@ -47,6 +48,17 @@ export default createStore({
       },
       setLoggedUser(context, user) {
           context.commit('setLoggedUser', user)
+      },
+      logout(context) {
+          let defaultUser = {
+              email: null,
+              firstName: null,
+              secondName: null,
+              roleId: 0,
+              role: null,
+              jwt: null
+          }
+          context.commit('setLoggedUser', defaultUser)
       }
   },
   getters: {
@@ -63,13 +75,13 @@ export default createStore({
           return state.loggedUser
       },
       isAuthenticated: state => {
-          return !!state.loggedUser.email
+          return !!state.loggedUser.email && !!state.loggedUser.jwt
       },
       getLoggedUserToken: state => {
-          return state.loggedUser.token
+          return state.loggedUser.jwt
       },
       getLoggedUserRole: state => {
-          return state.loggedUser.role
+          return state.loggedUser.roleId
       }
   }
 })

@@ -1,4 +1,6 @@
-﻿namespace Hotel_PIS.DAL
+﻿using System.Text.Json.Serialization;
+
+namespace Hotel_PIS.DAL
 {
     public class Role : BaseModel
     {
@@ -6,6 +8,7 @@
         {
         }
         public string NameOfRole { get; set; }
-        public ICollection<Employee> EmployeesWithRole { get; set; }
+        [JsonIgnore]
+        public ICollection<Employee>? EmployeesWithRole { get; set; }
     }
 }
