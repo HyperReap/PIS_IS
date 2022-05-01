@@ -30,7 +30,7 @@ const routes = [
     component: RoomsManagement,
     meta: {
         showInMenu: true,
-        acceptedUserRoles: [0, 1]
+        acceptedUserRoles: [1]
     }
   },
   {
@@ -48,7 +48,7 @@ const routes = [
     component: StatsManagement,
     meta: {
         showInMenu: true,
-        acceptedUserRoles: [0, 1]
+        acceptedUserRoles: [1]
     }
   },
   {
@@ -57,7 +57,7 @@ const routes = [
     component: Rooms,
     meta: {
         showInMenu: true,
-        acceptedUserRoles: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2]
     }
   },
   {
@@ -67,7 +67,7 @@ const routes = [
     meta: {
         showInMenu: false,
         parentHighlight: '/rezervace',
-        acceptedUserRoles: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2]
     }
   },
   {
@@ -77,7 +77,7 @@ const routes = [
     meta: {
         showInMenu: false,
         parentHighlight: '/rezervace',
-        acceptedUserRoles: [0, 1, 2, 3, 4]
+        acceptedUserRoles: [0, 1, 2]
     }
   },
   {
@@ -98,15 +98,15 @@ const routes = [
         acceptedUserRoles: [1, 2, 3, 4]
     }
   },
-    {
-        path: '/uklizeni',
-        name: 'Uklízení',
-        component: UncleanedRooms,
-        meta: {
-            showInMenu: true,
-            acceptedUserRoles: [1, 2, 3, 4]
-        }
-    },
+  {
+    path: '/uklizeni',
+    name: 'Uklízení',
+    component: UncleanedRooms,
+    meta: {
+        showInMenu: true,
+        acceptedUserRoles: [1, 2, 3, 4]
+    }
+  },
   {
     path: '/login',
     name: 'Přihlášení',
