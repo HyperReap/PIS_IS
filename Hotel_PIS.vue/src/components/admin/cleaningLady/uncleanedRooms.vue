@@ -44,7 +44,14 @@ export default {
     loadUncleanedRooms() {
       this.uncleanedRoom = [];
       this.$root.loading = !this.$root.loading
-      fetch('api/Room/GetAllUncleaned')
+      fetch('api/Room/GetAllUncleaned', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
+        },
+      })
           .then(r => r.json())
           .then(json => {
             this.uncleanedRooms = json;
@@ -63,7 +70,14 @@ export default {
     },
     loadCleanedRooms() {
       this.$root.loading = !this.$root.loading
-      fetch('api/Room/GetAllCleaned')
+      fetch('api/Room/GetAllCleaned', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
+        },
+      })
           .then(r => r.json())
           .then(json => {
             this.cleanedRooms = json;
@@ -86,7 +100,8 @@ export default {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
           },
         })
         .then(r => {
@@ -120,7 +135,8 @@ export default {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
           },
         })
         .then(r => {
@@ -154,7 +170,8 @@ export default {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
           },
         })
         .then(r => r.json())
