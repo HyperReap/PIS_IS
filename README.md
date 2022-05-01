@@ -14,10 +14,7 @@ FE 2/2
 
 PRI CHECKIN musi Reception zadat cislo obcanky zakaznika
 
-**Stats navrhy**
-- vytizeni pokoju v sooucasnem mesici
-
-- nejvytizenejsi mesice
+**Stats - TODO!!**
 
 - pokoje s nejvice zavadami
 
