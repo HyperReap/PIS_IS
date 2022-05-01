@@ -101,9 +101,8 @@
         }
     };
 </script>
-
+<style scoped src="../../assets/bootstrap.min.css"></style>
 <style scoped>
-    @import '../../assets/bootstrap.min.css';
     .thead {
         color: #fff;
         border-color: #409eff;

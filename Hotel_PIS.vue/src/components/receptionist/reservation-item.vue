@@ -207,12 +207,11 @@
         }
     };
 </script>
-
+<style scoped src="../../assets/bootstrap.min.css"></style>
 <style scoped>
     .drawer-min-width {
         min-width: 320px;
     }
-    @import '../../assets/bootstrap.min.css';
 
     .button-width {
         width: 140px;
