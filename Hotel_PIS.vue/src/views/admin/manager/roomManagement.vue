@@ -261,6 +261,14 @@
         width: 100%;
         flex-basis: 100%;
     }
+    .new-room-form >>> input::-webkit-outer-spin-button,
+    .new-room-form >>> input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .new-room-form >>> input[type=number] {
+        -moz-appearance: textfield;
+    }
 
     @media screen and (max-width: 992px) {
         .rooms {

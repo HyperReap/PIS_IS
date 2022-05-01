@@ -88,7 +88,6 @@
                 .then(r => r.json())
                 .then(json => {
                     this.rooms = json;
-                    console.log(json)
                     this.$root.loading = !this.$root.loading
                     return
                 })

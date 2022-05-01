@@ -40,7 +40,7 @@
                 <h3>Nejbližší konce smluv</h3>
                 <div class="employee" v-for="(employee, index) in employees" :key="index">
                     <p>{{employee.firstName}} {{employee.secondName}}</p>
-                    <p>{{employee.contractDueDae}}</p>
+                    <p>{{contractTo(employee.contractDueDae)}}</p>
                 </div>
             </div>
         </el-col>
@@ -56,40 +56,9 @@
         },
         data() {
             return {
-                employees: [
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    },
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    },
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    },
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    },
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    },
-                    {
-                        firstName: "Petr",
-                        secondName: "Novák",
-                        contractDueDae: "1. 1. 2022"
-                    }
-                ],
+                employees: [],
                 stayLenght: {
-                    max: 14,
+                    max: 10,
                     avarage: 0
                 },
                 mostLoyalClient: null,
@@ -102,16 +71,24 @@
                     count: null
                 },
                 mostFailuresRoom: {
-                    roomNumber: 2222,
-                    count: 3
+                    roomNumber: null,
+                    count: null
                 }
             };
         },
         created() {
             this.loadStats();
-            setTimeout(() => this.stayLenght.avarage = 5, 200);
         },
         methods: {
+            contractTo(date) {
+                if (date === null) {
+                    return "neomezeně"
+                }
+                else {
+                    date = new Date(date);
+                    return date.getDate() + '. ' + (date.getMonth() + 1) + '. ' + date.getFullYear();
+                }
+            },
             loadStats() {
                 fetch('api/Statistics/GetStatistics', {
                     method: 'GET',
@@ -123,15 +100,16 @@
                 })
                 .then(r => r.json())
                 .then(stats => {
-                    //TODO stayLength.max!!!
+                    this.stayLenght.max = stats.longestStay;
                     setTimeout(() => this.stayLenght.avarage = stats.averageStay, 200);
                     this.mostLoyalClient = stats.mostLoyalClient;
                     this.mostBusyRoom.roomNumber = stats.mostBusyRoomNumber;
                     this.mostBusyRoom.count = stats.mostBusyRoomCount
                     this.leastBusyRoom.roomNumber = stats.notWantedRoomNumber;
                     this.leastBusyRoom.count = stats.notWantedRoomCount;
-                    //TODO: mostfailureRoom
-                    //TODO: employees
+                    this.mostFailuresRoom.roomNumber = stats.roomWithMostFailuresNumber;
+                    this.mostFailuresRoom.count = stats.roomWithMostFailuresCount;
+                    this.employees = stats.employeesWithEndingContract;
                     ElMessage({ "message": "Statistiky načteny", "type": "success", "custom-class": "message-class" });
                 })
                 .catch(error => {

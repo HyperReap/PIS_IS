@@ -169,6 +169,17 @@
         width: 47.5%;
         flex-basis: 47.5%;
     }
+    .new-room-form >>> .el-input-number .el-input__inner{
+        text-align: left;
+    }
+    .new-room-form >>> input::-webkit-outer-spin-button,
+    .new-room-form >>> input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .new-room-form >>> input[type=number] {
+        -moz-appearance: textfield;
+    }
     @media screen and (max-width: 992px) {
         .new-room-form >>> .el-form-item {
             width: 100%;
