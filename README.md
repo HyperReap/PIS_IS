@@ -32,9 +32,10 @@ kazdy nove pouzity nuget package napsat do README
 
 
 ## STEZEJNI BODY:
- autorizace
 
- Sprava zamestnancu
+ Sprava zamestnancu (chybi jen update)
+ 
+ Sprava pokoju (chybi jen update)
 
 ## ZAPOMENUTO:
 Spraviť migráciu pre userov
