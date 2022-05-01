@@ -57,7 +57,14 @@
                 this.loadRoomNumbers();
             },
             loadRoomNumbers() {
-                fetch('api/Room/GetAll')
+                fetch('api/Room/GetAll', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
+                    },
+                })
                 .then(r => r.json())
                 .then(json  => {
                     this.rooms = json;
@@ -75,7 +82,8 @@
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                             },
                             body: JSON.stringify(this.failure)
                         })

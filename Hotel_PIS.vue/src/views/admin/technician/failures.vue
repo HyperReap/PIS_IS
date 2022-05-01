@@ -49,7 +49,14 @@
             loadFailures() {
                 this.failures = [];
                 this.$root.loading = !this.$root.loading
-                fetch('api/Failure/GetAll')
+                fetch('api/Failure/GetAll', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
+                    },
+                })
                 .then(r => r.json())
                 .then(json => {
                     this.failures = json;
@@ -74,7 +81,8 @@
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
                     },
                 })
                 .then(r => {
