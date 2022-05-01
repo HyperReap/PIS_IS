@@ -11,48 +11,64 @@
 </head>
 <body>
 
-<!-- Nahraďte prosím názvem tématu -->
-<h1>HOTEL</h1>
+    <!-- Nahraďte prosím názvem tématu -->
+    <h1>HOTEL</h1>
 
-<!-- Editujte jména a maily autorů a jejich činnost -->
-<dl>
-	<dt>Autoři</dt>
-	<dd>Petr Urbánek
-	    <a href="mailto:xurban70@stud.fit.vutbr.cz">xurban70@stud.fit.vutbr.cz</a> -
-		backend(base architecture), Database(Migrations, draft, seeds), Template for controllers, funny fixing of endpoints, init of projects, init of github
-	</dd>
-	<dd>Robert Havránek
-        <a href="mailto:xhavra14@stud.fit.vutbr.cz">xhavra14@stud.fit.vutbr.cz</a> - 
-        backend(controllers), frontend(reservations managment)
-    </dd>
-    <dd>Martin Krajči
-        <a href="mailto:xkrajc21@stud.fit.vutbr.cz">xkrajc21@stud.fit.vutbr.cz</a> - 
-        backend: failure controller, frontend: technician and cleaning lady view
-    </dd>
-    <dd>Ondřej Studnička
-        <a href="mailto:xstudn00@stud.fit.vutbr.cz">xstudn00@stud.fit.vutbr.cz</a> - 
-        rest of views, management
-    </dd>
-    <dd>Ján Jakub Kubík
-        <a href="mailto:xkubik32@stud.fit.vutbr.cz">xkubik32@stud.fit.vutbr.cz</a> - 
-        základy autorizace
-    </dd>
-</dl>
+    <!-- Editujte jména a maily autorů a jejich činnost -->
+    <dl>
+        <dt>Autoři</dt>
+        <dd>
+            Petr Urbánek
+            <a href="mailto:xurban70@stud.fit.vutbr.cz">xurban70@stud.fit.vutbr.cz</a> -
+            backend(base architecture), Database(Migrations, draft, seeds), Template for controllers, funny fixing of endpoints, init of projects, init of github
+        </dd>
+        <dd>
+            Robert Havránek
+            <a href="mailto:xhavra14@stud.fit.vutbr.cz">xhavra14@stud.fit.vutbr.cz</a> -
+            backend(controllers), frontend(reservations managment)
+        </dd>
+        <dd>
+            Martin Krajči
+            <a href="mailto:xkrajc21@stud.fit.vutbr.cz">xkrajc21@stud.fit.vutbr.cz</a> -
+            backend: failure controller, frontend: technician and cleaning lady view
+        </dd>
+        <dd>
+            Ondřej Studnička - Společně s WAP
+            <a href="mailto:xstudn00@stud.fit.vutbr.cz">xstudn00@stud.fit.vutbr.cz</a> -
+            rest of views, management
+        </dd>
+        <dd>
+            Ján Jakub Kubík
+            <a href="mailto:xkubik32@stud.fit.vutbr.cz">xkubik32@stud.fit.vutbr.cz</a> -
+            základy autorizace
+        </dd>
+    </dl>
 
-<!-- uživatelské účty -->
-<h2>Uživatelé systému pro testování</h2>
-<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
-<table>
-<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
-<tr><td>manager@manager.cz</td><td>123-aaa-BBB</td><td>manager</td></tr>
-<tr><td>recepce@recepce.cz</td><td>123-aaa-BBB</td><td>recepci</td></tr>
-<tr><td>technik@technik.cz</td><td>123-aaa-BBB</td><td>technik</td></tr>
-<tr><td>uklizečka@uklizečka.cz</td><td>123-aaa-BBB</td><td>uklizečka</td></tr>
-<tr><td>-</td><td>-</td><td>zakazník</td></tr>
-</table>
+    <!-- uživatelské účty -->
+    <h2>Uživatelé systému pro testování</h2>
+    <p>URL pro přihlášení: /login např. https://localhost:5002/login</p>
+    <table>
+        <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+        <tr><td>manager@manager.cz</td><td>123-aaa-BBB</td><td>manager</td></tr>
+        <tr><td>recepce@recepce.cz</td><td>123-aaa-BBB</td><td>recepci</td></tr>
+        <tr><td>technik@technik.cz</td><td>123-aaa-BBB</td><td>technik</td></tr>
+        <tr><td>uklizečka@uklizečka.cz</td><td>123-aaa-BBB</td><td>uklizečka</td></tr>
+        <tr><td>-</td><td>-</td><td>zakazník</td></tr>
+    </table>
 
-<h2>Postup instalace</h2>
-<p>Např. vyžadované prostředky na serveru, datové zdroje, inicializace databáze, apod. Stačí v několika stručných bodech.</p>
+    <h2>Postup instalace</h2>
+    <h3>On Server :</h3>
+    <p>.NET 6.0, EntityFrameworkCore 6.0.3, BCrypt.Net-Next 4.0.3</p>
+    <p>Pro inicializaci databáze: dotnet ef database update</p>
+    <h3>On CLient:</h3>
+    <p>vue.js 3.0, vue-cli 5.0</p>
+    <p>Pro načtení všech dependencies: npm install</p>
+
+    <h2>Spuštění</h2>
+    <h3>Server</h3>
+    <p>Ke spuštění RestApi: dotnet run --project "CestaKAPI"\Hotel_PIS\Hotel_PIS.csproj</p>
+    <h3>Client</h3>
+    <p>Ke spuštění klienta: npm run serve</p>
 
 </body>
 </html>
