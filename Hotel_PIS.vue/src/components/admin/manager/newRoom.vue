@@ -20,6 +20,11 @@
             <el-form-item prop="costPerNight">
                 <el-input type="number" :min="1" placeholder="Cena za noc" v-model.number="room.costPerNight"></el-input>
             </el-form-item>
+            <el-form-item prop="equipments">
+                <el-select v-model="room.equipments" multiple collapse-tags placeholder="Vybavení">
+                    <el-option v-for="item in equipments" :key="item.id" :label="item.label" :value="item.id" value-key="item.id" />
+                </el-select>
+            </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
@@ -38,8 +43,10 @@
         },
         data() {
             return {
+                equipments: [],
                 dialogVisible: false,
                 room: {
+                    equipments: [],
                     numberOfBeds: null,
                     numberOfSideBeds: null,
                     roomSize: null,
@@ -104,18 +111,42 @@
                         min: 1,
                         autocomplete: "off"
                     },
+                    equipments: {
+                        required: false,
+                    }
                 }
             };
-        }, 
+        },
+        created() {
+            this.loadAllEquipment();
+        },
         methods: {
             openDialog() {
                 this.dialogVisible = !this.dialogVisible;
             },
+            loadAllEquipment() {
+                fetch('api/Room/GetEquipments')
+                .then(r => r.json())
+                .then(json => {
+                    let self = this;
+                    Object.keys(json).forEach(function (key) {
+                        self.equipments.push({ "label": json[key].name, "id": json[key].id });
+                    });
+                    return;
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se vybavení do filtrů!", "custom-class": "message-class" });
+                    console.log(error);
+                });
+            },
             add() {
                 this.$refs.room.validate((result) => {
-                    console.log(result)
                     if (result) {
-                        fetch('api/Room/Save', {
+                        let params = "?";
+                        this.room.equipments.forEach(function (equipment, index) {
+                            params += "&equipmentIds=" + equipment;
+                        });
+                        fetch('api/Room/Save' + params, {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
@@ -149,15 +180,9 @@
     }
 </script>
 <style scoped>
-    .new-room-form >>> .date-picker,
-    .new-room-form >>> .role-select
+    .new-room-form >>> .el-select
     {
         width: 100% !important;
-    }
-    .new-room-form >>> .date-picker input,
-    .new-room-form >>> .password input
-    {
-        padding-left: 30px!important;
     }
     .new-room-form {
         display: flex;

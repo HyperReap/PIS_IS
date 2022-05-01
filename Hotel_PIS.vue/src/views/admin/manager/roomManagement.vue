@@ -12,7 +12,7 @@
     </el-row>
     <el-dialog v-model="dialogVisible" custom-class="new-room-dialog">
         <h3>Upravit pokoj</h3>
-        <el-form :model="currentRoom" :rules="rules" ref="update-room" class="new-room-form">
+        <el-form :model="currentRoom" :rules="rules" ref="update" class="new-room-form">
             <el-form-item prop="roomNumber" label="Číslo pokoje">
                 <el-input type="number" :min="1" placeholder="Číslo pokoje" v-model.number="currentRoom.roomNumber"></el-input>
             </el-form-item>
@@ -31,10 +31,16 @@
             <el-form-item prop="costPerNight" label="Cena za noc">
                 <el-input type="number" :min="1" placeholder="Cena za noc" v-model.number="currentRoom.costPerNight"></el-input>
             </el-form-item>
+            <el-form-item prop="equipments" label="Vybavení">
+                <el-select v-model="currentRoom.equipments" multiple collapse-tags placeholder="Vybavení">
+                    <el-option v-for="item in equipments" :key="item.id" :label="item.label" :value="item.id" value-key="item.id" />
+                </el-select>
+            </el-form-item>
         </el-form>
+        {{currentRoom}}
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary">Aktualizovat</el-button>
+                <el-button type="primary" @click="updateRoom(currentRoom.id)">Aktualizovat</el-button>
                 <el-button type="danger" @click="deleteRoom(currentRoom.id)">Odstranit</el-button>
             </span>
         </template>
@@ -50,8 +56,10 @@
         },
         data() {
             return {
+                equipments: [],
                 rooms: [],
                 currentRoom: {
+                    equipments: [],
                     numberOfBeds: null,
                     numberOfSideBeds: null,
                     roomSize: null,
@@ -116,14 +124,33 @@
                         min: 1,
                         autocomplete: "off"
                     },
+                    equipments: {
+                        required: false,
+                    }
                 },
                 dialogVisible: false
             };
         },
         created() {
             this.loadRooms();
+            this.loadAllEquipment();
         },
         methods: {
+            loadAllEquipment() {
+                fetch('api/Room/GetEquipments')
+                    .then(r => r.json())
+                    .then(json => {
+                        let self = this;
+                        Object.keys(json).forEach(function (key) {
+                            self.equipments.push({ "label": json[key].name, "id": json[key].id });
+                        });
+                        return;
+                    })
+                    .catch(error => {
+                        ElMessage.error({ "message": "Nepodařilo se vybavení do filtrů!", "custom-class": "message-class" });
+                        console.log(error);
+                    });
+            },
             loadRooms() {
                 this.rooms = [];
                 this.$root.loading = !this.$root.loading
@@ -146,12 +173,66 @@
                     console.log(error);
                 });
             },
+            loadRoomEquipment(id) {
+                fetch('api/Room/GetEquipmentsOfRoom?roomId=' + id)
+                .then(r => r.json())
+                .then(json => {
+                    this.currentRoom.equipments = []
+                    let self = this;
+                    Object.keys(json).forEach(function (key) {
+                        self.currentRoom.equipments.push(json[key].id);
+                    });
+                    return;
+                })
+                .catch(error => {
+                    ElMessage.error({ "message": "Nepodařilo se načíst vybavení do pokoje!", "custom-class": "message-class", "grouping": true });
+                    console.log(error);
+                });
+            },
             openRoomDialog(room) {
+                this.loadRoomEquipment(room.id)
                 this.currentRoom = room;
                 this.dialogVisible = true;
             },
             newRoom(room) {
                 this.rooms.push(room);
+            },
+            updateRoom(id) {
+                this.$refs.update.validate((result) => {
+                    if (result) {
+                        let params = "?id=" + id;
+                        this.currentRoom.equipments.forEach(function (equipment, index) {
+                            params += "&equipmentIds=" + equipment;
+                        });
+                        fetch('api/Room/Save' + params, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken
+                            },
+                            body: JSON.stringify(this.currentRoom)
+                        })
+                        .then(r => r.json())
+                        .then(json => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage({ "message": "Pokoj upraven", "type": "success", "custom-class": "message-class", "grouping": true });
+                            if ("id" in json && "roomNumber" in json && "numberOfBeds" in json) {
+                                let index = this.rooms.findIndex(room => { return room.id === id; });
+                                this.rooms[index] = json;
+                            }
+                            else {
+                                ElMessage({ "message": "Aktualizujte stránku pro nová data", "type": "success", "custom-class": "message-class", "grouping": true });
+                            }
+                            return
+                        })
+                        .catch(error => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage.error({ "message": "Nepodařilo se upravit pokoj!", "custom-class": "message-class", "grouping": true });
+                            console.log(error);
+                        });
+                    }
+                });
             },
             deleteRoom(id) {
                 this.dialogVisible = false;
@@ -234,13 +315,9 @@
         align-items: flex-start;
     }
 
-    .new-room-form >>> .date-picker,
-    .new-room-form >>> .role-select {
+    .new-room-form >>> .el-select
+    {
         width: 100% !important;
-    }
-
-    .new-room-form >>> .date-picker input {
-        padding-left: 30px !important;
     }
 
     .new-room-form {

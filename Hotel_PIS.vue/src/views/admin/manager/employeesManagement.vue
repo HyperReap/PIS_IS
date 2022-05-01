@@ -16,14 +16,14 @@
     </el-row>
     <el-dialog v-model="dialogVisible" custom-class="new-employee-dialog">
         <h3>Upravit údaje</h3>
-        <el-form :model="currentEmployee" :rules="rules" ref="update-employee" class="new-employee-form">
+        <el-form :model="currentEmployee" :rules="rules" ref="update" class="new-employee-form">
             <el-form-item prop="firstName">
                 <el-input type="text" placeholder="Jméno" v-model="currentEmployee.firstName"></el-input>
             </el-form-item>
             <el-form-item prop="secondName">
                 <el-input type="text" placeholder="Příjmení" v-model="currentEmployee.secondName"></el-input>
             </el-form-item>
-            <el-form-item prop="dateFrom">
+            <el-form-item prop="dateFrom" v-if="currentEmployee.roleId != 1">
                 <el-date-picker v-model="currentEmployee.contractDueDae" type="date" placeholder="Smlouva do" popper-class="date-dropdown"
                                 class="date-picker" :disabled-date="disabledDateFrom" format="DD. MM. YYYY" value-format="YYYY-MM-DD" />
             </el-form-item>
@@ -36,7 +36,7 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary">Aktualizovat</el-button>
+                <el-button type="primary" @click="updateEmployee(currentEmployee.id)">Aktualizovat</el-button>
                 <el-button type="danger" v-if="currentEmployee.roleId != 1" @click="deleteEmployee(currentEmployee.id)">Odstranit</el-button>
             </span>
         </template>
@@ -185,31 +185,40 @@
                     ElMessage.error({ "message": "Nepodařilo se odstranit zaměstnance!", "custom-class": "message-class", "grouping": true });
                     console.log(error);
                 });
-            }
-            /*updateEmployee(id) {
-                this.dialogVisible = false;
-                fetch('api/Failure/Solve?failureId=' + id, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                })
-                .then(r => {
-                    if (r.status === 200) {
-                        ElMessage({ "message": "Vyřešeno!", "type": "success", "custom-class": "message-class" });
-                        this.failures = this.failures.filter(function (failure) { return failure.id !== id; });
+            },
+            updateEmployee(id) {
+                this.$refs.update.validate((result) => {
+                    if (result) {
+                        fetch('api/Employee/Save?id=' + id, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + this.$store.getters.getLoggedUserToken,
+                            },
+                            body: JSON.stringify(this.currentEmployee)
+                        })
+                        .then(r => r.json())
+                        .then(json => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage({ "message": "Zaměstnanec aktualizován", "type": "success", "custom-class": "message-class", "grouping": true });
+                            if ("id" in json && "firstName" in json && "secondName" in json) {
+                                let index = this.employees.findIndex(employee => { return employee.id === id; });
+                                this.employees[index] = json;
+                            }
+                            else {
+                                ElMessage({ "message": "Aktualizujte stránku pro nová data", "type": "success", "custom-class": "message-class", "grouping": true });
+                            }
+                            return
+                        })
+                        .catch(error => {
+                            this.dialogVisible = !this.dialogVisible;
+                            ElMessage.error({ "message": "Nepodařilo se aktualizovat zaměstnance!", "custom-class": "message-class", "grouping": true });
+                            console.log(error);
+                        });
                     }
-                    else {
-                        ElMessage.error({ "message": "Nepodařilo se označit jako vyřešeno!", "custom-class": "message-class", "grouping": true });
-                    }
-                    return;
-                })
-                .catch(error => {
-                    ElMessage.error({ "message": "Nepodařilo se označit jako vyřešeno!", "custom-class": "message-class", "grouping": true });
-                    console.log(error);
                 });
-            },*/
+            },
         }
     }
 </script>
