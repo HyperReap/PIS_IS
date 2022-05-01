@@ -1,9 +1,3 @@
-## TODO-LIST
-
-sepsat dokumentaci - doc.html (zbyva instalace)
-
-zkusit rozjet odevzdane veci
-
 
 ## Project for Advanced information Systems.
 
@@ -21,6 +15,7 @@ Hotel_PIS		- WEB API
 
 Hotel_PIS.vue	- Frontend of application
 
-https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-vue?view=vs-2022
+# Authors: 
+Petr Urbánek (HyperReap/xurban70)
+Ondra Studnička (xstudn00)
 
-Authors: Petr Urbánek (HyperReap/xurban70)
