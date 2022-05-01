@@ -35,17 +35,18 @@ kazdy nove pouzity nuget package napsat do README
  Sprava zamestnancu (chybi jen update)
  
  Sprava pokoju (chybi jen update)
+ 
+ Zabezpecit endpointy
+ 
+ Spraviť migráciu pre userov
 
 ## ZAPOMENUTO:
-Spraviť migráciu pre userov
-
-Update zamestnancu
 
 Pri save pokoje nejde pridat Equipment
 
 Predelat PDF dle aktualnich use-case??
 
-Zabezpecit endpointy
+
 
 ## NEDĚLAT:
 CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
