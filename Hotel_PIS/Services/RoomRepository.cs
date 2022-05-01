@@ -69,14 +69,31 @@ namespace Hotel_PIS.Services
         {
             using (var db = new HotelContext())
             {
+                var dbEqs = db.RoomEquipments.Where(x => x.RoomId == roomId).ToList();
+
                 foreach (var eqId in equipmentIds)
                 {
-                    db.RoomEquipments.Add(new RoomEquipment
+                    var eq = dbEqs.FirstOrDefault(x => x.EquipmentId == eqId);
+                    if (eq is null) //if not found in db, add to db
                     {
-                        RoomId = roomId,
-                        EquipmentId = eqId
-                    });
+                        db.RoomEquipments.Add(new RoomEquipment
+                        {
+                            RoomId = roomId,
+                            EquipmentId = eqId
+                        });
+                    }
                 }
+
+                foreach (var eq in dbEqs)
+                {
+                    //if in db but not in eqs
+                    var isIn = equipmentIds.Any(x => x == eq.EquipmentId);
+                    if (!isIn)
+                        db.RoomEquipments.Remove(eq);
+
+                }
+
+
 
                 db.SaveChanges();
             }
