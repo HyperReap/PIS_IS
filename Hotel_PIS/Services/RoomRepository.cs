@@ -46,6 +46,24 @@ namespace Hotel_PIS.Services
                 return rooms;
             }
         }
+        
+        public List<Room> GetAllUncleaned()
+        {
+            using (var db = new HotelContext())
+            {
+                var rooms = db.Rooms.Where(x => x.IsCleaned == false).ToList();
+                return rooms;
+            }
+        }
+        
+        public List<Room> GetAllCleaned()
+        {
+            using (var db = new HotelContext())
+            {
+                var rooms = db.Rooms.Where(x => x.IsCleaned == false).ToList();
+                return rooms;
+            }
+        }
 
         public Room Save(int id, Room obj)
         {
@@ -172,6 +190,19 @@ namespace Hotel_PIS.Services
             {
                 var equipments = db.RoomEquipments.Where(x=>x.RoomId==roomId).Select(s=>s.Equipment).ToList();
                 return equipments;
+            }
+        }
+        public bool MarkAsCleaned(int roomId)
+        {
+            using (var db = new HotelContext())
+            {
+                var room = db.Rooms.Where(x => x.Id == roomId).FirstOrDefault();
+                if (room == null)
+                    throw new Exception($"Room with id:'{roomId}' was not found in database.");
+                room.IsCleaned = true;
+
+                db.SaveChanges();
+                return true;
             }
         }
     }

@@ -6,6 +6,7 @@ import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/customer/my-reservations.vue'
 import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
 import Failure from "@/views/admin/technician/failures.vue";
+import UncleanedRooms from "@/components/admin/cleaningLady/uncleanedRooms";
 
 import StatsManagement from "@/views/admin/manager/statsManagement.vue";
 import EmployeesManagement from "@/views/admin/manager/employeesManagement.vue";
@@ -97,6 +98,15 @@ const routes = [
         acceptedUserRoles: [1, 2, 3, 4]
     }
   },
+    {
+        path: '/uklizeni',
+        name: 'Uklízení',
+        component: UncleanedRooms,
+        meta: {
+            showInMenu: true,
+            acceptedUserRoles: [1, 2, 3, 4]
+        }
+    },
   {
     path: '/login',
     name: 'Přihlášení',

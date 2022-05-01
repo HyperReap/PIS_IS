@@ -42,6 +42,18 @@ namespace Hotel_PIS.Controllers
         {
             return roomRepository.GetAll();
         }
+        
+        [HttpGet]
+        public List<Room> GetAllUncleaned()
+        {
+            return roomRepository.GetAllUncleaned();
+        }
+        
+        [HttpGet]
+        public List<Room> GetAllCleaned()
+        {
+            return roomRepository.GetAllUncleaned();
+        }
 
         [HttpGet]
         public List<Equipment> GetEquipments()
@@ -67,5 +79,10 @@ namespace Hotel_PIS.Controllers
             return roomRepository.Save(id, obj);
         }
 
+        [HttpGet]
+        public bool MarkAsCleaned(int roomId)
+        {
+            return roomRepository.MarkAsCleaned(roomId);
+        }
     }
 }
