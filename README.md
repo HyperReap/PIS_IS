@@ -1,7 +1,5 @@
 ## TODO-LIST
 
-dat vsude bearer na BE
-
 sepsat dokumentaci - doc.html (zbyva instalace)
 
 zkusit rozjet odevzdane veci
