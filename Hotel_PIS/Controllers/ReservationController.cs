@@ -61,6 +61,12 @@ namespace Hotel_PIS.Controllers
         }
 
         [HttpGet]
+        public List<ReservationDto> GetInProgressReservations()
+        {
+            return reservationRepository.GetInProgressReservations();
+        }
+
+        [HttpGet]
         public List<ReservationDto> GetReservationsByEmail([Required]string email)
         {
             return reservationRepository.GetReservationsByEmail(email);

@@ -5,6 +5,7 @@ import ReservationDetails from '../views/customer/reservation-details.vue'
 import MyReservations from '../views/customer/my-reservations.vue'
 import Failure from "@/views/failures";
 import ReservationConfirmation from '../views/customer/reservation-confirmation.vue'
+import Reservations from '../views/receptionist/reservations.vue'
 import Login from '../views/admin/login.vue'
 
 const routes = [
@@ -22,6 +23,14 @@ const routes = [
     component: Rooms,
     meta: {
         showInMenu: true
+    }
+  },
+  {
+    path: '/sprava-rezervaci',
+    name: 'Správa rezervací',
+    component: Reservations,
+    meta: {
+        showInMenu: true,
     }
   },
   {

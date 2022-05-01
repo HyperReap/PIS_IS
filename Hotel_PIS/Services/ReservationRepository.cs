@@ -103,7 +103,7 @@ namespace Hotel_PIS.Services
 
 
                 reservation.RoomReservations.Add(new RoomReservation { RoomId = roomId, DateFrom = dateFrom, DateTo = dateTo});
-
+               
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
 
@@ -185,6 +185,31 @@ namespace Hotel_PIS.Services
                 return tmp;
 
                 }
+        }
+
+        public List<ReservationDto> GetInProgressReservations()
+        {
+            using (var db = new HotelContext())
+            {
+                var tmp = db.RoomReservations.Where(x => x.Reservation.ReservationState == ReservationStateEnum.Reserved || x.Reservation.ReservationState == ReservationStateEnum.Check_in)
+                .Select(s => new ReservationDto
+                {
+                    Cost = s.Reservation.Cost,
+                    Paid = s.Reservation.Payed,
+                    NumberOfPeople = s.Reservation.NumberOfPeople,
+                    ReservationState = s.Reservation.ReservationState,
+                    DateFrom = s.DateFrom,
+                    DateTo = s.DateTo,
+                    Email = s.Reservation.Client.Email,
+                    FirstName = s.Reservation.Client.FirstName, //no reservation can exist without client
+                    SecondName = s.Reservation.Client.SecondName,
+                    PhoneNumber = s.Reservation.Client.PhoneNumber,
+                    ReservationId = s.ReservationId,
+                    RoomNumber = s.Room.RoomNumber, //no reservation withou room can exist in db
+                    }).ToList();
+                return tmp;
+
+            }
         }
 
         public void CancelReservation(int id)

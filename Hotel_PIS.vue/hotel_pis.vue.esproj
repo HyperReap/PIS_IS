@@ -6,10 +6,14 @@
     <StartupCommand>npm run serve</StartupCommand>
     <JavaScriptTestRoot>.\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
-	  <NpmInstallStampFile>node_modules/.install-stamp</NpmInstallStampFile>
+    <NpmInstallStampFile>node_modules/.install-stamp</NpmInstallStampFile>
   </PropertyGroup>
   <ItemGroup>
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\components\receptionist\" />
+    <Folder Include="src\views\receptionist\" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -21,8 +25,8 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
-	<Target Name="NpmInstall" BeforeTargets="BeforeBuild" Inputs="package.json" Outputs="$(NpmInstallStampFile)">
-		<Exec Command="npm install" />
-		<Touch Files="$(NpmInstallStampFile)" AlwaysCreate="true" />
-	</Target>
+  <Target Name="NpmInstall" BeforeTargets="BeforeBuild" Inputs="package.json" Outputs="$(NpmInstallStampFile)">
+    <Exec Command="npm install" />
+    <Touch Files="$(NpmInstallStampFile)" AlwaysCreate="true" />
+  </Target>
 </Project>

@@ -17,5 +17,6 @@ namespace Hotel_PIS.IServices
         Reservation Save(ReservationDto obj);
         List<FromToDateDto> GetBookedDatesOfRooms(List<int> roomIds, DateTime dateNow);
         List<ReservationDto> GetReservationsByEmail(string email);
+        List<ReservationDto> GetInProgressReservations();
     }
 }
