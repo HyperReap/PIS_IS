@@ -127,6 +127,7 @@
     }    
     .filters >>> .el-button.button{
         margin: 20px 0 0 auto;
+        order: 6;
     }
     .filters >>> .el-button.button:hover,
     .filters >>> .el-button.button:focus,

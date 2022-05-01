@@ -37,7 +37,6 @@
                 </el-select>
             </el-form-item>
         </el-form>
-        {{currentRoom}}
         <template #footer>
             <span class="dialog-footer">
                 <el-button type="primary" @click="updateRoom(currentRoom.id)">Aktualizovat</el-button>
