@@ -1,38 +1,10 @@
 ## TODO-LIST
 
-xurban70:
+dat vsude bearer na BE
 
-Ondra_stuD: Front-end 1/2
+sepsat dokumentaci - doc.html (zbyva instalace)
 
-kredenc: technik a upratovačka - BE + FE
-
-TODO: dodelat controllery podle navrhu
-
-FE 2/2
-
-
-
-sepsat dokumentaci - doc.html
-
-kazdy nove pouzity nuget package napsat do README
-
-
-## STEZEJNI BODY:
-
- Sprava zamestnancu (chybi jen update a to jen na FE)
- 
- Sprava pokoju (chybi jen update a to jen na FE)
- 
- Zabezpecit endpoint
-
-## ZAPOMENUTO:
-Predelat PDF dle aktualnich use-case??
-
-## NEDĚLAT:
-CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
-
-## DALŠÍ MOŽNOSTI:
-filtrování seznamu rezervací na FE na základě inputu
+zkusit rozjet odevzdane veci
 
 
 ## Project for Advanced information Systems.
