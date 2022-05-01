@@ -78,7 +78,7 @@ namespace Hotel_PIS.Services
             }
             else
             {
-                savedEmployee = UpdateEmployee(obj);
+                savedEmployee = UpdateEmployee(id,obj);
             }
 
             return savedEmployee;
@@ -96,16 +96,23 @@ namespace Hotel_PIS.Services
             }
         }
 
-        private Employee UpdateEmployee(Employee employee)
+        private Employee UpdateEmployee(int id, Employee employee)
         {
             using (var db = new HotelContext())
             {
-                var dbEmployee = db.Employees.Where(x => x.Id == employee.Id).FirstOrDefault();
+                var dbEmployee = db.Employees.Where(x => x.Id == id).FirstOrDefault();
                 if (dbEmployee == null)
                     throw new Exception($"Employee with id:'{employee.Id}' was not found in database.");
 
                 if (dbEmployee.Equals(employee))
                     return employee;
+
+                dbEmployee.Email = employee.Email;
+                dbEmployee.ContractDueDae = employee.ContractDueDae;
+                dbEmployee.FirstName = employee.FirstName;
+                dbEmployee.SecondName = employee.SecondName;
+                dbEmployee.RoleId = employee.RoleId;
+
 
                 db.SaveChanges();
                 return employee;
