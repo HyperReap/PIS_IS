@@ -43,6 +43,8 @@ Update zamestnancu
 
 Pri save pokoje nejde pridat Equipment
 
+Predelat PDF dle aktualnich use-case??
+
 ## NEDĚLAT:
 CRUD - informace o zakaznikovi (u recepcniho) - je to k nicemu
 
